@@ -1,0 +1,102 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Login{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-6 col-lg-5">
+            <div class="card shadow">
+                <div class="card-body p-5">
+                    <div class="text-center mb-4">
+                        <h2 class="card-title">
+                            <i class="fas fa-sign-in-alt text-primary" aria-hidden="true"></i>
+                            Login
+                        </h2>
+                        <p class="text-muted">Welcome back! Please sign in to your account.</p>
+                    </div>
+
+                    <form method="post">
+                        {% csrf_token %}
+                        
+                        {% if form.non_field_errors %}
+                        <div class="alert alert-danger" role="alert">
+                            {{ form.non_field_errors }}
+                        </div>
+                        {% endif %}
+
+                        <div class="mb-3">
+                            <label for="{{ form.username.id_for_label }}" class="form-label">
+                                <i class="fas fa-user" aria-hidden="true"></i> Username
+                            </label>
+                            {{ form.username }}
+                            {% if form.username.errors %}
+                            <div class="invalid-feedback d-block">
+                                {{ form.username.errors }}
+                            </div>
+                            {% endif %}
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="{{ form.password.id_for_label }}" class="form-label">
+                                <i class="fas fa-lock" aria-hidden="true"></i> Password
+                            </label>
+                            {{ form.password }}
+                            {% if form.password.errors %}
+                            <div class="invalid-feedback d-block">
+                                {{ form.password.errors }}
+                            </div>
+                            {% endif %}
+                        </div>
+
+                        <div class="mb-3 form-check">
+                            <input type="checkbox" class="form-check-input" id="rememberMe" name="remember_me">
+                            <label class="form-check-label" for="rememberMe">
+                                Remember me
+                            </label>
+                        </div>
+
+                        <div class="d-grid mb-3">
+                            <button type="submit" class="btn btn-primary btn-lg">
+                                <i class="fas fa-sign-in-alt" aria-hidden="true"></i> Sign In
+                            </button>
+                        </div>
+
+                        <div class="text-center">
+                            <p class="mb-2">
+                                <a href="{% url 'blog:password_reset' %}" class="text-decoration-none">
+                                    Forgot your password?
+                                </a>
+                            </p>
+                            <p class="mb-0">
+                                Don't have an account? 
+                                <a href="{% url 'blog:register' %}" class="text-decoration-none fw-bold">
+                                    Sign up here
+                                </a>
+                            </p>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Social Login (if implemented) -->
+            <div class="text-center mt-4">
+                <p class="text-muted">Or sign in with:</p>
+                <div class="d-flex justify-content-center gap-2">
+                    <button class="btn btn-outline-primary" disabled>
+                        <i class="fab fa-google" aria-hidden="true"></i> Google
+                    </button>
+                    <button class="btn btn-outline-info" disabled>
+                        <i class="fab fa-twitter" aria-hidden="true"></i> Twitter
+                    </button>
+                    <button class="btn btn-outline-dark" disabled>
+                        <i class="fab fa-github" aria-hidden="true"></i> GitHub
+                    </button>
+                </div>
+                <small class="text-muted d-block mt-2">Social login coming soon!</small>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

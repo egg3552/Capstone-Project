@@ -1,0 +1,30 @@
+# Django Full Stack Blog Project Dependencies
+
+# Core Django Framework
+Django==5.2.6
+
+# Environment Variables Management
+django-environ==0.11.2
+
+# Static Files Management (Production)
+whitenoise==6.8.1
+
+# Image Processing
+Pillow==10.4.0
+
+# Database (Production PostgreSQL support)
+psycopg2-binary==2.9.9
+
+# Production WSGI Server
+gunicorn==23.0.0
+
+# Security & Performance (Production)
+django-cors-headers==4.3.0
+
+# Development Tools (Optional - uncomment if needed)
+# django-debug-toolbar==4.2.0
+# django-extensions==3.2.3
+
+# Testing (Optional - uncomment if needed)
+# coverage==7.3.0
+# factory-boy==3.3.0

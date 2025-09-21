@@ -1,0 +1,246 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}About Us{% endblock %}
+
+{% block content %}
+<div class="container">
+    <!-- Hero Section -->
+    <div class="row mb-5">
+        <div class="col-12 text-center">
+            <div class="bg-primary text-white rounded p-5">
+                <h1 class="display-4 fw-bold mb-3">About Our Blog</h1>
+                <p class="lead mb-0">Sharing knowledge, building community, inspiring innovation</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-lg-8 mx-auto">
+            <!-- Mission Section -->
+            <section class="mb-5">
+                <h2 class="mb-4">
+                    <i class="fas fa-bullseye text-primary" aria-hidden="true"></i>
+                    Our Mission
+                </h2>
+                <p class="lead">
+                    We believe in the power of shared knowledge and collaborative learning. 
+                    Our blog serves as a platform where developers, tech enthusiasts, and 
+                    curious minds come together to explore the latest trends in technology, 
+                    programming, and digital innovation.
+                </p>
+                <p>
+                    Whether you're a seasoned developer or just starting your journey in tech, 
+                    our community welcomes you. We strive to create content that is both 
+                    accessible to beginners and valuable to experts.
+                </p>
+            </section>
+
+            <!-- What We Cover Section -->
+            <section class="mb-5">
+                <h2 class="mb-4">
+                    <i class="fas fa-list text-success" aria-hidden="true"></i>
+                    What We Cover
+                </h2>
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <div class="card h-100 border-0 bg-light">
+                            <div class="card-body">
+                                <h5 class="card-title">
+                                    <i class="fab fa-python text-warning" aria-hidden="true"></i>
+                                    Programming Languages
+                                </h5>
+                                <p class="card-text">
+                                    Python, JavaScript, Django, React, and more. 
+                                    Deep dives into syntax, best practices, and real-world applications.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <div class="card h-100 border-0 bg-light">
+                            <div class="card-body">
+                                <h5 class="card-title">
+                                    <i class="fas fa-server text-info" aria-hidden="true"></i>
+                                    Web Development
+                                </h5>
+                                <p class="card-text">
+                                    Full-stack development, API design, database optimization, 
+                                    and modern web technologies.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <div class="card h-100 border-0 bg-light">
+                            <div class="card-body">
+                                <h5 class="card-title">
+                                    <i class="fas fa-cloud text-primary" aria-hidden="true"></i>
+                                    Cloud & DevOps
+                                </h5>
+                                <p class="card-text">
+                                    Cloud deployment, containerization, CI/CD pipelines, 
+                                    and infrastructure as code.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <div class="card h-100 border-0 bg-light">
+                            <div class="card-body">
+                                <h5 class="card-title">
+                                    <i class="fas fa-brain text-danger" aria-hidden="true"></i>
+                                    AI & Machine Learning
+                                </h5>
+                                <p class="card-text">
+                                    Artificial intelligence, machine learning algorithms, 
+                                    data science, and emerging technologies.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Community Section -->
+            <section class="mb-5">
+                <h2 class="mb-4">
+                    <i class="fas fa-users text-info" aria-hidden="true"></i>
+                    Our Community
+                </h2>
+                <p>
+                    Our blog is built on Django, showcasing the power of this robust web framework. 
+                    We practice what we preach by using modern development practices:
+                </p>
+                <ul class="list-unstyled">
+                    <li class="mb-2">
+                        <i class="fas fa-check text-success" aria-hidden="true"></i>
+                        Role-based user authentication and authorization
+                    </li>
+                    <li class="mb-2">
+                        <i class="fas fa-check text-success" aria-hidden="true"></i>
+                        Responsive design with Bootstrap 5
+                    </li>
+                    <li class="mb-2">
+                        <i class="fas fa-check text-success" aria-hidden="true"></i>
+                        WCAG accessibility compliance
+                    </li>
+                    <li class="mb-2">
+                        <i class="fas fa-check text-success" aria-hidden="true"></i>
+                        SEO-optimized content structure
+                    </li>
+                    <li class="mb-2">
+                        <i class="fas fa-check text-success" aria-hidden="true"></i>
+                        Interactive commenting system
+                    </li>
+                    <li class="mb-2">
+                        <i class="fas fa-check text-success" aria-hidden="true"></i>
+                        Advanced search and filtering
+                    </li>
+                </ul>
+            </section>
+
+            <!-- Join Us Section -->
+            <section class="mb-5">
+                <div class="card bg-primary text-white">
+                    <div class="card-body text-center p-5">
+                        <h2 class="mb-3">
+                            <i class="fas fa-handshake" aria-hidden="true"></i>
+                            Join Our Community
+                        </h2>
+                        <p class="lead mb-4">
+                            Ready to share your knowledge or learn from others? 
+                            Join our community today!
+                        </p>
+                        <div class="d-flex justify-content-center gap-3">
+                            {% if not user.is_authenticated %}
+                            <a href="{% url 'blog:register' %}" class="btn btn-light btn-lg">
+                                <i class="fas fa-user-plus" aria-hidden="true"></i>
+                                Register Now
+                            </a>
+                            <a href="{% url 'blog:login' %}" class="btn btn-outline-light btn-lg">
+                                <i class="fas fa-sign-in-alt" aria-hidden="true"></i>
+                                Sign In
+                            </a>
+                            {% else %}
+                            {% if user.userprofile.can_create_posts %}
+                            <a href="{% url 'blog:post_create' %}" class="btn btn-light btn-lg">
+                                <i class="fas fa-pen" aria-hidden="true"></i>
+                                Write a Post
+                            </a>
+                            {% endif %}
+                            <a href="{% url 'blog:post_list' %}" class="btn btn-outline-light btn-lg">
+                                <i class="fas fa-home" aria-hidden="true"></i>
+                                Browse Posts
+                            </a>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Statistics -->
+            <section class="mb-5">
+                <h2 class="mb-4">
+                    <i class="fas fa-chart-bar text-warning" aria-hidden="true"></i>
+                    By the Numbers
+                </h2>
+                <div class="row text-center">
+                    <div class="col-md-3 mb-3">
+                        <div class="card border-0 bg-light">
+                            <div class="card-body">
+                                <i class="fas fa-file-alt fa-2x text-primary mb-2" aria-hidden="true"></i>
+                                <h3 class="mb-1">50+</h3>
+                                <small class="text-muted">Articles Published</small>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3 mb-3">
+                        <div class="card border-0 bg-light">
+                            <div class="card-body">
+                                <i class="fas fa-users fa-2x text-success mb-2" aria-hidden="true"></i>
+                                <h3 class="mb-1">200+</h3>
+                                <small class="text-muted">Community Members</small>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3 mb-3">
+                        <div class="card border-0 bg-light">
+                            <div class="card-body">
+                                <i class="fas fa-comments fa-2x text-info mb-2" aria-hidden="true"></i>
+                                <h3 class="mb-1">1K+</h3>
+                                <small class="text-muted">Comments & Discussions</small>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3 mb-3">
+                        <div class="card border-0 bg-light">
+                            <div class="card-body">
+                                <i class="fas fa-eye fa-2x text-warning mb-2" aria-hidden="true"></i>
+                                <h3 class="mb-1">10K+</h3>
+                                <small class="text-muted">Monthly Readers</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Contact Info -->
+            <section class="text-center">
+                <h2 class="mb-4">
+                    <i class="fas fa-envelope text-primary" aria-hidden="true"></i>
+                    Get in Touch
+                </h2>
+                <p class="mb-4">
+                    Have questions, suggestions, or want to collaborate? 
+                    We'd love to hear from you!
+                </p>
+                <a href="{% url 'blog:contact' %}" class="btn btn-primary btn-lg">
+                    <i class="fas fa-paper-plane" aria-hidden="true"></i>
+                    Contact Us
+                </a>
+            </section>
+        </div>
+    </div>
+</div>
+{% endblock %}
