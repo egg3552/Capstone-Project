@@ -17,7 +17,9 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='NewsletterSubscription',
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+                ('id', models.BigAutoField(
+                    auto_created=True, primary_key=True, serialize=False,
+                    verbose_name='ID')),
                 ('email', models.EmailField(max_length=254, unique=True)),
                 ('subscribed_at', models.DateTimeField(auto_now_add=True)),
                 ('is_active', models.BooleanField(default=True)),
@@ -34,26 +36,45 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='PostReaction',
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('reaction_type', models.CharField(choices=[('like', 'Like'), ('love', 'Love'), ('laugh', 'Laugh'), ('wow', 'Wow'), ('sad', 'Sad'), ('angry', 'Angry')], default='like', max_length=10)),
+                ('id', models.BigAutoField(
+                    auto_created=True, primary_key=True, serialize=False,
+                    verbose_name='ID')),
+                ('reaction_type', models.CharField(
+                    choices=[('like', 'Like'), ('love', 'Love'),
+                             ('laugh', 'Laugh'), ('wow', 'Wow'),
+                             ('sad', 'Sad'), ('angry', 'Angry')],
+                    default='like', max_length=10)),
                 ('created_at', models.DateTimeField(auto_now_add=True)),
-                ('post', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='reactions', to='blog.Post')),
-                ('user', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='reactions', to=settings.AUTH_USER_MODEL)),
+                ('post', models.ForeignKey(
+                    on_delete=django.db.models.deletion.CASCADE,
+                    related_name='reactions', to='blog.Post')),
+                ('user', models.ForeignKey(
+                    on_delete=django.db.models.deletion.CASCADE,
+                    related_name='reactions', to=settings.AUTH_USER_MODEL)),
             ],
             options={
                 'ordering': ['-created_at'],
-                'indexes': [models.Index(fields=['post', 'reaction_type'], name='blog_postre_post_id_0a25e0_idx')],
+                'indexes': [models.Index(
+                    fields=['post', 'reaction_type'],
+                    name='blog_postre_post_id_0a25e0_idx')],
                 'unique_together': {('post', 'user')},
             },
         ),
         migrations.CreateModel(
             name='ReadingProgress',
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('progress_percentage', models.PositiveIntegerField(default=0)),
+                ('id', models.BigAutoField(
+                    auto_created=True, primary_key=True, serialize=False,
+                    verbose_name='ID')),
+                ('progress_percentage',
+                 models.PositiveIntegerField(default=0)),
                 ('last_read_at', models.DateTimeField(auto_now=True)),
-                ('post', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='blog.Post')),
-                ('user', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL)),
+                ('post', models.ForeignKey(
+                    on_delete=django.db.models.deletion.CASCADE,
+                    to='blog.Post')),
+                ('user', models.ForeignKey(
+                    on_delete=django.db.models.deletion.CASCADE,
+                    to=settings.AUTH_USER_MODEL)),
             ],
             options={
                 'ordering': ['-last_read_at'],
