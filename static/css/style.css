@@ -555,13 +555,14 @@ a:hover {
   }
 }
 
-/* About page specific styling with bright colors */
+/* About page specific styling with ultra-bright colors */
 .about-hero {
-  background: linear-gradient(135deg, var(--gradient-sunset)) !important;
+  background: linear-gradient(135deg, #ffeb3b 0%, #ff9800 50%, #e91e63 100%) !important;
   position: relative;
   overflow: hidden;
   border: none !important;
   color: white !important;
+  box-shadow: 0 8px 32px rgba(255, 235, 59, 0.4) !important;
 }
 
 .about-hero::before {
@@ -571,7 +572,7 @@ a:hover {
   left: 0;
   right: 0;
   bottom: 0;
-  background: rgba(255, 152, 0, 0.3);  /* Bright orange overlay */
+  background: linear-gradient(45deg, rgba(255, 255, 255, 0.1), rgba(255, 235, 59, 0.2));  /* Bright light overlay */
   z-index: 1;
 }
 
@@ -582,17 +583,21 @@ a:hover {
 
 .about-hero .about-title {
   color: #ffffff !important;  /* Pure white for maximum contrast */
-  text-shadow: 3px 3px 6px var(--primary-color) !important;  /* Bright colored shadow */
+  text-shadow: 2px 2px 8px rgba(255, 255, 255, 0.8), 
+               0 0 20px rgba(255, 255, 255, 0.6),
+               0 0 30px rgba(255, 235, 59, 0.4) !important;  /* Bright white glow */
   font-weight: 900 !important;  /* Extra bold for better visibility */
-  letter-spacing: -0.02em !important;
+  letter-spacing: 2px !important;
   text-transform: none !important;
   opacity: 1 !important;
-  font-size: 3.5rem !important;  /* Make it larger */
+  font-size: 4rem !important;  /* Make it larger */
 }
 
 .about-hero .about-subtitle {
-  color: #fff8e1 !important;  /* Warm light cream for subtitle */
-  text-shadow: 2px 2px 4px var(--secondary-color) !important;
+  color: #ffffff !important;  /* Pure white for subtitle */
+  text-shadow: 1px 1px 4px rgba(255, 255, 255, 0.7),
+               0 0 10px rgba(255, 235, 59, 0.5) !important;  /* Bright white glow */
   opacity: 1 !important;
   font-weight: 600 !important;
+  font-size: 1.3rem !important;
 }
