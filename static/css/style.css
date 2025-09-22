@@ -551,6 +551,8 @@ a:hover {
   background: linear-gradient(135deg, #1e3a8a 0%, #1e40af 50%, #2563eb 100%) !important;
   position: relative;
   overflow: hidden;
+  border: none !important;
+  color: white !important;
 }
 
 .about-hero::before {
@@ -560,7 +562,7 @@ a:hover {
   left: 0;
   right: 0;
   bottom: 0;
-  background: rgba(0, 0, 0, 0.15);  /* Subtle dark overlay for better contrast */
+  background: rgba(0, 0, 0, 0.4);  /* Strong dark overlay */
   z-index: 1;
 }
 
@@ -569,9 +571,19 @@ a:hover {
   z-index: 2;  /* Ensure text appears above overlay */
 }
 
-.about-title {
+.about-hero .about-title {
   color: #ffffff !important;  /* Pure white for maximum contrast */
-  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);  /* Strong text shadow for definition */
+  text-shadow: 4px 4px 8px rgba(0, 0, 0, 0.9) !important;  /* Very strong shadow */
   font-weight: 900 !important;  /* Extra bold for better visibility */
-  letter-spacing: -0.02em;  /* Slight letter spacing for better readability */
+  letter-spacing: -0.02em !important;
+  text-transform: none !important;
+  opacity: 1 !important;
+  font-size: 3.5rem !important;  /* Make it larger */
+}
+
+.about-hero .about-subtitle {
+  color: #f1f5f9 !important;  /* Very light gray for subtitle */
+  text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.8) !important;
+  opacity: 1 !important;
+  font-weight: 600 !important;
 }
