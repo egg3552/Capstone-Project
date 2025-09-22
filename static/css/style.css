@@ -2,49 +2,56 @@
 
 /* Root variables for consistent theming and easy customization */
 :root {
-  /* Color palette */
-  --primary-color: #2563eb;
-  --primary-dark: #1d4ed8;
-  --secondary-color: #64748b;
-  --success-color: #059669;
-  --danger-color: #dc2626;
-  --warning-color: #d97706;
-  --info-color: #0891b2;
-  --light-color: #f8fafc;
-  --dark-color: #1e293b;
+  /* Bright color palette */
+  --primary-color: #ff6b6b;          /* Bright coral red */
+  --primary-dark: #ff5252;           /* Slightly darker coral */
+  --secondary-color: #4ecdc4;        /* Bright teal */
+  --success-color: #4caf50;          /* Bright green */
+  --danger-color: #ff9800;           /* Bright orange (softer than red) */
+  --warning-color: #ffeb3b;          /* Bright yellow */
+  --info-color: #03dac6;             /* Bright cyan */
+  --light-color: #fff8e1;            /* Warm light cream */
+  --dark-color: #ff6b6b;             /* Replace dark with bright coral */
+  
+  /* Additional bright colors */
+  --primary-blue: #00bcd4;           /* Bright cyan blue */
+  --secondary-blue: #03a9f4;         /* Bright sky blue */
+  --accent-purple: #e91e63;          /* Bright pink */
+  --accent-orange: #ff9800;          /* Bright orange */
   
   /* Typography */
   --font-family-primary: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   
-  /* Spacing and effects */
+  /* Spacing and effects with bright shadows */
   --border-radius: 0.75rem;
-  --box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
-  --box-shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+  --box-shadow: 0 4px 6px -1px rgba(255, 107, 107, 0.2), 0 2px 4px -1px rgba(255, 107, 107, 0.1);
+  --box-shadow-lg: 0 10px 15px -3px rgba(255, 107, 107, 0.2), 0 4px 6px -2px rgba(255, 107, 107, 0.1);
   --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   
-  /* Gradients for modern appearance */
-  --gradient-primary: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  --gradient-secondary: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+  /* Bright gradients for modern appearance */
+  --gradient-primary: linear-gradient(135deg, #ff6b6b 0%, #4ecdc4 100%);
+  --gradient-secondary: linear-gradient(135deg, #ffeb3b 0%, #03dac6 100%);
+  --gradient-sunset: linear-gradient(135deg, #ff9800 0%, #e91e63 100%);
 }
 
-/* General body styling with gradient background */
+/* General body styling with bright gradient background */
 body {
   font-family: var(--font-family-primary);
   line-height: 1.6;
-  color: #1f2937;
-  background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);  /* Subtle gradient */
+  color: #2d3748;  /* Dark gray for readability on bright backgrounds */
+  background: linear-gradient(135deg, #fff8e1 0%, #ffecb3 50%, #ffe0b2 100%);  /* Bright warm gradient */
   min-height: 100vh;
 }
 
-/* Heading styles with gradient text effect for h1 */
+/* Heading styles with bright gradient text effect for h1 */
 h1, h2, h3, h4, h5, h6 {
   font-weight: 700;
   line-height: 1.2;
   margin-bottom: 1rem;
-  color: var(--dark-color);
+  color: #2d3748;  /* Dark gray for readability */
 }
 
-/* Gradient text effect for main headings */
+/* Bright gradient text effect for main headings */
 h1 {
   background: var(--gradient-primary);
   -webkit-background-clip: text;  /* Webkit prefix for Safari */
@@ -118,9 +125,10 @@ a:hover {
 }
 
 .btn-secondary {
-  background: linear-gradient(135deg, #64748b 0%, #475569 100%);
+  background: linear-gradient(135deg, var(--secondary-color) 0%, var(--info-color) 100%);
   border: none;
   box-shadow: var(--box-shadow);
+  color: white;
 }
 
 .btn-secondary:hover {
@@ -183,12 +191,13 @@ a:hover {
   line-height: 1.5;
 }
 
-/* Featured post with overlay effect for better text readability */
+/* Featured post with bright overlay effect for better text readability */
 .featured-post {
-  background: linear-gradient(135deg, var(--primary-color), #0056b3);
+  background: linear-gradient(135deg, var(--gradient-sunset));
   color: white;
   border-radius: var(--border-radius);
   overflow: hidden;
+  position: relative;
 }
 
 .featured-post .card-body {
@@ -196,7 +205,7 @@ a:hover {
   z-index: 2;  /* Above overlay */
 }
 
-/* Dark overlay for better text contrast */
+/* Bright overlay for better text contrast */
 .featured-post::before {
   content: '';
   position: absolute;
@@ -204,7 +213,7 @@ a:hover {
   left: 0;
   right: 0;
   bottom: 0;
-  background: rgba(0, 0, 0, 0.3);  /* Semi-transparent dark overlay */
+  background: rgba(255, 152, 0, 0.2);  /* Semi-transparent bright orange overlay */
   z-index: 1;
 }
 
@@ -227,7 +236,7 @@ a:hover {
 }
 
 .tag:hover {
-  background-color: #138496;
+  background-color: var(--primary-color);
   color: white;
   text-decoration: none;
 }
@@ -238,7 +247,7 @@ a:hover {
 }
 
 .category-badge:hover {
-  background-color: #545b62;
+  background-color: var(--accent-purple);
   color: white;
   text-decoration: none;
 }
@@ -284,22 +293,22 @@ a:hover {
 }
 
 .btn-primary:hover {
-  background-color: #0056b3;
-  border-color: #0056b3;
+  background-color: var(--primary-dark);
+  border-color: var(--primary-dark);
   transform: translateY(-1px);
 }
 
 /* Pagination */
 .pagination .page-link {
   color: var(--primary-color);
-  border-color: #dee2e6;
+  border-color: var(--secondary-color);
   transition: var(--transition);
 }
 
 .pagination .page-link:hover {
-  color: #0056b3;
+  color: var(--accent-purple);
   background-color: var(--light-color);
-  border-color: #dee2e6;
+  border-color: var(--secondary-color);
 }
 
 .pagination .page-item.active .page-link {
@@ -343,7 +352,7 @@ a:hover {
 
 /* Profile */
 .profile-header {
-  background: linear-gradient(135deg, var(--primary-color), #0056b3);
+  background: linear-gradient(135deg, var(--gradient-primary));
   color: white;
   padding: 3rem 0;
   text-align: center;
@@ -393,7 +402,7 @@ a:hover {
 }
 
 .back-to-top:hover {
-  background-color: #0056b3;
+  background-color: var(--accent-purple);
   transform: translateY(-2px);  /* Lift effect on hover */
 }
 
@@ -482,16 +491,16 @@ a:hover {
   }
 }
 
-/* Dark mode support using system preference detection */
+/* Bright mode support - override any dark mode preferences */
 @media (prefers-color-scheme: dark) {
   .card {
-    background-color: #2d3748;
-    color: #e2e8f0;
+    background-color: var(--warning-color);
+    color: #2d3748;
   }
   
   .sidebar {
-    background-color: #2d3748;
-    color: #e2e8f0;
+    background-color: var(--info-color);
+    color: #2d3748;
   }
 }
 
@@ -536,19 +545,19 @@ a:hover {
 /* High contrast mode support for accessibility compliance */
 @media (prefers-contrast: high) {
   .card {
-    border: 2px solid #000;  /* Strong border for high contrast */
+    border: 2px solid var(--primary-color);  /* Strong bright border for high contrast */
   }
   
   .btn-primary {
-    background-color: #000;  /* Pure black background */
-    border-color: #000;
+    background-color: var(--primary-color);  /* Bright primary background */
+    border-color: var(--primary-color);
     color: #fff;  /* Pure white text */
   }
 }
 
-/* About page specific styling for better readability */
+/* About page specific styling with bright colors */
 .about-hero {
-  background: linear-gradient(135deg, #1e3a8a 0%, #1e40af 50%, #2563eb 100%) !important;
+  background: linear-gradient(135deg, var(--gradient-sunset)) !important;
   position: relative;
   overflow: hidden;
   border: none !important;
@@ -562,7 +571,7 @@ a:hover {
   left: 0;
   right: 0;
   bottom: 0;
-  background: rgba(0, 0, 0, 0.4);  /* Strong dark overlay */
+  background: rgba(255, 152, 0, 0.3);  /* Bright orange overlay */
   z-index: 1;
 }
 
@@ -573,7 +582,7 @@ a:hover {
 
 .about-hero .about-title {
   color: #ffffff !important;  /* Pure white for maximum contrast */
-  text-shadow: 4px 4px 8px rgba(0, 0, 0, 0.9) !important;  /* Very strong shadow */
+  text-shadow: 3px 3px 6px var(--primary-color) !important;  /* Bright colored shadow */
   font-weight: 900 !important;  /* Extra bold for better visibility */
   letter-spacing: -0.02em !important;
   text-transform: none !important;
@@ -582,8 +591,8 @@ a:hover {
 }
 
 .about-hero .about-subtitle {
-  color: #f1f5f9 !important;  /* Very light gray for subtitle */
-  text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.8) !important;
+  color: #fff8e1 !important;  /* Warm light cream for subtitle */
+  text-shadow: 2px 2px 4px var(--secondary-color) !important;
   opacity: 1 !important;
   font-weight: 600 !important;
 }

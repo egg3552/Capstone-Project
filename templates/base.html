@@ -36,18 +36,19 @@
     
     <!-- Custom CSS with Django static file handling -->
     {% load static %}
-    <link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}">
+    <!-- Custom CSS with cache busting -->
+    <link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}?v={{ CACHE_BUSTER|default:'2025092201' }}">
     
     <!-- Block for page-specific CSS -->
     {% block extra_css %}{% endblock %}
 </head>
 <body>
-    <!-- Primary Navigation with gradient background and sticky positioning -->
-    <nav class="navbar navbar-expand-lg navbar-dark sticky-top" role="navigation" aria-label="Main navigation" 
-         style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);">
+    <!-- Primary Navigation with bright gradient background and sticky positioning -->
+    <nav class="navbar navbar-expand-lg navbar-light sticky-top" role="navigation" aria-label="Main navigation" 
+         style="background: linear-gradient(135deg, #ff6b6b 0%, #4ecdc4 100%); box-shadow: 0 4px 6px -1px rgba(255, 107, 107, 0.2);">
         <div class="container">
-            <!-- Brand logo with text shadow and icon -->
-            <a class="navbar-brand fw-bold fs-3" href="{% url 'blog:post_list' %}" style="text-shadow: 0 2px 4px rgba(0,0,0,0.3);">
+            <!-- Brand logo with bright text shadow and icon -->
+            <a class="navbar-brand fw-bold fs-3" href="{% url 'blog:post_list' %}" style="text-shadow: 0 2px 4px rgba(255,255,255,0.5); color: white;">
                 <i class="fas fa-blog me-2" aria-hidden="true"></i> Blog
             </a>
             
@@ -65,25 +66,25 @@
                     <li class="nav-item">
                         <!-- Dynamic active class based on current URL name -->
                         <a class="nav-link {% if request.resolver_match.url_name == 'post_list' %}active{% endif %}" 
-                           href="{% url 'blog:post_list' %}">
+                           href="{% url 'blog:post_list' %}" style="color: white !important;">
                             <i class="fas fa-home" aria-hidden="true"></i> Home
                         </a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link {% if request.resolver_match.url_name == 'about' %}active{% endif %}" 
-                           href="{% url 'blog:about' %}">
+                           href="{% url 'blog:about' %}" style="color: white !important;">
                             <i class="fas fa-info-circle" aria-hidden="true"></i> About
                         </a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link {% if request.resolver_match.url_name == 'contact' %}active{% endif %}" 
-                           href="{% url 'blog:contact' %}">
+                           href="{% url 'blog:contact' %}" style="color: white !important;">
                             <i class="fas fa-envelope" aria-hidden="true"></i> Contact
                         </a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link {% if request.resolver_match.url_name == 'advanced_search' %}active{% endif %}" 
-                           href="{% url 'blog:advanced_search' %}">
+                           href="{% url 'blog:advanced_search' %}" style="color: white !important;">
                             <i class="fas fa-search" aria-hidden="true"></i> Search
                         </a>
                     </li>
@@ -95,7 +96,7 @@
                         <!-- Authenticated user dropdown menu -->
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" href="#" role="button" 
-                               data-bs-toggle="dropdown" aria-expanded="false">
+                               data-bs-toggle="dropdown" aria-expanded="false" style="color: white !important;">
                                 <i class="fas fa-user" aria-hidden="true"></i> {{ user.username }}
                             </a>
                             <ul class="dropdown-menu">
@@ -128,12 +129,12 @@
                     {% else %}
                         <!-- Non-authenticated user links -->
                         <li class="nav-item">
-                            <a class="nav-link" href="{% url 'blog:login' %}">
+                            <a class="nav-link" href="{% url 'blog:login' %}" style="color: white !important;">
                                 <i class="fas fa-sign-in-alt" aria-hidden="true"></i> Login
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="{% url 'blog:register' %}">
+                            <a class="nav-link" href="{% url 'blog:register' %}" style="color: white !important;">
                                 <i class="fas fa-user-plus" aria-hidden="true"></i> Register
                             </a>
                         </li>
