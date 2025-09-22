@@ -178,16 +178,16 @@
             <div class="row">
                 <!-- About section with brand information -->
                 <div class="col-md-4">
-                    <h5 class="fw-bold mb-3 text-dark">
+                    <h5 class="fw-bold mb-3 text-dark" style="transition: all 0.3s ease; cursor: pointer;" onmouseover="this.style.transform='translateY(-2px)'; this.style.color='#667eea'" onmouseout="this.style.transform='translateY(0)'; this.style.color='#2d3748'">
                         <i class="fas fa-blog me-2 text-primary"></i>About This Blog
                     </h5>
-                    <p class="text-dark" style="opacity: 0.8;">A modern blog platform built with Django, featuring user authentication, 
+                    <p class="text-dark" style="opacity: 0.8; transition: all 0.3s ease; cursor: pointer;" onmouseover="this.style.opacity='1'; this.style.transform='translateX(5px)'" onmouseout="this.style.opacity='0.8'; this.style.transform='translateX(0)'">A modern blog platform built with Django, featuring user authentication, 
                     commenting system, and content management.</p>
                 </div>
                 
                 <!-- Quick navigation links -->
                 <div class="col-md-3">
-                    <h5 class="fw-bold mb-3 text-dark">Quick Links</h5>
+                    <h5 class="fw-bold mb-3 text-dark" style="transition: all 0.3s ease; cursor: pointer;" onmouseover="this.style.transform='translateY(-2px)'; this.style.color='#667eea'" onmouseout="this.style.transform='translateY(0)'; this.style.color='#2d3748'">Quick Links</h5>
                     <ul class="list-unstyled">
                         <li class="mb-2">
                             <!-- Links with hover effects via inline JavaScript -->
@@ -218,8 +218,8 @@
                 
                 <!-- Newsletter subscription section -->
                 <div class="col-md-3">
-                    <h5 class="fw-bold mb-3 text-dark">Newsletter</h5>
-                    <p class="text-dark mb-3" style="opacity: 0.8;">Stay updated with our latest posts!</p>
+                    <h5 class="fw-bold mb-3 text-dark" style="transition: all 0.3s ease; cursor: pointer;" onmouseover="this.style.transform='translateY(-2px)'; this.style.color='#667eea'" onmouseout="this.style.transform='translateY(0)'; this.style.color='#2d3748'">Newsletter</h5>
+                    <p class="text-dark mb-3" style="opacity: 0.8; transition: all 0.3s ease; cursor: pointer;" onmouseover="this.style.opacity='1'; this.style.transform='translateX(5px)'" onmouseout="this.style.opacity='0.8'; this.style.transform='translateX(0)'">Stay updated with our latest posts!</p>
                     <!-- Newsletter subscription form -->
                     <form method="post" action="{% url 'blog:newsletter_subscribe' %}">
                         {% csrf_token %}
@@ -240,7 +240,7 @@
                 
                 <!-- Social media links -->
                 <div class="col-md-2">
-                    <h5 class="fw-bold mb-3 text-dark">Connect</h5>
+                    <h5 class="fw-bold mb-3 text-dark" style="transition: all 0.3s ease; cursor: pointer;" onmouseover="this.style.transform='translateY(-2px)'; this.style.color='#667eea'" onmouseout="this.style.transform='translateY(0)'; this.style.color='#2d3748'">Connect</h5>
                     <div class="social-links">
                         <!-- Social media icons with blue hover transitions -->
                         <a href="#" class="text-dark me-3 fs-4" style="opacity: 0.8; transition: all 0.3s;" aria-label="Facebook" onmouseover="this.style.opacity='1'; this.style.color='#667eea'" onmouseout="this.style.opacity='0.8'; this.style.color='#2d3748'">
@@ -266,13 +266,13 @@
             <div class="row align-items-center">
                 <div class="col-md-6">
                     <!-- Dynamic copyright year using Django template tag -->
-                    <p class="mb-0 text-dark" style="opacity: 0.8;">
+                    <p class="mb-0 text-dark" style="opacity: 0.8; transition: all 0.3s ease; cursor: pointer;" onmouseover="this.style.opacity='1'; this.style.transform='translateX(5px)'" onmouseout="this.style.opacity='0.8'; this.style.transform='translateX(0)'">
                         <i class="fas fa-copyright me-1"></i>{% now "Y" %} Blog. All rights reserved.
                     </p>
                 </div>
                 <div class="col-md-6 text-end">
                     <!-- Technology stack attribution -->
-                    <small class="text-dark" style="opacity: 0.8;">
+                    <small class="text-dark" style="opacity: 0.8; transition: all 0.3s ease; cursor: pointer;" onmouseover="this.style.opacity='1'; this.style.transform='translateX(-5px)'" onmouseout="this.style.opacity='0.8'; this.style.transform='translateX(0)'">
                         <i class="fas fa-code me-1"></i>Built with Django & Bootstrap
                     </small>
                 </div>
