@@ -424,10 +424,17 @@ def analytics_dashboard(request):
     """
     Analytics dashboard for content creators and admins.
     """
-    # Restrict access to authors and admins only
-    if not (request.user.userprofile.can_create_posts() or
-            request.user.userprofile.can_moderate()):
-        messages.error(request, 'Access denied.')
+    # Check if user has UserProfile and required permissions
+    try:
+        user_profile = request.user.userprofile
+        if not (user_profile.can_create_posts() or
+                user_profile.can_moderate()):
+            messages.error(request, 'Access denied. Authors and admins only.')
+            return redirect('blog:post_list')
+    except AttributeError:
+        # Handle case where UserProfile doesn't exist
+        messages.error(
+            request, 'Profile setup required. Please contact admin.')
         return redirect('blog:post_list')
     
     from django.db.models import Sum
