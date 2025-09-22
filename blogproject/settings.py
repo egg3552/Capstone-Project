@@ -146,11 +146,23 @@ STATIC_URL = '/static/'
 # Use os.path.join for better Heroku compatibility
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
-# Ensure static directory exists and add to STATICFILES_DIRS
-STATICFILES_DIRS = []
-static_dir = os.path.join(BASE_DIR, 'static')
-if os.path.exists(static_dir) and os.path.isdir(static_dir):
-    STATICFILES_DIRS.append(static_dir)
+# Detect if we're running on Heroku
+IS_HEROKU = 'DYNO' in os.environ
+
+# Configure static files based on environment
+if IS_HEROKU:
+    # Heroku-specific static files configuration
+    STATICFILES_DIRS = []
+    # Only add static dir if it exists
+    static_dir = os.path.join(BASE_DIR, 'static')
+    if os.path.exists(static_dir) and os.path.isdir(static_dir):
+        STATICFILES_DIRS.append(static_dir)
+else:
+    # Local development configuration
+    STATICFILES_DIRS = []
+    static_dir = os.path.join(BASE_DIR, 'static')
+    if os.path.exists(static_dir) and os.path.isdir(static_dir):
+        STATICFILES_DIRS.append(static_dir)
 
 # Static files finders
 STATICFILES_FINDERS = [
@@ -162,18 +174,31 @@ STATICFILES_FINDERS = [
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
 
-# Modern Django 4.2+ storage configuration
-STORAGES = {
-    "default": {
-        "BACKEND": "django.core.files.storage.FileSystemStorage",
-    },
-    "staticfiles": {
-        "BACKEND": "whitenoise.storage.StaticFilesStorage",
-    },
-}
-
-# Additional WhiteNoise settings for Heroku
-WHITENOISE_USE_FINDERS = True
+# Modern Django 4.2+ storage configuration with Heroku compatibility
+if IS_HEROKU:
+    # Heroku: Use most basic WhiteNoise configuration possible
+    STORAGES = {
+        "default": {
+            "BACKEND": "django.core.files.storage.FileSystemStorage",
+        },
+        "staticfiles": {
+            "BACKEND": "whitenoise.storage.StaticFilesStorage",
+        },
+    }
+    # Minimal WhiteNoise settings for Heroku
+    WHITENOISE_USE_FINDERS = True
+    WHITENOISE_AUTOREFRESH = False
+else:
+    # Local development: Use standard WhiteNoise
+    STORAGES = {
+        "default": {
+            "BACKEND": "django.core.files.storage.FileSystemStorage",
+        },
+        "staticfiles": {
+            "BACKEND": "whitenoise.storage.StaticFilesStorage",
+        },
+    }
+    WHITENOISE_USE_FINDERS = True
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
