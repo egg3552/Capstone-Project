@@ -1,0 +1,147 @@
+{% extends 'blog/base.html' %}
+{% load static %}
+
+{% block title %}Analytics Dashboard - {{ block.super }}{% endblock %}
+
+{% block extra_css %}
+<style>
+    .analytics-card {
+        background: rgba(255, 255, 255, 0.95);
+        border-radius: 15px;
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        backdrop-filter: blur(10px);
+        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+        transition: all 0.3s ease;
+    }
+    
+    .analytics-card:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 12px 40px rgba(0, 0, 0, 0.15);
+    }
+    
+    .stat-number {
+        font-size: 2.5rem;
+        font-weight: 700;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+    }
+    
+    .stat-label {
+        color: #6c757d;
+        font-size: 0.9rem;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="row">
+        <div class="col-12">
+            <h1 class="mb-4">
+                <i class="fas fa-chart-bar"></i> Analytics Dashboard
+            </h1>
+        </div>
+    </div>
+    
+    <!-- Stats Cards -->
+    <div class="row mb-4">
+        <div class="col-md-3 mb-3">
+            <div class="analytics-card p-4 text-center">
+                <div class="stat-number">{{ total_posts }}</div>
+                <div class="stat-label">Total Posts</div>
+            </div>
+        </div>
+        <div class="col-md-3 mb-3">
+            <div class="analytics-card p-4 text-center">
+                <div class="stat-number">{{ total_views }}</div>
+                <div class="stat-label">Total Views</div>
+            </div>
+        </div>
+        <div class="col-md-3 mb-3">
+            <div class="analytics-card p-4 text-center">
+                <div class="stat-number">{{ total_reactions }}</div>
+                <div class="stat-label">Total Reactions</div>
+            </div>
+        </div>
+        <div class="col-md-3 mb-3">
+            <div class="analytics-card p-4 text-center">
+                <div class="stat-number">
+                    {% if total_posts > 0 %}
+                        {{ total_views|floatformat:0|default:"0" }}
+                    {% else %}
+                        0
+                    {% endif %}
+                </div>
+                <div class="stat-label">Avg Views/Post</div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="row">
+        <!-- Popular Posts -->
+        <div class="col-md-6 mb-4">
+            <div class="analytics-card p-4">
+                <h3 class="h5 mb-3">
+                    <i class="fas fa-fire"></i> Popular Posts
+                </h3>
+                {% if popular_posts %}
+                    {% for post in popular_posts %}
+                        <div class="d-flex justify-content-between align-items-center mb-2 p-2 rounded" 
+                             style="background: rgba(0,0,0,0.02);">
+                            <div>
+                                <a href="{% url 'blog:post_detail' post.slug %}" 
+                                   class="text-decoration-none">
+                                    {{ post.title|truncatechars:40 }}
+                                </a>
+                            </div>
+                            <span class="badge bg-primary">{{ post.view_count }} views</span>
+                        </div>
+                    {% endfor %}
+                {% else %}
+                    <p class="text-muted">No posts available yet.</p>
+                {% endif %}
+            </div>
+        </div>
+        
+        <!-- Recent Reactions -->
+        <div class="col-md-6 mb-4">
+            <div class="analytics-card p-4">
+                <h3 class="h5 mb-3">
+                    <i class="fas fa-heart"></i> Recent Reactions
+                </h3>
+                {% if recent_reactions %}
+                    {% for reaction in recent_reactions %}
+                        <div class="d-flex justify-content-between align-items-center mb-2 p-2 rounded" 
+                             style="background: rgba(0,0,0,0.02);">
+                            <div>
+                                <small class="text-muted">{{ reaction.user.username }}</small><br>
+                                <a href="{% url 'blog:post_detail' reaction.post.slug %}" 
+                                   class="text-decoration-none small">
+                                    {{ reaction.post.title|truncatechars:30 }}
+                                </a>
+                            </div>
+                            <div class="text-center">
+                                {% if reaction.reaction_type == 'like' %}
+                                    <span class="text-success"><i class="fas fa-thumbs-up"></i></span>
+                                {% elif reaction.reaction_type == 'love' %}
+                                    <span class="text-danger"><i class="fas fa-heart"></i></span>
+                                {% elif reaction.reaction_type == 'laugh' %}
+                                    <span class="text-warning"><i class="fas fa-laugh"></i></span>
+                                {% endif %}
+                                <br>
+                                <small class="text-muted">{{ reaction.created|timesince }} ago</small>
+                            </div>
+                        </div>
+                    {% endfor %}
+                {% else %}
+                    <p class="text-muted">No reactions yet.</p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

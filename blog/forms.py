@@ -1,7 +1,9 @@
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
-from .models import UserProfile, Comment, Post
+from .models import (
+    UserProfile, Comment, Post, NewsletterSubscription, PostReaction
+)
 
 
 class CustomUserCreationForm(UserCreationForm):
@@ -199,3 +201,76 @@ class PostSearchForm(forms.Form):
         super().__init__(*args, **kwargs)
         from .models import Category
         self.fields['category'].queryset = Category.objects.all()
+
+
+class NewsletterSubscriptionForm(forms.ModelForm):
+    """
+    Form for newsletter subscription.
+    """
+    class Meta:
+        model = NewsletterSubscription
+        fields = ['email']
+        widgets = {
+            'email': forms.EmailInput(attrs={
+                'class': 'form-control',
+                'placeholder': 'Enter your email for updates...'
+            })
+        }
+
+
+class PostReactionForm(forms.ModelForm):
+    """
+    Form for post reactions.
+    """
+    class Meta:
+        model = PostReaction
+        fields = ['reaction_type']
+        widgets = {
+            'reaction_type': forms.HiddenInput()
+        }
+
+
+class AdvancedSearchForm(forms.Form):
+    """
+    Advanced search form with additional filters.
+    """
+    query = forms.CharField(
+        max_length=255,
+        required=False,
+        widget=forms.TextInput(attrs={
+            'class': 'form-control',
+            'placeholder': 'Search posts, content, and authors...'
+        })
+    )
+    category = forms.ModelChoiceField(
+        queryset=None,
+        required=False,
+        empty_label="All Categories",
+        widget=forms.Select(attrs={'class': 'form-select'})
+    )
+    tag = forms.ModelChoiceField(
+        queryset=None,
+        required=False,
+        empty_label="All Tags",
+        widget=forms.Select(attrs={'class': 'form-select'})
+    )
+    date_from = forms.DateField(
+        required=False,
+        widget=forms.DateInput(attrs={
+            'class': 'form-control',
+            'type': 'date'
+        })
+    )
+    date_to = forms.DateField(
+        required=False,
+        widget=forms.DateInput(attrs={
+            'class': 'form-control',
+            'type': 'date'
+        })
+    )
+    
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        from .models import Category, Tag
+        self.fields['category'].queryset = Category.objects.all()
+        self.fields['tag'].queryset = Tag.objects.all()

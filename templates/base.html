@@ -70,6 +70,12 @@
                             <i class="fas fa-envelope" aria-hidden="true"></i> Contact
                         </a>
                     </li>
+                    <li class="nav-item">
+                        <a class="nav-link {% if request.resolver_match.url_name == 'advanced_search' %}active{% endif %}" 
+                           href="{% url 'blog:advanced_search' %}">
+                            <i class="fas fa-search" aria-hidden="true"></i> Search
+                        </a>
+                    </li>
                 </ul>
                 
                 <ul class="navbar-nav">
@@ -86,6 +92,11 @@
                                 {% if user.userprofile.can_create_posts %}
                                     <li><a class="dropdown-item" href="{% url 'blog:post_create' %}">
                                         <i class="fas fa-plus" aria-hidden="true"></i> Create Post
+                                    </a></li>
+                                {% endif %}
+                                {% if user.userprofile.can_create_posts or user.userprofile.can_moderate %}
+                                    <li><a class="dropdown-item" href="{% url 'blog:analytics_dashboard' %}">
+                                        <i class="fas fa-chart-bar" aria-hidden="true"></i> Analytics
                                     </a></li>
                                 {% endif %}
                                 <li><hr class="dropdown-divider"></li>
@@ -145,7 +156,7 @@
     <footer class="text-light py-5 mt-auto" style="background: linear-gradient(135deg, #1e293b 0%, #334155 100%); box-shadow: 0 -4px 6px -1px rgba(0, 0, 0, 0.1);">
         <div class="container">
             <div class="row">
-                <div class="col-md-6">
+                <div class="col-md-4">
                     <h5 class="fw-bold mb-3 text-white">
                         <i class="fas fa-blog me-2 text-primary"></i>About This Blog
                     </h5>
@@ -180,6 +191,23 @@
                     </ul>
                 </div>
                 <div class="col-md-3">
+                    <h5 class="fw-bold mb-3 text-white">Newsletter</h5>
+                    <p class="text-white mb-3" style="opacity: 0.9;">Stay updated with our latest posts!</p>
+                    <form method="post" action="{% url 'blog:newsletter_subscribe' %}">
+                        {% csrf_token %}
+                        <div class="input-group mb-3">
+                            <input type="email" name="email" class="form-control" 
+                                   placeholder="Enter your email" required
+                                   style="border-radius: 8px 0 0 8px; border: 1px solid rgba(255,255,255,0.3); background: rgba(255,255,255,0.1); color: white;">
+                            <button class="btn btn-primary" type="submit" 
+                                    style="border-radius: 0 8px 8px 0; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border: none;">
+                                <i class="fas fa-paper-plane"></i>
+                            </button>
+                        </div>
+                    </form>
+                    <small class="text-white" style="opacity: 0.7;">We'll never share your email address.</small>
+                </div>
+                <div class="col-md-2">
                     <h5 class="fw-bold mb-3 text-white">Connect</h5>
                     <div class="social-links">
                         <a href="#" class="text-white me-3 fs-4" style="opacity: 0.9; transition: all 0.3s;" aria-label="Facebook" onmouseover="this.style.opacity='1'; this.style.color='#3b82f6'" onmouseout="this.style.opacity='0.9'; this.style.color='white'">

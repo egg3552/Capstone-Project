@@ -84,11 +84,64 @@
                             </button>
                         </div>
                         {% endif %}
+                        
+                        <!-- Reaction Buttons -->
+                        {% if user.is_authenticated %}
+                        <div class="reaction-buttons mb-3 p-3 rounded" style="background: rgba(0,0,0,0.02); border: 1px solid rgba(0,0,0,0.05);">
+                            <div class="d-flex align-items-center gap-3">
+                                <small class="text-muted fw-semibold">React:</small>
+                                <form method="post" action="{% url 'blog:add_reaction' post.slug %}" class="d-inline">
+                                    {% csrf_token %}
+                                    <input type="hidden" name="reaction_type" value="like">
+                                    <button type="submit" class="btn btn-sm btn-outline-success reaction-btn" data-reaction="like">
+                                        <i class="fas fa-thumbs-up"></i> Like
+                                    </button>
+                                </form>
+                                <form method="post" action="{% url 'blog:add_reaction' post.slug %}" class="d-inline">
+                                    {% csrf_token %}
+                                    <input type="hidden" name="reaction_type" value="love">
+                                    <button type="submit" class="btn btn-sm btn-outline-danger reaction-btn" data-reaction="love">
+                                        <i class="fas fa-heart"></i> Love
+                                    </button>
+                                </form>
+                                <form method="post" action="{% url 'blog:add_reaction' post.slug %}" class="d-inline">
+                                    {% csrf_token %}
+                                    <input type="hidden" name="reaction_type" value="laugh">
+                                    <button type="submit" class="btn btn-sm btn-outline-warning reaction-btn" data-reaction="laugh">
+                                        <i class="fas fa-laugh"></i> Laugh
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
+                        {% endif %}
                     </header>
                     
                     <!-- Post Content -->
                     <div class="post-content">
                         {{ post.content|linebreaks }}
+                    </div>
+                    
+                    <!-- Social Sharing -->
+                    <div class="social-sharing mt-4 pt-4 border-top">
+                        <h6 class="mb-3"><i class="fas fa-share-alt"></i> Share this post</h6>
+                        <div class="d-flex gap-2 flex-wrap">
+                            <a href="https://twitter.com/intent/tweet?text={{ post.title|urlencode }}&url={{ request.build_absolute_uri|urlencode }}" 
+                               target="_blank" class="btn btn-outline-info btn-sm">
+                                <i class="fab fa-twitter"></i> Twitter
+                            </a>
+                            <a href="https://www.facebook.com/sharer/sharer.php?u={{ request.build_absolute_uri|urlencode }}" 
+                               target="_blank" class="btn btn-outline-primary btn-sm">
+                                <i class="fab fa-facebook"></i> Facebook
+                            </a>
+                            <a href="https://www.linkedin.com/sharing/share-offsite/?url={{ request.build_absolute_uri|urlencode }}" 
+                               target="_blank" class="btn btn-outline-success btn-sm">
+                                <i class="fab fa-linkedin"></i> LinkedIn
+                            </a>
+                            <a href="mailto:?subject={{ post.title|urlencode }}&body=Check out this post: {{ request.build_absolute_uri|urlencode }}" 
+                               class="btn btn-outline-secondary btn-sm">
+                                <i class="fas fa-envelope"></i> Email
+                            </a>
+                        </div>
                     </div>
                 </div>
             </article>
@@ -356,4 +409,108 @@
         </div>
     </div>
 </div>
+
+<!-- Reading Progress Bar -->
+{% if user.is_authenticated %}
+<div id="reading-progress" style="position: fixed; top: 0; left: 0; width: 0%; height: 3px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); z-index: 1000; transition: width 0.3s;"></div>
+{% endif %}
+{% endblock %}
+
+{% block extra_js %}
+<script>
+// Copy link functionality
+document.addEventListener('DOMContentLoaded', function() {
+    const copyBtn = document.querySelector('.copy-link-btn');
+    if (copyBtn) {
+        copyBtn.addEventListener('click', function() {
+            navigator.clipboard.writeText(this.dataset.url).then(function() {
+                // Show success message
+                const originalText = copyBtn.innerHTML;
+                copyBtn.innerHTML = '<i class="fas fa-check"></i> Copied!';
+                copyBtn.classList.remove('btn-outline-secondary');
+                copyBtn.classList.add('btn-success');
+                
+                setTimeout(function() {
+                    copyBtn.innerHTML = originalText;
+                    copyBtn.classList.remove('btn-success');
+                    copyBtn.classList.add('btn-outline-secondary');
+                }, 2000);
+            });
+        });
+    }
+
+    // Reading progress tracking
+    {% if user.is_authenticated %}
+    const progressBar = document.getElementById('reading-progress');
+    const article = document.querySelector('article');
+    let lastProgressUpdate = 0;
+    
+    function updateReadingProgress() {
+        if (!article) return;
+        
+        const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+        const articleTop = article.offsetTop;
+        const articleHeight = article.offsetHeight;
+        const windowHeight = window.innerHeight;
+        
+        // Calculate progress percentage
+        const progress = Math.min(100, Math.max(0, 
+            ((scrollTop - articleTop + windowHeight / 2) / articleHeight) * 100
+        ));
+        
+        // Update progress bar
+        if (progressBar) {
+            progressBar.style.width = progress + '%';
+        }
+        
+        // Send progress to server every 10% change
+        const roundedProgress = Math.round(progress / 10) * 10;
+        if (roundedProgress !== lastProgressUpdate && roundedProgress >= 10) {
+            lastProgressUpdate = roundedProgress;
+            
+            fetch('{% url "blog:update_reading_progress" post.slug %}', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                    'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value
+                },
+                body: 'progress=' + roundedProgress
+            });
+        }
+    }
+    
+    // Throttled scroll listener
+    let ticking = false;
+    function onScroll() {
+        if (!ticking) {
+            requestAnimationFrame(function() {
+                updateReadingProgress();
+                ticking = false;
+            });
+            ticking = true;
+        }
+    }
+    
+    window.addEventListener('scroll', onScroll);
+    updateReadingProgress(); // Initial call
+    {% endif %}
+    
+    // Social sharing enhancements
+    const socialLinks = document.querySelectorAll('.social-sharing a[target="_blank"]');
+    socialLinks.forEach(link => {
+        link.addEventListener('click', function(e) {
+            e.preventDefault();
+            const url = this.href;
+            const width = 600;
+            const height = 400;
+            const left = (screen.width - width) / 2;
+            const top = (screen.height - height) / 2;
+            
+            window.open(url, 'share', 
+                `width=${width},height=${height},left=${left},top=${top},resizable=yes,scrollbars=yes`
+            );
+        });
+    });
+});
+</script>
 {% endblock %}

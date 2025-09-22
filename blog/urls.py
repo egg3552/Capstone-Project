@@ -54,5 +54,21 @@ urlpatterns = [
     # Utility URLs
     path('about/', views.about_view, name='about'),
     path('contact/', views.contact_view, name='contact'),
+    
+    # Newsletter URLs
+    path('newsletter/subscribe/', views.newsletter_subscribe,
+         name='newsletter_subscribe'),
+    
+    # Reaction URLs
+    path('post/<slug:slug>/react/', views.add_reaction, name='add_reaction'),
+    
+    # Analytics URLs
+    path('analytics/', views.analytics_dashboard, name='analytics_dashboard'),
+    
+    # Search URLs
+    path('search/', views.advanced_search, name='advanced_search'),
+    
+    # Reading Progress URLs
+    path('post/<slug:slug>/progress/', views.update_reading_progress,
+         name='update_reading_progress'),
 ]
-

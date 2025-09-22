@@ -62,6 +62,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'ckeditor',
+    'ckeditor_uploader',
     'blog.apps.BlogConfig',
 ]
 
@@ -194,4 +196,46 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 # Login URLs
 LOGIN_URL = '/login/'
 LOGIN_REDIRECT_URL = '/'
+
+# CKEditor Configuration
+CKEDITOR_UPLOAD_PATH = "uploads/"
+CKEDITOR_IMAGE_BACKEND = "pillow"
+CKEDITOR_ALLOW_NONIMAGE_FILES = False
+
+CKEDITOR_CONFIGS = {
+    'default': {
+        'height': 400,
+        'width': '100%',
+        'toolbar_Custom': [
+            ['Bold', 'Italic', 'Underline', 'Strike'],
+            ['NumberedList', 'BulletedList', '-', 'Outdent', 'Indent', '-', 
+             'JustifyLeft', 'JustifyCenter', 'JustifyRight', 'JustifyBlock'],
+            ['Link', 'Unlink', 'Anchor'],
+            ['Image', 'Table', 'HorizontalRule', 'SpecialChar'],
+            ['Styles', 'Format', 'Font', 'FontSize'],
+            ['TextColor', 'BGColor'],
+            ['Maximize', 'ShowBlocks'],
+            ['Source', 'CodeSnippet'],
+        ],
+        'toolbar': 'Custom',
+        'tabSpaces': 4,
+        'extraPlugins': ','.join([
+            'uploadimage',
+            'div',
+            'autolink',
+            'autoembed',
+            'embedsemantic',
+            'autogrow',
+            'widget',
+            'lineutils',
+            'clipboard',
+            'dialog',
+            'dialogui',
+            'elementspath',
+            'codesnippet',
+        ]),
+        'codeSnippet_theme': 'monokai_sublime',
+        'removePlugins': 'stylesheetparser',
+    }
+}
 LOGOUT_REDIRECT_URL = '/'

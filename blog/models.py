@@ -3,6 +3,7 @@ from django.contrib.auth.models import User
 from django.urls import reverse
 from django.utils import timezone
 from django.utils.text import slugify
+from ckeditor_uploader.fields import RichTextUploadingField
 from PIL import Image
 
 
@@ -114,7 +115,7 @@ class Post(models.Model):
     author = models.ForeignKey(
         User, on_delete=models.CASCADE, related_name='posts'
     )
-    content = models.TextField()
+    content = RichTextUploadingField()
     excerpt = models.TextField(
         max_length=500, blank=True,
         help_text="Short description of the post"
@@ -209,3 +210,71 @@ class Comment(models.Model):
 
     def is_reply(self):
         return self.parent is not None
+
+
+class NewsletterSubscription(models.Model):
+    """
+    Newsletter subscription model for email marketing.
+    """
+    email = models.EmailField(unique=True)
+    subscribed_at = models.DateTimeField(auto_now_add=True)
+    is_active = models.BooleanField(default=True)
+    
+    class Meta:
+        ordering = ['-subscribed_at']
+        
+    def __str__(self):
+        return self.email
+
+
+class PostReaction(models.Model):
+    """
+    Post reaction system (likes, loves, etc.).
+    """
+    REACTION_CHOICES = [
+        ('like', 'Like'),
+        ('love', 'Love'),
+        ('laugh', 'Laugh'),
+        ('wow', 'Wow'),
+        ('sad', 'Sad'),
+        ('angry', 'Angry'),
+    ]
+    
+    post = models.ForeignKey(
+        Post, on_delete=models.CASCADE, related_name='reactions'
+    )
+    user = models.ForeignKey(
+        User, on_delete=models.CASCADE, related_name='reactions'
+    )
+    reaction_type = models.CharField(
+        max_length=10, choices=REACTION_CHOICES, default='like'
+    )
+    created_at = models.DateTimeField(auto_now_add=True)
+    
+    class Meta:
+        unique_together = ('post', 'user')
+        ordering = ['-created_at']
+        indexes = [
+            models.Index(fields=['post', 'reaction_type']),
+        ]
+    
+    def __str__(self):
+        return f'{self.user.username} {self.reaction_type}d {self.post.title}'
+
+
+class ReadingProgress(models.Model):
+    """
+    Track user reading progress on posts.
+    """
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    post = models.ForeignKey(Post, on_delete=models.CASCADE)
+    progress_percentage = models.PositiveIntegerField(default=0)
+    last_read_at = models.DateTimeField(auto_now=True)
+    
+    class Meta:
+        unique_together = ('user', 'post')
+        ordering = ['-last_read_at']
+    
+    def __str__(self):
+        return (f'{self.user.username} - {self.post.title} '
+                f'({self.progress_percentage}%)')

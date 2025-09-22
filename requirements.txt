@@ -18,11 +18,17 @@ psycopg2-binary==2.9.9
 # Database URL parsing for Heroku
 dj-database-url==2.1.0
 
+# Rich Text Editor
+django-ckeditor==6.7.0
+
 # Production WSGI Server
 gunicorn==23.0.0
 
 # Security & Performance (Production)
 django-cors-headers==4.3.0
+
+# Rich Text Editor
+django-ckeditor==6.7.0
 
 # Development Tools (Optional - uncomment if needed)
 # django-debug-toolbar==4.2.0
