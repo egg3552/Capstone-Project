@@ -277,3 +277,9 @@ class AdvancedSearchForm(forms.Form):
         from .models import Category, Tag
         self.fields['category'].queryset = Category.objects.all()
         self.fields['tag'].queryset = Tag.objects.all()
+
+
+
+
+
+
