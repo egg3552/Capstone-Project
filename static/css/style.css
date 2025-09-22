@@ -2,44 +2,46 @@
 
 /* Root variables for consistent theming and easy customization */
 :root {
-  /* Bright color palette */
-  --primary-color: #ff6b6b;          /* Bright coral red */
-  --primary-dark: #ff5252;           /* Slightly darker coral */
-  --secondary-color: #4ecdc4;        /* Bright teal */
-  --success-color: #4caf50;          /* Bright green */
-  --danger-color: #ff9800;           /* Bright orange (softer than red) */
-  --warning-color: #ffeb3b;          /* Bright yellow */
-  --info-color: #03dac6;             /* Bright cyan */
-  --light-color: #fff8e1;            /* Warm light cream */
-  --dark-color: #ff6b6b;             /* Replace dark with bright coral */
+  /* Blue-Purple gradient color palette */
+  --primary-color: #667eea;          /* Soft blue */
+  --primary-dark: #5a67d8;           /* Darker blue */
+  --secondary-color: #9f7aea;        /* Medium purple */
+  --success-color: #68d391;          /* Green accent */
+  --danger-color: #fc8181;           /* Pink-red accent */
+  --warning-color: #f6e05e;          /* Yellow accent */
+  --info-color: #63b3ed;             /* Light blue */
+  --light-color: #f7fafc;            /* Very light blue-white */
+  --dark-color: #4c51bf;             /* Deep purple-blue */
   
-  /* Additional bright colors */
-  --primary-blue: #00bcd4;           /* Bright cyan blue */
-  --secondary-blue: #03a9f4;         /* Bright sky blue */
-  --accent-purple: #e91e63;          /* Bright pink */
-  --accent-orange: #ff9800;          /* Bright orange */
+  /* Additional blue-purple colors */
+  --primary-blue: #4299e1;           /* Sky blue */
+  --secondary-blue: #3182ce;         /* Medium blue */
+  --accent-purple: #805ad5;          /* Rich purple */
+  --accent-indigo: #6366f1;          /* Indigo */
+  --light-purple: #e9d8fd;           /* Very light purple */
   
   /* Typography */
   --font-family-primary: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   
-  /* Spacing and effects with bright shadows */
+  /* Spacing and effects with blue-purple shadows */
   --border-radius: 0.75rem;
-  --box-shadow: 0 4px 6px -1px rgba(255, 107, 107, 0.2), 0 2px 4px -1px rgba(255, 107, 107, 0.1);
-  --box-shadow-lg: 0 10px 15px -3px rgba(255, 107, 107, 0.2), 0 4px 6px -2px rgba(255, 107, 107, 0.1);
+  --box-shadow: 0 4px 6px -1px rgba(102, 126, 234, 0.2), 0 2px 4px -1px rgba(102, 126, 234, 0.1);
+  --box-shadow-lg: 0 10px 15px -3px rgba(102, 126, 234, 0.2), 0 4px 6px -2px rgba(102, 126, 234, 0.1);
   --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   
-  /* Bright gradients for modern appearance */
-  --gradient-primary: linear-gradient(135deg, #ff6b6b 0%, #4ecdc4 100%);
-  --gradient-secondary: linear-gradient(135deg, #ffeb3b 0%, #03dac6 100%);
-  --gradient-sunset: linear-gradient(135deg, #ff9800 0%, #e91e63 100%);
+  /* Blue-Purple gradients for modern appearance */
+  --gradient-primary: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  --gradient-secondary: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);
+  --gradient-sunset: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #9f7aea 100%);
+  --gradient-ocean: linear-gradient(135deg, #4299e1 0%, #667eea 50%, #805ad5 100%);
 }
 
-/* General body styling with bright gradient background */
+/* General body styling with blue-purple gradient background */
 body {
   font-family: var(--font-family-primary);
   line-height: 1.6;
   color: #2d3748;  /* Dark gray for readability on bright backgrounds */
-  background: linear-gradient(135deg, #fff8e1 0%, #ffecb3 50%, #ffe0b2 100%);  /* Bright warm gradient */
+  background: linear-gradient(135deg, #e0e7ff 0%, #c7d2fe 50%, #ddd6fe 100%);  /* Light blue-purple gradient */
   min-height: 100vh;
 }
 
@@ -191,9 +193,9 @@ a:hover {
   line-height: 1.5;
 }
 
-/* Featured post with bright overlay effect for better text readability */
+/* Featured post with blue-purple gradient effect for better text readability */
 .featured-post {
-  background: linear-gradient(135deg, var(--gradient-sunset));
+  background: var(--gradient-ocean);
   color: white;
   border-radius: var(--border-radius);
   overflow: hidden;
@@ -205,7 +207,7 @@ a:hover {
   z-index: 2;  /* Above overlay */
 }
 
-/* Bright overlay for better text contrast */
+/* Blue-purple overlay for better text contrast */
 .featured-post::before {
   content: '';
   position: absolute;
@@ -213,7 +215,7 @@ a:hover {
   left: 0;
   right: 0;
   bottom: 0;
-  background: rgba(255, 152, 0, 0.2);  /* Semi-transparent bright orange overlay */
+  background: rgba(102, 126, 234, 0.2);  /* Semi-transparent blue overlay */
   z-index: 1;
 }
 
@@ -236,7 +238,7 @@ a:hover {
 }
 
 .tag:hover {
-  background-color: var(--primary-color);
+  background-color: var(--accent-purple);
   color: white;
   text-decoration: none;
 }
@@ -247,7 +249,7 @@ a:hover {
 }
 
 .category-badge:hover {
-  background-color: var(--accent-purple);
+  background-color: var(--accent-indigo);
   color: white;
   text-decoration: none;
 }
@@ -402,7 +404,7 @@ a:hover {
 }
 
 .back-to-top:hover {
-  background-color: var(--accent-purple);
+  background-color: var(--secondary-color);
   transform: translateY(-2px);  /* Lift effect on hover */
 }
 
@@ -491,10 +493,10 @@ a:hover {
   }
 }
 
-/* Bright mode support - override any dark mode preferences */
+/* Blue-purple mode support - override any dark mode preferences */
 @media (prefers-color-scheme: dark) {
   .card {
-    background-color: var(--warning-color);
+    background-color: var(--light-purple);
     color: #2d3748;
   }
   
@@ -555,14 +557,14 @@ a:hover {
   }
 }
 
-/* About page specific styling with ultra-bright colors */
+/* About page specific styling with blue-purple gradients */
 .about-hero {
-  background: linear-gradient(135deg, #ffeb3b 0%, #ff9800 50%, #e91e63 100%) !important;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #9f7aea 100%) !important;
   position: relative;
   overflow: hidden;
   border: none !important;
   color: white !important;
-  box-shadow: 0 8px 32px rgba(255, 235, 59, 0.4) !important;
+  box-shadow: 0 8px 32px rgba(102, 126, 234, 0.4) !important;
 }
 
 .about-hero::before {
@@ -572,7 +574,7 @@ a:hover {
   left: 0;
   right: 0;
   bottom: 0;
-  background: linear-gradient(45deg, rgba(255, 255, 255, 0.1), rgba(255, 235, 59, 0.2));  /* Bright light overlay */
+  background: linear-gradient(45deg, rgba(255, 255, 255, 0.1), rgba(102, 126, 234, 0.2));  /* Blue-purple light overlay */
   z-index: 1;
 }
 
@@ -585,7 +587,7 @@ a:hover {
   color: #ffffff !important;  /* Pure white for maximum contrast */
   text-shadow: 2px 2px 8px rgba(255, 255, 255, 0.8), 
                0 0 20px rgba(255, 255, 255, 0.6),
-               0 0 30px rgba(255, 235, 59, 0.4) !important;  /* Bright white glow */
+               0 0 30px rgba(102, 126, 234, 0.4) !important;  /* Blue glow */
   font-weight: 900 !important;  /* Extra bold for better visibility */
   letter-spacing: 2px !important;
   text-transform: none !important;
@@ -596,7 +598,7 @@ a:hover {
 .about-hero .about-subtitle {
   color: #ffffff !important;  /* Pure white for subtitle */
   text-shadow: 1px 1px 4px rgba(255, 255, 255, 0.7),
-               0 0 10px rgba(255, 235, 59, 0.5) !important;  /* Bright white glow */
+               0 0 10px rgba(159, 122, 234, 0.5) !important;  /* Purple glow */
   opacity: 1 !important;
   font-weight: 600 !important;
   font-size: 1.3rem !important;
