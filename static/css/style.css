@@ -565,6 +565,13 @@ a:hover {
   border: none !important;
   color: white !important;
   box-shadow: 0 8px 32px rgba(102, 126, 234, 0.4) !important;
+  transition: all 0.3s ease !important;
+}
+
+/* Hover effect for the entire hero section */
+.about-hero:hover {
+  transform: translateY(-2px) !important;
+  box-shadow: 0 12px 40px rgba(102, 126, 234, 0.5) !important;
 }
 
 .about-hero::before {
@@ -576,6 +583,12 @@ a:hover {
   bottom: 0;
   background: linear-gradient(45deg, rgba(255, 255, 255, 0.1), rgba(102, 126, 234, 0.2));  /* Blue-purple light overlay */
   z-index: 1;
+  transition: all 0.3s ease !important;
+}
+
+/* Animate the overlay on hover */
+.about-hero:hover::before {
+  background: linear-gradient(45deg, rgba(255, 255, 255, 0.15), rgba(102, 126, 234, 0.25));
 }
 
 .about-hero * {
@@ -585,19 +598,37 @@ a:hover {
 
 .about-hero .about-title {
   color: #ffffff !important;  /* Pure white for maximum contrast */
-  text-shadow: 1px 1px 2px rgba(102, 126, 234, 0.8), 
-               0 0 4px rgba(255, 255, 255, 0.6) !important;  /* Sharp, minimal blue glow */
-  font-weight: 900 !important;  /* Extra bold for better visibility */
+  font-family: 'Arial', 'Helvetica', sans-serif !important;  /* Clear, clean font */
+  text-shadow: none !important;  /* No shadows for crystal clear text */
+  font-weight: 700 !important;  /* Bold but not too heavy */
   letter-spacing: 2px !important;
   text-transform: none !important;
   opacity: 1 !important;
-  font-size: 4rem !important;  /* Make it larger */
+  font-size: 4rem !important;
+  transition: all 0.3s ease !important;  /* Smooth transitions */
+  cursor: pointer !important;  /* Show it's interactive */
+}
+
+/* Fancy hover animation for the title */
+.about-hero .about-title:hover {
+  transform: scale(1.05) translateY(-5px) !important;  /* Scale up and lift */
+  text-shadow: 0 5px 15px rgba(255, 255, 255, 0.3) !important;  /* Subtle white glow on hover */
+  letter-spacing: 3px !important;  /* Expand letter spacing */
+  color: #f0f8ff !important;  /* Slightly brighter white on hover */
 }
 
 .about-hero .about-subtitle {
   color: #ffffff !important;  /* Pure white for subtitle */
-  text-shadow: 1px 1px 2px rgba(159, 122, 234, 0.7) !important;  /* Sharp purple shadow */
+  font-family: 'Arial', 'Helvetica', sans-serif !important;  /* Clean font */
+  text-shadow: none !important;  /* No shadows for clarity */
   opacity: 1 !important;
-  font-weight: 600 !important;
+  font-weight: 400 !important;  /* Normal weight for subtitle */
   font-size: 1.3rem !important;
+  transition: all 0.3s ease !important;
+}
+
+/* Hover effect for subtitle */
+.about-hero .about-subtitle:hover {
+  transform: translateY(-2px) !important;  /* Subtle lift */
+  opacity: 0.9 !important;  /* Slight fade effect */
 }
