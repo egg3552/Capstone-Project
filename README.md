@@ -1,91 +1,44 @@
 # Django Blog Platform
 
-A production-ready blog platform built with Django 5.2.6, featuring role-based authentication, PostgreSQL database, and deployed on Heroku.
+A production-ready blog platform built with Django 5.2.6, featuring user authentication, content management, and deployment on Heroku.
 
 ## 🚀 Live Demo
-**[View Live Site](https://capstone-blog-matthew-eb1d04bfcf98.herokuapp.com/)**
+**[https://capstone-blog-matthew-eb1d04bfcf98.herokuapp.com/](https://capstone-blog-matthew-eb1d04bfcf98.herokuapp.com/)**
 
-## ⚡ Features
+## Features
+- User registration, login/logout with role-based access
+- Create, edit, delete blog posts with categories and tags
+- Comment system with moderation
+- Search and filtering capabilities
+- Mobile-responsive Bootstrap 5 design
+- PostgreSQL database with Heroku deployment
 
-- **User Management**: Registration, authentication, role-based permissions (Reader/Author/Admin)
-- **Content Management**: Full CRUD operations for posts with categories, tags, and featured images
-- **Engagement**: Nested commenting system with moderation
-- **Search & Filter**: Advanced search by title, content, category, and tags
-- **SEO Ready**: Meta descriptions, clean URLs, Open Graph tags
-- **Mobile Responsive**: Bootstrap 5 with custom styling
-- **Production Ready**: PostgreSQL, WhiteNoise static files, environment-based configuration
-
-## 🛠 Tech Stack
-
-- **Framework**: Django 5.2.6
-- **Database**: PostgreSQL (production), SQLite (development)
-- **Frontend**: Bootstrap 5, vanilla JavaScript
-- **Deployment**: Heroku with gunicorn
-- **Static Files**: WhiteNoise middleware
+## Tech Stack
+- **Backend**: Django 5.2.6, PostgreSQL, Gunicorn
+- **Frontend**: Bootstrap 5, HTML/CSS/JavaScript
+- **Deployment**: Heroku with WhiteNoise for static files
 - **Environment**: django-environ for configuration
 
-## 🚀 Quick Start
+## Quick Start
 
 ### Local Development
 ```bash
-# Clone repository
 git clone https://github.com/egg3552/Capstone-Project.git
 cd BlogFullStackProject
 
-# Setup virtual environment
+# Setup environment
 python -m venv .venv
 .\.venv\Scripts\activate  # Windows
-# source .venv/bin/activate  # macOS/Linux
-
-# Install dependencies
 pip install -r requirements.txt
 
-# Environment setup
-cp .env.example .env  # Edit with your settings
-
-# Database setup
+# Configure database
 python manage.py migrate
 python manage.py createsuperuser
-
-# Run development server
 python manage.py runserver
 ```
 
-### Production Deployment (Heroku)
-```bash
-# Install Heroku CLI and login
-heroku create your-app-name
-heroku addons:create heroku-postgresql:hobby-dev
-
-# Deploy
-git push heroku main
-
-# Setup database
-heroku run python manage.py migrate
-heroku run python manage.py createsuperuser
-```
-
-## 📁 Project Structure
-
-```
-BlogFullStackProject/
-├── blog/                   # Main blog application
-│   ├── models.py          # Post, Comment, Category, Tag, UserProfile
-│   ├── views.py           # Class and function-based views
-│   ├── forms.py           # User registration, post creation forms
-│   └── management/        # Custom Django commands
-├── blogproject/           # Django project settings
-├── templates/             # HTML templates
-├── static/               # CSS, JavaScript, images
-├── requirements.txt      # Python dependencies
-├── Procfile             # Heroku deployment configuration
-└── runtime.txt          # Python version specification
-```
-
-## 🔧 Configuration
-
 ### Environment Variables
-Create a `.env` file:
+Create `.env` file:
 ```env
 SECRET_KEY=your-secret-key-here
 DEBUG=True
@@ -93,94 +46,27 @@ ALLOWED_HOSTS=127.0.0.1,localhost
 DATABASE_URL=sqlite:///db.sqlite3
 ```
 
-### User Roles
-- **Reader**: View posts, add comments
-- **Author**: Create and manage own posts
-- **Admin**: Full content and user management
+## Project Structure
+```
+BlogFullStackProject/
+├── blog/               # Main application
+├── blogproject/        # Settings and configuration
+├── templates/          # HTML templates
+├── static/            # CSS, JS, images
+└── requirements.txt   # Dependencies
+```
 
-## 🧪 Testing & Quality Assurance
-
-### AI-Assisted Bug Testing
-This project underwent comprehensive AI-powered analysis using GitHub Copilot to identify potential issues:
-
-- **Security Audit**: Analyzed for XSS, CSRF, SQL injection vulnerabilities
-- **Code Quality Review**: Checked Django best practices, PEP 8 compliance
-- **Performance Analysis**: Reviewed database queries, static file handling
-- **Configuration Validation**: Verified production-ready settings
-
-**Result**: ✅ No critical bugs found. Codebase rated excellent with proper security measures and Django best practices.
-
-### Manual Testing
-- User authentication flows
-- CRUD operations for all models
-- Form validation and error handling
-- Mobile responsiveness
-- Production deployment on Heroku
-
-## 🚀 Deployment
-
-This application is successfully deployed on Heroku with:
-- PostgreSQL database
-- WhiteNoise static file serving
+## Deployment Notes
+Successfully deployed on Heroku with:
+- PostgreSQL database integration
 - Environment-based configuration
-- Automated migrations
+- Static file handling with WhiteNoise
+- Resolved WSGI module case sensitivity issues
 
-**Live URL**: https://capstone-blog-matthew-eb1d04bfcf98.herokuapp.com/
-
-### Deployment Challenges Solved
-- Static file collection issues (resolved with DISABLE_COLLECTSTATIC)
-- Database connection problems (fixed by adding PostgreSQL add-on)
-- WSGI module reference errors (corrected case sensitivity)
-
-## 📝 Key Features Implemented
-
-### Authentication System
-- Custom user registration with role selection
-- Django's built-in login/logout
-- Password reset functionality
-- Profile management with avatars
-
-### Content Management
-- Rich post creation with categories and tags
-- Image upload for featured images
-- Auto-generated slugs for SEO-friendly URLs
-- Draft/published status system
-
-### User Experience
-- Responsive design across all devices
-- Search functionality with filters
-- Pagination for large content sets
-- Nested commenting system
-
-## 🛡️ Security Features
-
-- CSRF protection on all forms
-- Environment variable configuration
-- Input validation and sanitization
-- Production security headers
-- Role-based access controls
-
-## 📈 Performance Optimizations
-
-- Database indexing on key fields
-- Optimized Django querysets
-- Static file compression
-- Lazy loading for images
-- Efficient pagination
-
-## 🤝 Contributing
-
-1. Fork the repository
-2. Create a feature branch
-3. Make changes with tests
-4. Submit a pull request
-
-## 📄 License
-
-This project is open source and available under the MIT License.
+## Quality Assurance
+- AI-assisted debugging and code review using GitHub Copilot
+- Comprehensive testing for security vulnerabilities and best practices
+- Manual testing of all user flows and functionality
 
 ---
-
-**Live Demo**: [https://capstone-blog-matthew-eb1d04bfcf98.herokuapp.com/](https://capstone-blog-matthew-eb1d04bfcf98.herokuapp.com/)
-
-Built with Django 5.2.6 | Deployed on Heroku | AI-Tested for Quality Assurance
+Built with Django 5.2.6 | Deployed on Heroku | AI-Assisted Development
