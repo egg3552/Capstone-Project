@@ -387,27 +387,33 @@ def add_reaction(request, slug):
     post = get_object_or_404(Post, slug=slug, status='published')
     reaction_type = request.POST.get('reaction_type', 'like')
     
-    from .models import PostReaction
-    # Use get_or_create to avoid duplicate reactions
-    reaction, created = PostReaction.objects.get_or_create(
-        post=post,
-        user=request.user,
-        defaults={'reaction_type': reaction_type}
-    )
-    
-    if not created:
-        # Toggle reaction - remove if same type, update if different
-        if reaction.reaction_type == reaction_type:
-            # Remove reaction if clicking same type
-            reaction.delete()
-            messages.success(request, 'Reaction removed!')
+    try:
+        from .models import PostReaction
+        # Use get_or_create to avoid duplicate reactions
+        reaction, created = PostReaction.objects.get_or_create(
+            post=post,
+            user=request.user,
+            defaults={'reaction_type': reaction_type}
+        )
+        
+        if not created:
+            # Toggle reaction - remove if same type, update if different
+            if reaction.reaction_type == reaction_type:
+                # Remove reaction if clicking same type
+                reaction.delete()
+                messages.success(request, 'Reaction removed!')
+            else:
+                # Update reaction type
+                reaction.reaction_type = reaction_type
+                reaction.save()
+                messages.success(
+                    request, f'Reaction updated to {reaction_type}!')
         else:
-            # Update reaction type
-            reaction.reaction_type = reaction_type
-            reaction.save()
-            messages.success(request, f'Reaction updated to {reaction_type}!')
-    else:
-        messages.success(request, f'Added {reaction_type} reaction!')
+            messages.success(request, f'Added {reaction_type} reaction!')
+    except Exception:
+        # Handle case where PostReaction table doesn't exist
+        messages.warning(
+            request, 'Reactions feature temporarily unavailable.')
     
     return redirect('blog:post_detail', slug=slug)
 
@@ -425,7 +431,6 @@ def analytics_dashboard(request):
         return redirect('blog:post_list')
     
     from django.db.models import Sum
-    from .models import PostReaction
     
     # Get user's posts if author, all posts if admin
     if request.user.userprofile.can_moderate():
@@ -438,15 +443,22 @@ def analytics_dashboard(request):
     # Calculate analytics
     total_posts = posts.count()
     total_views = posts.aggregate(Sum('view_count'))['view_count__sum'] or 0
-    total_reactions = PostReaction.objects.filter(post__in=posts).count()
+    
+    # Try to get reaction data, handle if table doesn't exist
+    try:
+        from .models import PostReaction
+        total_reactions = PostReaction.objects.filter(post__in=posts).count()
+        recent_reactions = PostReaction.objects.filter(
+            post__in=posts
+        ).select_related('user', 'post')[:10]
+    except Exception:
+        # Handle case where PostReaction table doesn't exist
+        # (e.g., local development without proper migrations)
+        total_reactions = 0
+        recent_reactions = []
     
     # Popular posts
     popular_posts = posts.order_by('-view_count')[:5]
-    
-    # Recent reactions
-    recent_reactions = PostReaction.objects.filter(
-        post__in=posts
-    ).select_related('user', 'post')[:10]
     
     context = {
         'total_posts': total_posts,
