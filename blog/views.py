@@ -57,7 +57,8 @@ def profile_view(request):
         'user_posts': page_obj,
         'total_posts': user_posts.count(),
     }
-    return render(request, 'blog/profile.html', context)
+    # Temporarily use post_list template to test
+    return render(request, 'blog/post_list.html', context)
 
 
 @login_required
