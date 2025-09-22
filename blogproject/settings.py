@@ -20,7 +20,8 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 # Initialize environment variables
 env = environ.Env(
-    DEBUG=(bool, False)
+    DEBUG=(bool, False),
+    SECRET_KEY=(str, 'django-insecure-default-key-change-in-production')
 )
 
 # Read .env file
@@ -36,7 +37,11 @@ SECRET_KEY = env('SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = env('DEBUG')
 
-ALLOWED_HOSTS = env.list('ALLOWED_HOSTS', default=[])
+ALLOWED_HOSTS = env.list('ALLOWED_HOSTS', default=[
+    'django-blog-app-a5ba456d0cc7.herokuapp.com',
+    'localhost',
+    '127.0.0.1'
+])
 
 # Production security settings
 if not DEBUG:
