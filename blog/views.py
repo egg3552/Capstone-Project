@@ -28,7 +28,7 @@ def register_view(request):
             user = form.save()
             username = form.cleaned_data.get('username')
             messages.success(request, f'Account created for {username}!')
-            
+
             # Automatically log in the user
             raw_password = form.cleaned_data.get('password1')
             user = authenticate(username=username, password=raw_password)
@@ -37,7 +37,7 @@ def register_view(request):
                 return redirect('blog:post_list')
     else:
         form = CustomUserCreationForm()
-    
+
     return render(request, 'registration/register.html', {'form': form})
 
 
@@ -52,7 +52,7 @@ def profile_view(request):
     paginator = Paginator(user_posts, 10)
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
-    
+
     context = {
         'user_posts': page_obj,
         'total_posts': user_posts.count(),
@@ -72,7 +72,7 @@ def edit_profile_view(request):
             instance=request.user.userprofile,
             user=request.user
         )
-        
+
         if user_form.is_valid() and profile_form.is_valid():
             user_form.save()
             profile_form.save()
@@ -84,7 +84,7 @@ def edit_profile_view(request):
             instance=request.user.userprofile,
             user=request.user
         )
-    
+
     context = {
         'user_form': user_form,
         'profile_form': profile_form
@@ -101,11 +101,11 @@ class PostListView(ListView):
     template_name = 'blog/post_list.html'
     context_object_name = 'posts'
     paginate_by = 10
-    
+
     def get_queryset(self):
         queryset = Post.objects.filter(status='published').select_related(
             'author', 'category').prefetch_related('tags')
-        
+
         # Search functionality
         query = self.request.GET.get('query')
         if query:
@@ -114,19 +114,19 @@ class PostListView(ListView):
                 Q(content__icontains=query) |
                 Q(excerpt__icontains=query)
             )
-        
+
         # Category filtering
         category = self.request.GET.get('category')
         if category:
             queryset = queryset.filter(category__slug=category)
-            
+
         # Tag filtering
         tag = self.request.GET.get('tag')
         if tag:
             queryset = queryset.filter(tags__slug=tag)
-            
+
         return queryset.order_by('-published_at')
-    
+
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['search_form'] = PostSearchForm(self.request.GET)
@@ -144,29 +144,29 @@ class PostDetailView(DetailView):
     model = Post
     template_name = 'blog/post_detail.html'
     context_object_name = 'post'
-    
+
     def get_queryset(self):
         return Post.objects.filter(status='published').select_related(
             'author', 'category').prefetch_related('tags')
-    
+
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         post = self.get_object()
-        
+
         # Increment view count
         Post.objects.filter(pk=post.pk).update(view_count=post.view_count + 1)
-        
+
         # Get comments
         comments = Comment.objects.filter(
             post=post, active=True, parent=None
         ).select_related('author').order_by('created_at')
-        
+
         context['comments'] = comments
         context['comment_form'] = CommentForm()
         context['related_posts'] = Post.objects.filter(
             status='published', category=post.category
         ).exclude(pk=post.pk)[:3]
-        
+
         return context
 
 
@@ -178,7 +178,7 @@ class PostCreateView(CreateView):
     model = Post
     form_class = PostForm
     template_name = 'blog/post_form.html'
-    
+
     def dispatch(self, request, *args, **kwargs):
         if not request.user.userprofile.can_create_posts():
             messages.error(
@@ -186,12 +186,12 @@ class PostCreateView(CreateView):
             )
             return redirect('blog:post_list')
         return super().dispatch(request, *args, **kwargs)
-    
+
     def get_form_kwargs(self):
         kwargs = super().get_form_kwargs()
         kwargs['user'] = self.request.user
         return kwargs
-    
+
     def form_valid(self, form):
         form.instance.author = self.request.user
         messages.success(self.request, 'Post created successfully!')
@@ -206,7 +206,7 @@ class PostUpdateView(UpdateView):
     model = Post
     form_class = PostForm
     template_name = 'blog/post_form.html'
-    
+
     def dispatch(self, request, *args, **kwargs):
         post = self.get_object()
         if (request.user != post.author and
@@ -214,12 +214,12 @@ class PostUpdateView(UpdateView):
             messages.error(request, 'You can only edit your own posts.')
             return redirect('blog:post_detail', slug=post.slug)
         return super().dispatch(request, *args, **kwargs)
-    
+
     def get_form_kwargs(self):
         kwargs = super().get_form_kwargs()
         kwargs['user'] = self.request.user
         return kwargs
-    
+
     def form_valid(self, form):
         messages.success(self.request, 'Post updated successfully!')
         return super().form_valid(form)
@@ -233,7 +233,7 @@ class PostDeleteView(DeleteView):
     model = Post
     template_name = 'blog/post_confirm_delete.html'
     success_url = reverse_lazy('blog:post_list')
-    
+
     def dispatch(self, request, *args, **kwargs):
         post = self.get_object()
         if (request.user != post.author and
@@ -241,7 +241,7 @@ class PostDeleteView(DeleteView):
             messages.error(request, 'You can only delete your own posts.')
             return redirect('blog:post_detail', slug=post.slug)
         return super().dispatch(request, *args, **kwargs)
-    
+
     def delete(self, request, *args, **kwargs):
         messages.success(request, 'Post deleted successfully!')
         return super().delete(request, *args, **kwargs)
@@ -254,25 +254,25 @@ def add_comment_view(request, slug):
     Add comment to a blog post.
     """
     post = get_object_or_404(Post, slug=slug, status='published')
-    
+
     if request.method == 'POST':
         form = CommentForm(request.POST)
         if form.is_valid():
             comment = form.save(commit=False)
             comment.post = post
             comment.author = request.user
-            
+
             # Handle reply to another comment
             parent_id = request.POST.get('parent_id')
             if parent_id:
                 parent_comment = get_object_or_404(Comment, id=parent_id)
                 comment.parent = parent_comment
-            
+
             comment.save()
             messages.success(request, 'Comment added successfully!')
         else:
             messages.error(request, 'Please correct the errors below.')
-    
+
     return redirect('blog:post_detail', slug=slug)
 
 
@@ -282,7 +282,7 @@ def delete_comment_view(request, comment_id):
     Delete a comment (author or admin only).
     """
     comment = get_object_or_404(Comment, id=comment_id)
-    
+
     if (request.user == comment.author or
             request.user.userprofile.can_moderate()):
         post_slug = comment.post.slug
@@ -303,13 +303,13 @@ class CategoryDetailView(ListView):
     template_name = 'blog/category_detail.html'
     context_object_name = 'posts'
     paginate_by = 10
-    
+
     def get_queryset(self):
         self.category = get_object_or_404(Category, slug=self.kwargs['slug'])
         return Post.objects.filter(
             category=self.category, status='published'
         ).order_by('-published_at')
-    
+
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['category'] = self.category
@@ -324,13 +324,13 @@ class TagDetailView(ListView):
     template_name = 'blog/tag_detail.html'
     context_object_name = 'posts'
     paginate_by = 10
-    
+
     def get_queryset(self):
         self.tag = get_object_or_404(Tag, slug=self.kwargs['slug'])
         return Post.objects.filter(
             tags=self.tag, status='published'
         ).order_by('-published_at')
-    
+
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['tag'] = self.tag
