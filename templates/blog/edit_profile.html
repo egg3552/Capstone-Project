@@ -1,0 +1,240 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Edit Profile - {{ user.username }}{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-header bg-primary text-white">
+                    <h4 class="mb-0">
+                        <i class="fas fa-user-edit"></i>
+                        Edit Profile
+                    </h4>
+                </div>
+                <div class="card-body">
+                    <form method="post" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        
+                        <!-- User Information Section -->
+                        <div class="row mb-4">
+                            <div class="col-12">
+                                <h5 class="border-bottom pb-2 mb-3">
+                                    <i class="fas fa-user text-primary"></i>
+                                    Basic Information
+                                </h5>
+                            </div>
+                            
+                            <div class="col-md-6 mb-3">
+                                <label for="{{ user_form.first_name.id_for_label }}" class="form-label">
+                                    <i class="fas fa-user"></i> First Name
+                                </label>
+                                {{ user_form.first_name }}
+                                {% if user_form.first_name.errors %}
+                                    <div class="invalid-feedback d-block">
+                                        {{ user_form.first_name.errors }}
+                                    </div>
+                                {% endif %}
+                            </div>
+                            
+                            <div class="col-md-6 mb-3">
+                                <label for="{{ user_form.last_name.id_for_label }}" class="form-label">
+                                    <i class="fas fa-user"></i> Last Name
+                                </label>
+                                {{ user_form.last_name }}
+                                {% if user_form.last_name.errors %}
+                                    <div class="invalid-feedback d-block">
+                                        {{ user_form.last_name.errors }}
+                                    </div>
+                                {% endif %}
+                            </div>
+                            
+                            <div class="col-12 mb-3">
+                                <label for="{{ user_form.email.id_for_label }}" class="form-label">
+                                    <i class="fas fa-envelope"></i> Email Address
+                                </label>
+                                {{ user_form.email }}
+                                {% if user_form.email.errors %}
+                                    <div class="invalid-feedback d-block">
+                                        {{ user_form.email.errors }}
+                                    </div>
+                                {% endif %}
+                            </div>
+                        </div>
+                        
+                        <!-- Profile Information Section -->
+                        <div class="row mb-4">
+                            <div class="col-12">
+                                <h5 class="border-bottom pb-2 mb-3">
+                                    <i class="fas fa-id-card text-primary"></i>
+                                    Profile Details
+                                </h5>
+                            </div>
+                            
+                            <div class="col-md-6 mb-3">
+                                <label for="{{ profile_form.role.id_for_label }}" class="form-label">
+                                    <i class="fas fa-user-tag"></i> Role
+                                </label>
+                                {{ profile_form.role }}
+                                {% if profile_form.role.help_text %}
+                                    <small class="form-text text-muted">{{ profile_form.role.help_text }}</small>
+                                {% endif %}
+                                {% if profile_form.role.errors %}
+                                    <div class="invalid-feedback d-block">
+                                        {{ profile_form.role.errors }}
+                                    </div>
+                                {% endif %}
+                            </div>
+                            
+                            <div class="col-md-6 mb-3">
+                                <label for="{{ profile_form.avatar.id_for_label }}" class="form-label">
+                                    <i class="fas fa-image"></i> Profile Picture
+                                </label>
+                                {{ profile_form.avatar }}
+                                {% if profile_form.avatar.help_text %}
+                                    <small class="form-text text-muted">{{ profile_form.avatar.help_text }}</small>
+                                {% endif %}
+                                {% if profile_form.avatar.errors %}
+                                    <div class="invalid-feedback d-block">
+                                        {{ profile_form.avatar.errors }}
+                                    </div>
+                                {% endif %}
+                                
+                                {% if user.userprofile.avatar %}
+                                    <div class="mt-2">
+                                        <small class="text-muted">Current:</small><br>
+                                        <img src="{{ user.userprofile.avatar.url }}" alt="Current avatar" class="rounded" width="80" height="80">
+                                    </div>
+                                {% endif %}
+                            </div>
+                            
+                            <div class="col-12 mb-3">
+                                <label for="{{ profile_form.bio.id_for_label }}" class="form-label">
+                                    <i class="fas fa-quote-left"></i> Bio
+                                </label>
+                                {{ profile_form.bio }}
+                                {% if profile_form.bio.help_text %}
+                                    <small class="form-text text-muted">{{ profile_form.bio.help_text }}</small>
+                                {% endif %}
+                                {% if profile_form.bio.errors %}
+                                    <div class="invalid-feedback d-block">
+                                        {{ profile_form.bio.errors }}
+                                    </div>
+                                {% endif %}
+                            </div>
+                        </div>
+                        
+                        <!-- Social Links Section -->
+                        <div class="row mb-4">
+                            <div class="col-12">
+                                <h5 class="border-bottom pb-2 mb-3">
+                                    <i class="fas fa-share-alt text-primary"></i>
+                                    Social Links
+                                </h5>
+                            </div>
+                            
+                            <div class="col-md-6 mb-3">
+                                <label for="{{ profile_form.website.id_for_label }}" class="form-label">
+                                    <i class="fas fa-globe"></i> Website
+                                </label>
+                                {{ profile_form.website }}
+                                {% if profile_form.website.help_text %}
+                                    <small class="form-text text-muted">{{ profile_form.website.help_text }}</small>
+                                {% endif %}
+                                {% if profile_form.website.errors %}
+                                    <div class="invalid-feedback d-block">
+                                        {{ profile_form.website.errors }}
+                                    </div>
+                                {% endif %}
+                            </div>
+                            
+                            <div class="col-md-6 mb-3">
+                                <label for="{{ profile_form.twitter.id_for_label }}" class="form-label">
+                                    <i class="fab fa-twitter"></i> Twitter Username
+                                </label>
+                                <div class="input-group">
+                                    <span class="input-group-text">@</span>
+                                    {{ profile_form.twitter }}
+                                </div>
+                                {% if profile_form.twitter.help_text %}
+                                    <small class="form-text text-muted">{{ profile_form.twitter.help_text }}</small>
+                                {% endif %}
+                                {% if profile_form.twitter.errors %}
+                                    <div class="invalid-feedback d-block">
+                                        {{ profile_form.twitter.errors }}
+                                    </div>
+                                {% endif %}
+                            </div>
+                        </div>
+                        
+                        <!-- Form Actions -->
+                        <div class="row">
+                            <div class="col-12">
+                                <hr>
+                                <div class="d-flex justify-content-between">
+                                    <a href="{% url 'blog:profile' %}" class="btn btn-outline-secondary">
+                                        <i class="fas fa-arrow-left"></i> Cancel
+                                    </a>
+                                    <button type="submit" class="btn btn-primary">
+                                        <i class="fas fa-save"></i> Save Changes
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            
+            <!-- Additional Actions -->
+            <div class="row mt-4">
+                <div class="col-md-6">
+                    <div class="card border-warning">
+                        <div class="card-body">
+                            <h6 class="card-title text-warning">
+                                <i class="fas fa-key"></i> Change Password
+                            </h6>
+                            <p class="card-text small">Update your account password for security.</p>
+                            <a href="{% url 'blog:password_reset' %}" class="btn btn-outline-warning btn-sm">
+                                Change Password
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-md-6">
+                    <div class="card border-info">
+                        <div class="card-body">
+                            <h6 class="card-title text-info">
+                                <i class="fas fa-chart-line"></i> Account Stats
+                            </h6>
+                            <p class="card-text small">
+                                Member since {{ user.date_joined|date:"F Y" }}<br>
+                                <strong>{{ user.posts.count }}</strong> posts published
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+.form-control, .form-select {
+    border-radius: 0.375rem;
+    border: 1px solid #ced4da;
+    padding: 0.375rem 0.75rem;
+}
+
+.form-control:focus, .form-select:focus {
+    border-color: #86b7fe;
+    box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25);
+}
+
+.card-header {
+    border-radius: calc(0.375rem - 1px) calc(0.375rem - 1px) 0 0;
+}
+</style>
+{% endblock %}

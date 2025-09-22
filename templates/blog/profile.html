@@ -1,0 +1,215 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Profile - {{ user.get_full_name|default:user.username }}{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="row">
+        <!-- Profile Information -->
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-body text-center">
+                    {% if user.userprofile.avatar %}
+                        <img src="{{ user.userprofile.avatar.url }}" alt="Avatar" class="rounded-circle mb-3" width="150" height="150">
+                    {% else %}
+                        <div class="bg-secondary rounded-circle d-inline-flex align-items-center justify-content-center mb-3" style="width: 150px; height: 150px;">
+                            <i class="fas fa-user fa-4x text-white"></i>
+                        </div>
+                    {% endif %}
+                    
+                    <h4 class="card-title">{{ user.get_full_name|default:user.username }}</h4>
+                    <p class="text-muted">@{{ user.username }}</p>
+                    
+                    {% if user.userprofile.role %}
+                        <span class="badge bg-primary mb-2">{{ user.userprofile.get_role_display }}</span>
+                    {% endif %}
+                    
+                    {% if user.userprofile.bio %}
+                        <p class="card-text">{{ user.userprofile.bio }}</p>
+                    {% endif %}
+                    
+                    <div class="d-grid gap-2">
+                        <a href="{% url 'blog:edit_profile' %}" class="btn btn-outline-primary">
+                            <i class="fas fa-edit"></i> Edit Profile
+                        </a>
+                    </div>
+                    
+                    <!-- Additional Info -->
+                    <hr>
+                    <small class="text-muted">
+                        <i class="fas fa-calendar-alt"></i>
+                        Joined {{ user.date_joined|date:"F Y" }}
+                    </small>
+                    
+                    {% if user.userprofile.website %}
+                        <div class="mt-2">
+                            <a href="{{ user.userprofile.website }}" target="_blank" class="text-decoration-none">
+                                <i class="fas fa-external-link-alt"></i> Website
+                            </a>
+                        </div>
+                    {% endif %}
+                    
+                    {% if user.userprofile.twitter %}
+                        <div class="mt-1">
+                            <a href="https://twitter.com/{{ user.userprofile.twitter }}" target="_blank" class="text-decoration-none">
+                                <i class="fab fa-twitter"></i> @{{ user.userprofile.twitter }}
+                            </a>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        
+        <!-- User's Posts -->
+        <div class="col-md-8">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h3>
+                    <i class="fas fa-file-alt text-primary"></i>
+                    My Posts
+                    <span class="badge bg-secondary">{{ total_posts }}</span>
+                </h3>
+                
+                {% if user.userprofile.can_create_posts %}
+                    <a href="{% url 'blog:post_create' %}" class="btn btn-success">
+                        <i class="fas fa-plus"></i> New Post
+                    </a>
+                {% endif %}
+            </div>
+            
+            {% if user_posts %}
+                {% for post in user_posts %}
+                    <div class="card mb-3">
+                        <div class="card-body">
+                            <div class="d-flex justify-content-between align-items-start">
+                                <div class="flex-grow-1">
+                                    <h5 class="card-title">
+                                        <a href="{{ post.get_absolute_url }}" class="text-decoration-none">
+                                            {{ post.title }}
+                                        </a>
+                                    </h5>
+                                    
+                                    {% if post.excerpt %}
+                                        <p class="card-text text-muted">{{ post.excerpt|truncatewords:20 }}</p>
+                                    {% endif %}
+                                    
+                                    <div class="d-flex flex-wrap gap-2 mb-2">
+                                        {% if post.category %}
+                                            <span class="badge bg-info">
+                                                <i class="fas fa-folder"></i> {{ post.category.name }}
+                                            </span>
+                                        {% endif %}
+                                        
+                                        <span class="badge bg-{% if post.status == 'published' %}success{% elif post.status == 'draft' %}warning{% else %}secondary{% endif %}">
+                                            <i class="fas fa-{% if post.status == 'published' %}check{% elif post.status == 'draft' %}edit{% else %}archive{% endif %}"></i>
+                                            {{ post.get_status_display }}
+                                        </span>
+                                        
+                                        {% if post.featured %}
+                                            <span class="badge bg-danger">
+                                                <i class="fas fa-star"></i> Featured
+                                            </span>
+                                        {% endif %}
+                                    </div>
+                                    
+                                    <small class="text-muted">
+                                        <i class="fas fa-calendar"></i>
+                                        {% if post.published_at %}
+                                            Published {{ post.published_at|date:"M d, Y" }}
+                                        {% else %}
+                                            Created {{ post.created_at|date:"M d, Y" }}
+                                        {% endif %}
+                                        
+                                        <span class="ms-3">
+                                            <i class="fas fa-eye"></i> {{ post.view_count }} views
+                                        </span>
+                                        
+                                        <span class="ms-3">
+                                            <i class="fas fa-comments"></i> {{ post.get_comment_count }} comments
+                                        </span>
+                                    </small>
+                                </div>
+                                
+                                <div class="dropdown">
+                                    <button class="btn btn-outline-secondary btn-sm dropdown-toggle" type="button" data-bs-toggle="dropdown">
+                                        <i class="fas fa-ellipsis-v"></i>
+                                    </button>
+                                    <ul class="dropdown-menu">
+                                        <li>
+                                            <a class="dropdown-item" href="{{ post.get_absolute_url }}">
+                                                <i class="fas fa-eye"></i> View
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a class="dropdown-item" href="{% url 'blog:post_edit' post.slug %}">
+                                                <i class="fas fa-edit"></i> Edit
+                                            </a>
+                                        </li>
+                                        <li><hr class="dropdown-divider"></li>
+                                        <li>
+                                            <a class="dropdown-item text-danger" href="{% url 'blog:post_delete' post.slug %}">
+                                                <i class="fas fa-trash"></i> Delete
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+                
+                <!-- Pagination -->
+                {% if user_posts.has_other_pages %}
+                    <nav aria-label="Posts pagination">
+                        <ul class="pagination justify-content-center">
+                            {% if user_posts.has_previous %}
+                                <li class="page-item">
+                                    <a class="page-link" href="?page=1" aria-label="First">
+                                        <span aria-hidden="true">&laquo;&laquo;</span>
+                                    </a>
+                                </li>
+                                <li class="page-item">
+                                    <a class="page-link" href="?page={{ user_posts.previous_page_number }}" aria-label="Previous">
+                                        <span aria-hidden="true">&laquo;</span>
+                                    </a>
+                                </li>
+                            {% endif %}
+                            
+                            <li class="page-item active">
+                                <span class="page-link">
+                                    Page {{ user_posts.number }} of {{ user_posts.paginator.num_pages }}
+                                </span>
+                            </li>
+                            
+                            {% if user_posts.has_next %}
+                                <li class="page-item">
+                                    <a class="page-link" href="?page={{ user_posts.next_page_number }}" aria-label="Next">
+                                        <span aria-hidden="true">&raquo;</span>
+                                    </a>
+                                </li>
+                                <li class="page-item">
+                                    <a class="page-link" href="?page={{ user_posts.paginator.num_pages }}" aria-label="Last">
+                                        <span aria-hidden="true">&raquo;&raquo;</span>
+                                    </a>
+                                </li>
+                            {% endif %}
+                        </ul>
+                    </nav>
+                {% endif %}
+            {% else %}
+                <div class="text-center py-5">
+                    <i class="fas fa-file-alt fa-3x text-muted mb-3"></i>
+                    <h4 class="text-muted">No Posts Yet</h4>
+                    <p class="text-muted">You haven't created any posts yet.</p>
+                    
+                    {% if user.userprofile.can_create_posts %}
+                        <a href="{% url 'blog:post_create' %}" class="btn btn-primary">
+                            <i class="fas fa-plus"></i> Create Your First Post
+                        </a>
+                    {% endif %}
+                </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}
