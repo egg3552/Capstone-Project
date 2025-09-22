@@ -598,6 +598,10 @@ a:hover {
 
 .about-hero .about-title {
   color: #ffffff !important;  /* Pure white for maximum contrast */
+  background: none !important;  /* Remove any background gradients */
+  -webkit-background-clip: initial !important;  /* Reset background clipping */
+  -webkit-text-fill-color: #ffffff !important;  /* Force white text fill */
+  background-clip: initial !important;  /* Reset background clip */
   font-family: 'Arial', 'Helvetica', sans-serif !important;  /* Clear, clean font */
   text-shadow: none !important;  /* No shadows for crystal clear text */
   font-weight: 700 !important;  /* Bold but not too heavy */
@@ -614,11 +618,16 @@ a:hover {
   transform: scale(1.05) translateY(-5px) !important;  /* Scale up and lift */
   text-shadow: 0 5px 15px rgba(255, 255, 255, 0.3) !important;  /* Subtle white glow on hover */
   letter-spacing: 3px !important;  /* Expand letter spacing */
-  color: #f0f8ff !important;  /* Slightly brighter white on hover */
+  color: #ffffff !important;  /* Keep white on hover */
+  -webkit-text-fill-color: #ffffff !important;  /* Force white text fill on hover */
 }
 
 .about-hero .about-subtitle {
   color: #ffffff !important;  /* Pure white for subtitle */
+  background: none !important;  /* Remove any background gradients */
+  -webkit-background-clip: initial !important;  /* Reset background clipping */
+  -webkit-text-fill-color: #ffffff !important;  /* Force white text fill */
+  background-clip: initial !important;  /* Reset background clip */
   font-family: 'Arial', 'Helvetica', sans-serif !important;  /* Clean font */
   text-shadow: none !important;  /* No shadows for clarity */
   opacity: 1 !important;
@@ -631,4 +640,6 @@ a:hover {
 .about-hero .about-subtitle:hover {
   transform: translateY(-2px) !important;  /* Subtle lift */
   opacity: 0.9 !important;  /* Slight fade effect */
+  color: #ffffff !important;  /* Keep white on hover */
+  -webkit-text-fill-color: #ffffff !important;  /* Force white text fill on hover */
 }
