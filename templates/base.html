@@ -146,33 +146,33 @@
         <div class="container">
             <div class="row">
                 <div class="col-md-6">
-                    <h5 class="fw-bold mb-3">
+                    <h5 class="fw-bold mb-3 text-white">
                         <i class="fas fa-blog me-2 text-primary"></i>About This Blog
                     </h5>
-                    <p class="text-light opacity-75">A modern blog platform built with Django, featuring user authentication, 
+                    <p class="text-white" style="opacity: 0.9;">A modern blog platform built with Django, featuring user authentication, 
                     commenting system, and content management.</p>
                 </div>
                 <div class="col-md-3">
-                    <h5 class="fw-bold mb-3">Quick Links</h5>
+                    <h5 class="fw-bold mb-3 text-white">Quick Links</h5>
                     <ul class="list-unstyled">
                         <li class="mb-2">
-                            <a href="{% url 'blog:post_list' %}" class="text-light text-decoration-none opacity-75 hover-opacity-100">
+                            <a href="{% url 'blog:post_list' %}" class="text-white text-decoration-none" style="opacity: 0.9; transition: all 0.3s;" onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0.9'">
                                 <i class="fas fa-home me-2"></i>Home
                             </a>
                         </li>
                         <li class="mb-2">
-                            <a href="{% url 'blog:about' %}" class="text-light text-decoration-none opacity-75 hover-opacity-100">
+                            <a href="{% url 'blog:about' %}" class="text-white text-decoration-none" style="opacity: 0.9; transition: all 0.3s;" onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0.9'">
                                 <i class="fas fa-info-circle me-2"></i>About
                             </a>
                         </li>
                         <li class="mb-2">
-                            <a href="{% url 'blog:contact' %}" class="text-light text-decoration-none opacity-75 hover-opacity-100">
+                            <a href="{% url 'blog:contact' %}" class="text-white text-decoration-none" style="opacity: 0.9; transition: all 0.3s;" onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0.9'">
                                 <i class="fas fa-envelope me-2"></i>Contact
                             </a>
                         </li>
                         {% if user.is_authenticated and user.userprofile.can_create_posts %}
                             <li class="mb-2">
-                                <a href="{% url 'blog:post_create' %}" class="text-light text-decoration-none opacity-75 hover-opacity-100">
+                                <a href="{% url 'blog:post_create' %}" class="text-white text-decoration-none" style="opacity: 0.9; transition: all 0.3s;" onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0.9'">
                                     <i class="fas fa-plus me-2"></i>Write Post
                                 </a>
                             </li>
@@ -180,32 +180,32 @@
                     </ul>
                 </div>
                 <div class="col-md-3">
-                    <h5 class="fw-bold mb-3">Connect</h5>
+                    <h5 class="fw-bold mb-3 text-white">Connect</h5>
                     <div class="social-links">
-                        <a href="#" class="text-light me-3 fs-4 opacity-75 hover-opacity-100" aria-label="Facebook" style="transition: all 0.3s;">
+                        <a href="#" class="text-white me-3 fs-4" style="opacity: 0.9; transition: all 0.3s;" aria-label="Facebook" onmouseover="this.style.opacity='1'; this.style.color='#3b82f6'" onmouseout="this.style.opacity='0.9'; this.style.color='white'">
                             <i class="fab fa-facebook"></i>
                         </a>
-                        <a href="#" class="text-light me-3 fs-4 opacity-75 hover-opacity-100" aria-label="Twitter" style="transition: all 0.3s;">
+                        <a href="#" class="text-white me-3 fs-4" style="opacity: 0.9; transition: all 0.3s;" aria-label="Twitter" onmouseover="this.style.opacity='1'; this.style.color='#3b82f6'" onmouseout="this.style.opacity='0.9'; this.style.color='white'">
                             <i class="fab fa-twitter"></i>
                         </a>
-                        <a href="#" class="text-light me-3 fs-4 opacity-75 hover-opacity-100" aria-label="LinkedIn" style="transition: all 0.3s;">
+                        <a href="#" class="text-white me-3 fs-4" style="opacity: 0.9; transition: all 0.3s;" aria-label="LinkedIn" onmouseover="this.style.opacity='1'; this.style.color='#3b82f6'" onmouseout="this.style.opacity='0.9'; this.style.color='white'">
                             <i class="fab fa-linkedin"></i>
                         </a>
-                        <a href="#" class="text-light fs-4 opacity-75 hover-opacity-100" aria-label="GitHub" style="transition: all 0.3s;">
+                        <a href="#" class="text-white fs-4" style="opacity: 0.9; transition: all 0.3s;" aria-label="GitHub" onmouseover="this.style.opacity='1'; this.style.color='#3b82f6'" onmouseout="this.style.opacity='0.9'; this.style.color='white'">
                             <i class="fab fa-github"></i>
                         </a>
                     </div>
                 </div>
             </div>
-            <hr class="mt-4 opacity-25">
+            <hr class="mt-4" style="opacity: 0.3; border-color: white;">
             <div class="row align-items-center">
                 <div class="col-md-6">
-                    <p class="mb-0 opacity-75">
+                    <p class="mb-0 text-white" style="opacity: 0.9;">
                         <i class="fas fa-copyright me-1"></i>{% now "Y" %} Blog. All rights reserved.
                     </p>
                 </div>
                 <div class="col-md-6 text-end">
-                    <small class="opacity-75">
+                    <small class="text-white" style="opacity: 0.9;">
                         <i class="fas fa-code me-1"></i>Built with Django & Bootstrap
                     </small>
                 </div>
