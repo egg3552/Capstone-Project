@@ -88,9 +88,14 @@
                                     </a></li>
                                 {% endif %}
                                 <li><hr class="dropdown-divider"></li>
-                                <li><a class="dropdown-item" href="{% url 'blog:logout' %}">
-                                    <i class="fas fa-sign-out-alt" aria-hidden="true"></i> Logout
-                                </a></li>
+                                <li>
+                                    <form method="post" action="{% url 'blog:logout' %}" style="display: inline;">
+                                        {% csrf_token %}
+                                        <button type="submit" class="dropdown-item" style="border: none; background: none; width: 100%; text-align: left;">
+                                            <i class="fas fa-sign-out-alt" aria-hidden="true"></i> Logout
+                                        </button>
+                                    </form>
+                                </li>
                             </ul>
                         </li>
                     {% else %}
