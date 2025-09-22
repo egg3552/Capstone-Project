@@ -5,7 +5,7 @@
 
 {% block content %}
 <div class="container">
-    <!-- Hero Section -->
+    <!-- Hero Section with gradient background and centered content -->
     <div class="row mb-5">
         <div class="col-12 text-center">
             <div class="bg-primary text-white rounded p-5">
@@ -15,11 +15,13 @@
         </div>
     </div>
 
+    <!-- Main content area with responsive centering -->
     <div class="row">
-        <div class="col-lg-8 mx-auto">
+        <div class="col-lg-8 mx-auto"> <!-- Auto margins center the column -->
             <!-- Mission Section -->
             <section class="mb-5">
                 <h2 class="mb-4">
+                    <!-- Icon with semantic color coding and accessibility attributes -->
                     <i class="fas fa-bullseye text-primary" aria-hidden="true"></i>
                     Our Mission
                 </h2>
@@ -36,17 +38,20 @@
                 </p>
             </section>
 
-            <!-- What We Cover Section -->
+            <!-- What We Cover Section with responsive card grid -->
             <section class="mb-5">
                 <h2 class="mb-4">
                     <i class="fas fa-list text-success" aria-hidden="true"></i>
                     What We Cover
                 </h2>
+                <!-- Bootstrap responsive grid for topic cards -->
                 <div class="row">
+                    <!-- Programming Languages card with equal height -->
                     <div class="col-md-6 mb-3">
-                        <div class="card h-100 border-0 bg-light">
+                        <div class="card h-100 border-0 bg-light"> <!-- h-100 ensures equal card heights -->
                             <div class="card-body">
                                 <h5 class="card-title">
+                                    <!-- Brand-specific icon with semantic coloring -->
                                     <i class="fab fa-python text-warning" aria-hidden="true"></i>
                                     Programming Languages
                                 </h5>
@@ -57,6 +62,7 @@
                             </div>
                         </div>
                     </div>
+                    <!-- Web Development card -->
                     <div class="col-md-6 mb-3">
                         <div class="card h-100 border-0 bg-light">
                             <div class="card-body">
@@ -71,6 +77,7 @@
                             </div>
                         </div>
                     </div>
+                    <!-- Cloud & DevOps card -->
                     <div class="col-md-6 mb-3">
                         <div class="card h-100 border-0 bg-light">
                             <div class="card-body">
@@ -85,6 +92,7 @@
                             </div>
                         </div>
                     </div>
+                    <!-- AI & Machine Learning card -->
                     <div class="col-md-6 mb-3">
                         <div class="card h-100 border-0 bg-light">
                             <div class="card-body">
@@ -102,7 +110,7 @@
                 </div>
             </section>
 
-            <!-- Community Section -->
+            <!-- Community Features Section -->
             <section class="mb-5">
                 <h2 class="mb-4">
                     <i class="fas fa-users text-info" aria-hidden="true"></i>
@@ -112,8 +120,10 @@
                     Our blog is built on Django, showcasing the power of this robust web framework. 
                     We practice what we preach by using modern development practices:
                 </p>
-                <ul class="list-unstyled">
+                <!-- Feature list with custom styling and icons -->
+                <ul class="list-unstyled"> <!-- Remove default bullet points for custom styling -->
                     <li class="mb-2">
+                        <!-- Success checkmark with consistent spacing -->
                         <i class="fas fa-check text-success" aria-hidden="true"></i>
                         Role-based user authentication and authorization
                     </li>
@@ -140,7 +150,7 @@
                 </ul>
             </section>
 
-            <!-- Join Us Section -->
+            <!-- Call-to-Action Section with conditional user content -->
             <section class="mb-5">
                 <div class="card bg-primary text-white">
                     <div class="card-body text-center p-5">
@@ -152,7 +162,9 @@
                             Ready to share your knowledge or learn from others? 
                             Join our community today!
                         </p>
+                        <!-- Responsive button group with consistent gap spacing -->
                         <div class="d-flex justify-content-center gap-3">
+                            <!-- Django template conditional for non-authenticated users -->
                             {% if not user.is_authenticated %}
                             <a href="{% url 'blog:register' %}" class="btn btn-light btn-lg">
                                 <i class="fas fa-user-plus" aria-hidden="true"></i>
@@ -163,6 +175,7 @@
                                 Sign In
                             </a>
                             {% else %}
+                            <!-- Content for authenticated users with permission checking -->
                             {% if user.userprofile.can_create_posts %}
                             <a href="{% url 'blog:post_create' %}" class="btn btn-light btn-lg">
                                 <i class="fas fa-pen" aria-hidden="true"></i>
@@ -173,28 +186,32 @@
                                 <i class="fas fa-home" aria-hidden="true"></i>
                                 Browse Posts
                             </a>
-                            {% endif %}
+                            {% endif %} <!-- End authentication conditional -->
                         </div>
                     </div>
                 </div>
             </section>
 
-            <!-- Statistics -->
+            <!-- Statistics Section with responsive grid layout -->
             <section class="mb-5">
                 <h2 class="mb-4">
                     <i class="fas fa-chart-bar text-warning" aria-hidden="true"></i>
                     By the Numbers
                 </h2>
+                <!-- Responsive 4-column grid for statistics cards -->
                 <div class="row text-center">
+                    <!-- Articles statistic card -->
                     <div class="col-md-3 mb-3">
                         <div class="card border-0 bg-light">
                             <div class="card-body">
+                                <!-- Large icon with semantic color and accessible font size -->
                                 <i class="fas fa-file-alt fa-2x text-primary mb-2" aria-hidden="true"></i>
                                 <h3 class="mb-1">50+</h3>
                                 <small class="text-muted">Articles Published</small>
                             </div>
                         </div>
                     </div>
+                    <!-- Community members statistic card -->
                     <div class="col-md-3 mb-3">
                         <div class="card border-0 bg-light">
                             <div class="card-body">
@@ -204,6 +221,7 @@
                             </div>
                         </div>
                     </div>
+                    <!-- Comments statistic card -->
                     <div class="col-md-3 mb-3">
                         <div class="card border-0 bg-light">
                             <div class="card-body">
@@ -213,6 +231,7 @@
                             </div>
                         </div>
                     </div>
+                    <!-- Readers statistic card -->
                     <div class="col-md-3 mb-3">
                         <div class="card border-0 bg-light">
                             <div class="card-body">
@@ -222,10 +241,10 @@
                             </div>
                         </div>
                     </div>
-                </div>
+                </div> <!-- End statistics grid -->
             </section>
 
-            <!-- Contact Info -->
+            <!-- Contact Section with centered layout -->
             <section class="text-center">
                 <h2 class="mb-4">
                     <i class="fas fa-envelope text-primary" aria-hidden="true"></i>
@@ -235,12 +254,13 @@
                     Have questions, suggestions, or want to collaborate? 
                     We'd love to hear from you!
                 </p>
+                <!-- Contact button with Django URL resolution -->
                 <a href="{% url 'blog:contact' %}" class="btn btn-primary btn-lg">
                     <i class="fas fa-paper-plane" aria-hidden="true"></i>
                     Contact Us
                 </a>
             </section>
-        </div>
-    </div>
-</div>
-{% endblock %}
+        </div> <!-- End centered content column -->
+    </div> <!-- End main content row -->
+</div> <!-- End container -->
+{% endblock %} <!-- End content block -->

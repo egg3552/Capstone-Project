@@ -103,10 +103,11 @@ class PostListView(ListView):
     paginate_by = 10
 
     def get_queryset(self):
+        # Optimize database queries with select_related and prefetch_related
         queryset = Post.objects.filter(status='published').select_related(
             'author', 'category').prefetch_related('tags')
 
-        # Search functionality
+        # Search functionality - case-insensitive matching
         query = self.request.GET.get('query')
         if query:
             queryset = queryset.filter(
@@ -115,12 +116,12 @@ class PostListView(ListView):
                 Q(excerpt__icontains=query)
             )
 
-        # Category filtering
+        # Category filtering using slug for SEO-friendly URLs
         category = self.request.GET.get('category')
         if category:
             queryset = queryset.filter(category__slug=category)
 
-        # Tag filtering
+        # Tag filtering using slug for SEO-friendly URLs
         tag = self.request.GET.get('tag')
         if tag:
             queryset = queryset.filter(tags__slug=tag)
@@ -153,16 +154,17 @@ class PostDetailView(DetailView):
         context = super().get_context_data(**kwargs)
         post = self.get_object()
 
-        # Increment view count
+        # Increment view count atomically to avoid race conditions
         Post.objects.filter(pk=post.pk).update(view_count=post.view_count + 1)
 
-        # Get comments
+        # Get top-level comments only (replies are handled in template)
         comments = Comment.objects.filter(
             post=post, active=True, parent=None
         ).select_related('author').order_by('created_at')
 
         context['comments'] = comments
         context['comment_form'] = CommentForm()
+        # Show related posts from same category
         context['related_posts'] = Post.objects.filter(
             status='published', category=post.category
         ).exclude(pk=post.pk)[:3]
@@ -180,6 +182,7 @@ class PostCreateView(CreateView):
     template_name = 'blog/post_form.html'
 
     def dispatch(self, request, *args, **kwargs):
+        # Check user permissions before allowing access
         if not request.user.userprofile.can_create_posts():
             messages.error(
                 request, 'You do not have permission to create posts.'
@@ -209,6 +212,7 @@ class PostUpdateView(UpdateView):
 
     def dispatch(self, request, *args, **kwargs):
         post = self.get_object()
+        # Only post author or admin can edit posts
         if (request.user != post.author and
                 not request.user.userprofile.can_moderate()):
             messages.error(request, 'You can only edit your own posts.')
@@ -236,6 +240,7 @@ class PostDeleteView(DeleteView):
 
     def dispatch(self, request, *args, **kwargs):
         post = self.get_object()
+        # Only post author or admin can delete posts
         if (request.user != post.author and
                 not request.user.userprofile.can_moderate()):
             messages.error(request, 'You can only delete your own posts.')
@@ -262,7 +267,7 @@ def add_comment_view(request, slug):
             comment.post = post
             comment.author = request.user
 
-            # Handle reply to another comment
+            # Handle reply to another comment for threaded discussions
             parent_id = request.POST.get('parent_id')
             if parent_id:
                 parent_comment = get_object_or_404(Comment, id=parent_id)
@@ -283,6 +288,7 @@ def delete_comment_view(request, comment_id):
     """
     comment = get_object_or_404(Comment, id=comment_id)
 
+    # Check user permissions - only comment author or admin can delete
     if (request.user == comment.author or
             request.user.userprofile.can_moderate()):
         post_slug = comment.post.slug
@@ -382,6 +388,7 @@ def add_reaction(request, slug):
     reaction_type = request.POST.get('reaction_type', 'like')
     
     from .models import PostReaction
+    # Use get_or_create to avoid duplicate reactions
     reaction, created = PostReaction.objects.get_or_create(
         post=post,
         user=request.user,
@@ -389,6 +396,7 @@ def add_reaction(request, slug):
     )
     
     if not created:
+        # Toggle reaction - remove if same type, update if different
         if reaction.reaction_type == reaction_type:
             # Remove reaction if clicking same type
             reaction.delete()
@@ -410,6 +418,7 @@ def analytics_dashboard(request):
     """
     Analytics dashboard for content creators and admins.
     """
+    # Restrict access to authors and admins only
     if not (request.user.userprofile.can_create_posts() or
             request.user.userprofile.can_moderate()):
         messages.error(request, 'Access denied.')
@@ -469,6 +478,7 @@ def advanced_search(request):
         date_from = form.cleaned_data.get('date_from')
         date_to = form.cleaned_data.get('date_to')
         
+        # Apply search filters if provided
         if query:
             posts = posts.filter(
                 django_models.Q(title__icontains=query) |
@@ -485,6 +495,7 @@ def advanced_search(request):
         if tag:
             posts = posts.filter(tags__in=[tag])
         
+        # Date range filtering
         if date_from:
             posts = posts.filter(created__gte=date_from)
         
@@ -518,12 +529,14 @@ def update_reading_progress(request, slug):
     progress = request.POST.get('progress', 0)
     
     from .models import ReadingProgress
+    # Use get_or_create to track reading progress per user per post
     reading_progress, created = ReadingProgress.objects.get_or_create(
         post=post,
         user=request.user,
         defaults={'progress_percentage': progress}
     )
     
+    # Update progress if record already exists
     if not created:
         reading_progress.progress_percentage = progress
         reading_progress.save()

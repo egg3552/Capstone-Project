@@ -84,11 +84,13 @@ class UserProfile(models.Model):
 
     def save(self, *args, **kwargs):
         super().save(*args, **kwargs)
+        # Resize avatar image to improve page load performance
         if self.avatar:
             img = Image.open(self.avatar.path)
+            # Only resize if image is larger than 300x300 pixels
             if img.height > 300 or img.width > 300:
                 output_size = (300, 300)
-                img.thumbnail(output_size)
+                img.thumbnail(output_size)  # Maintain aspect ratio
                 img.save(self.avatar.path)
 
     def can_create_posts(self):
@@ -145,10 +147,14 @@ class Post(models.Model):
     featured = models.BooleanField(default=False)
 
     class Meta:
+        # Most recent published posts first
         ordering = ['-published_at', '-created_at']
         indexes = [
+            # Optimize queries for published posts by date
             models.Index(fields=['status', 'published_at']),
+            # Optimize author's post queries
             models.Index(fields=['author', 'status']),
+            # Optimize category-based filtering
             models.Index(fields=['category', 'status']),
         ]
 
@@ -159,8 +165,10 @@ class Post(models.Model):
         return reverse('blog:post_detail', kwargs={'slug': self.slug})
 
     def save(self, *args, **kwargs):
+        # Auto-generate slug from title if not provided
         if not self.slug:
             self.slug = slugify(self.title)
+        # Set published_at timestamp when status changes to published
         if self.status == 'published' and not self.published_at:
             self.published_at = timezone.now()
         super().save(*args, **kwargs)
@@ -173,10 +181,10 @@ class Post(models.Model):
 
     def get_reading_time(self):
         """Estimate reading time based on content length"""
-        words_per_minute = 200
+        words_per_minute = 200  # Average adult reading speed
         word_count = len(self.content.split())
         reading_time = word_count / words_per_minute
-        return max(1, round(reading_time))
+        return max(1, round(reading_time))  # Minimum 1 minute
 
 
 class Comment(models.Model):
@@ -193,7 +201,7 @@ class Comment(models.Model):
     active = models.BooleanField(default=True)
     parent = models.ForeignKey(
         'self', on_delete=models.CASCADE, null=True, blank=True,
-        related_name='replies'
+        related_name='replies'  # Enables hierarchical comment threading
     )
 
     class Meta:
@@ -252,9 +260,10 @@ class PostReaction(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     
     class Meta:
-        unique_together = ('post', 'user')
+        unique_together = ('post', 'user')  # One reaction per user per post
         ordering = ['-created_at']
         indexes = [
+            # Optimize reaction count queries by type
             models.Index(fields=['post', 'reaction_type']),
         ]
     
@@ -272,6 +281,7 @@ class ReadingProgress(models.Model):
     last_read_at = models.DateTimeField(auto_now=True)
     
     class Meta:
+        # One progress record per user per post
         unique_together = ('user', 'post')
         ordering = ['-last_read_at']
     

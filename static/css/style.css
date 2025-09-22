@@ -1,7 +1,8 @@
 /* Blog Custom Styles */
 
-/* Root variables for consistent theming */
+/* Root variables for consistent theming and easy customization */
 :root {
+  /* Color palette */
   --primary-color: #2563eb;
   --primary-dark: #1d4ed8;
   --secondary-color: #64748b;
@@ -11,25 +12,31 @@
   --info-color: #0891b2;
   --light-color: #f8fafc;
   --dark-color: #1e293b;
+  
+  /* Typography */
   --font-family-primary: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  
+  /* Spacing and effects */
   --border-radius: 0.75rem;
   --box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
   --box-shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
   --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  
+  /* Gradients for modern appearance */
   --gradient-primary: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
   --gradient-secondary: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
 }
 
-/* General Styles */
+/* General body styling with gradient background */
 body {
   font-family: var(--font-family-primary);
   line-height: 1.6;
   color: #1f2937;
-  background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+  background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);  /* Subtle gradient */
   min-height: 100vh;
 }
 
-/* Typography */
+/* Heading styles with gradient text effect for h1 */
 h1, h2, h3, h4, h5, h6 {
   font-weight: 700;
   line-height: 1.2;
@@ -37,9 +44,10 @@ h1, h2, h3, h4, h5, h6 {
   color: var(--dark-color);
 }
 
+/* Gradient text effect for main headings */
 h1 {
   background: var(--gradient-primary);
-  -webkit-background-clip: text;
+  -webkit-background-clip: text;  /* Webkit prefix for Safari */
   -webkit-text-fill-color: transparent;
   background-clip: text;
 }
@@ -57,15 +65,15 @@ a:hover {
   transform: translateY(-1px);
 }
 
-/* Cards */
+/* Glass morphism effect for modern card design */
 .card {
   border: none;
   box-shadow: var(--box-shadow);
   transition: var(--transition);
   margin-bottom: 2rem;
   border-radius: var(--border-radius);
-  background: rgba(255, 255, 255, 0.8);
-  backdrop-filter: blur(10px);
+  background: rgba(255, 255, 255, 0.8);  /* Semi-transparent background */
+  backdrop-filter: blur(10px);  /* Glass effect blur */
 }
 
 .card:hover {
@@ -73,25 +81,26 @@ a:hover {
   transform: translateY(-4px);
 }
 
+/* Image hover effect with scaling */
 .card-img-top {
   height: 200px;
-  object-fit: cover;
+  object-fit: cover;  /* Maintain aspect ratio */
   border-radius: var(--border-radius) var(--border-radius) 0 0;
   transition: var(--transition);
 }
 
 .card-img-top:hover {
-  transform: scale(1.05);
+  transform: scale(1.05);  /* Subtle zoom on hover */
 }
 
-/* Buttons */
+/* Enhanced button styling with gradients and micro-interactions */
 .btn {
   border-radius: var(--border-radius);
   font-weight: 600;
   padding: 0.75rem 1.5rem;
   transition: var(--transition);
   border: none;
-  text-transform: uppercase;
+  text-transform: uppercase;  /* Modern button styling */
   letter-spacing: 0.5px;
   font-size: 0.875rem;
 }
@@ -131,20 +140,20 @@ a:hover {
   transform: translateY(-2px);
 }
 
-/* Forms */
+/* Glass morphism form controls with enhanced focus states */
 .form-control, .form-select {
   border-radius: var(--border-radius);
   border: 2px solid #e2e8f0;
   padding: 0.75rem 1rem;
   transition: var(--transition);
-  background: rgba(255, 255, 255, 0.8);
-  backdrop-filter: blur(10px);
+  background: rgba(255, 255, 255, 0.8);  /* Semi-transparent background */
+  backdrop-filter: blur(10px);  /* Glass effect */
 }
 
 .form-control:focus, .form-select:focus {
   border-color: var(--primary-color);
-  box-shadow: 0 0 0 0.2rem rgba(37, 99, 235, 0.1);
-  transform: translateY(-1px);
+  box-shadow: 0 0 0 0.2rem rgba(37, 99, 235, 0.1);  /* Custom focus ring */
+  transform: translateY(-1px);  /* Lift effect on focus */
 }
 
 /* Post Cards */
@@ -174,7 +183,7 @@ a:hover {
   line-height: 1.5;
 }
 
-/* Featured Post */
+/* Featured post with overlay effect for better text readability */
 .featured-post {
   background: linear-gradient(135deg, var(--primary-color), #0056b3);
   color: white;
@@ -184,9 +193,10 @@ a:hover {
 
 .featured-post .card-body {
   position: relative;
-  z-index: 2;
+  z-index: 2;  /* Above overlay */
 }
 
+/* Dark overlay for better text contrast */
 .featured-post::before {
   content: '';
   position: absolute;
@@ -194,7 +204,7 @@ a:hover {
   left: 0;
   right: 0;
   bottom: 0;
-  background: rgba(0, 0, 0, 0.3);
+  background: rgba(0, 0, 0, 0.3);  /* Semi-transparent dark overlay */
   z-index: 1;
 }
 
@@ -233,16 +243,17 @@ a:hover {
   text-decoration: none;
 }
 
-/* Comments */
+/* Comment styling with visual hierarchy using borders */
 .comment {
-  border-left: 3px solid var(--primary-color);
+  border-left: 3px solid var(--primary-color);  /* Visual indicator */
   padding-left: 1rem;
   margin-bottom: 1rem;
 }
 
+/* Nested comment replies with different styling */
 .comment-reply {
-  margin-left: 2rem;
-  border-left-color: var(--secondary-color);
+  margin-left: 2rem;  /* Indent for visual hierarchy */
+  border-left-color: var(--secondary-color);  /* Different color for replies */
 }
 
 .comment-author {
@@ -364,7 +375,7 @@ a:hover {
   font-style: italic;
 }
 
-/* Back to Top Button */
+/* Fixed positioned back-to-top button with smooth interactions */
 .back-to-top {
   position: fixed;
   bottom: 2rem;
@@ -372,18 +383,18 @@ a:hover {
   background-color: var(--primary-color);
   color: white;
   border: none;
-  border-radius: 50%;
+  border-radius: 50%;  /* Circular button */
   width: 50px;
   height: 50px;
-  display: none;
+  display: none;  /* Hidden by default, shown via JavaScript */
   cursor: pointer;
   transition: var(--transition);
-  z-index: 1000;
+  z-index: 1000;  /* Above all other content */
 }
 
 .back-to-top:hover {
   background-color: #0056b3;
-  transform: translateY(-2px);
+  transform: translateY(-2px);  /* Lift effect on hover */
 }
 
 /* Social Links */
@@ -398,15 +409,18 @@ a:hover {
   color: var(--primary-color) !important;
 }
 
-/* Custom Utilities */
+/* Custom utility classes for advanced effects */
+
+/* Hover utility class for opacity effects */
 .hover-opacity-100:hover {
   opacity: 1 !important;
 }
 
+/* Glass morphism utility class for modern design */
 .glass-morphism {
-  background: rgba(255, 255, 255, 0.1);
-  backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.2);
+  background: rgba(255, 255, 255, 0.1);  /* Semi-transparent background */
+  backdrop-filter: blur(10px);  /* Blur effect */
+  border: 1px solid rgba(255, 255, 255, 0.2);  /* Subtle border */
 }
 
 /* Animations */
@@ -438,12 +452,13 @@ a:hover {
   animation: pulse 0.6s ease-in-out;
 }
 
-/* Responsive Design */
+/* Responsive design adjustments for mobile devices */
 @media (max-width: 768px) {
   .post-card {
     margin-bottom: 1.5rem;
   }
   
+  /* Reduce comment reply indentation on mobile */
   .comment-reply {
     margin-left: 1rem;
   }
@@ -452,11 +467,13 @@ a:hover {
     padding: 2rem 0;
   }
   
+  /* Smaller avatar on mobile */
   .profile-avatar {
     width: 80px;
     height: 80px;
   }
   
+  /* Adjust back-to-top button for mobile */
   .back-to-top {
     bottom: 1rem;
     right: 1rem;
@@ -465,7 +482,7 @@ a:hover {
   }
 }
 
-/* Dark mode support */
+/* Dark mode support using system preference detection */
 @media (prefers-color-scheme: dark) {
   .card {
     background-color: #2d3748;
@@ -478,23 +495,24 @@ a:hover {
   }
 }
 
-/* Print styles */
+/* Print-friendly styles - hide interactive elements */
 @media print {
   .navbar,
   .footer,
   .sidebar,
   .btn,
   .back-to-top {
-    display: none !important;
+    display: none !important;  /* Hide navigation and interactive elements */
   }
   
+  /* Simplified card styling for print */
   .card {
     box-shadow: none;
     border: 1px solid #ddd;
   }
 }
 
-/* Accessibility improvements */
+/* Accessibility improvements for screen readers */
 .sr-only {
   position: absolute;
   width: 1px;
@@ -502,28 +520,28 @@ a:hover {
   padding: 0;
   margin: -1px;
   overflow: hidden;
-  clip: rect(0, 0, 0, 0);
+  clip: rect(0, 0, 0, 0);  /* Legacy clip property */
   white-space: nowrap;
   border: 0;
 }
 
-/* Focus styles for better accessibility */
+/* Enhanced focus styles for better keyboard navigation */
 .btn:focus,
 .form-control:focus,
 .nav-link:focus {
-  outline: 2px solid var(--primary-color);
-  outline-offset: 2px;
+  outline: 2px solid var(--primary-color);  /* Custom focus outline */
+  outline-offset: 2px;  /* Space between element and outline */
 }
 
-/* High contrast mode support */
+/* High contrast mode support for accessibility compliance */
 @media (prefers-contrast: high) {
   .card {
-    border: 2px solid #000;
+    border: 2px solid #000;  /* Strong border for high contrast */
   }
   
   .btn-primary {
-    background-color: #000;
+    background-color: #000;  /* Pure black background */
     border-color: #000;
-    color: #fff;
+    color: #fff;  /* Pure white text */
   }
 }

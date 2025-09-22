@@ -5,10 +5,13 @@
 
 {% block content %}
 <div class="container">
+    <!-- Centered login form with responsive column sizing -->
     <div class="row justify-content-center">
-        <div class="col-md-6 col-lg-5">
+        <div class="col-md-6 col-lg-5"> <!-- Medium: 50% width, Large: 42% width -->
+            <!-- Main login card with shadow styling -->
             <div class="card shadow">
                 <div class="card-body p-5">
+                    <!-- Login header with icon and welcome message -->
                     <div class="text-center mb-4">
                         <h2 class="card-title">
                             <i class="fas fa-sign-in-alt text-primary" aria-hidden="true"></i>
@@ -17,20 +20,23 @@
                         <p class="text-muted">Welcome back! Please sign in to your account.</p>
                     </div>
 
+                    <!-- Login form with Django form handling -->
                     <form method="post">
-                        {% csrf_token %}
+                        {% csrf_token %} <!-- Django CSRF protection -->
                         
+                        <!-- Non-field errors display (e.g., invalid credentials) -->
                         {% if form.non_field_errors %}
                         <div class="alert alert-danger" role="alert">
                             {{ form.non_field_errors }}
                         </div>
                         {% endif %}
 
+                        <!-- Username field with icon label -->
                         <div class="mb-3">
                             <label for="{{ form.username.id_for_label }}" class="form-label">
                                 <i class="fas fa-user" aria-hidden="true"></i> Username
                             </label>
-                            {{ form.username }}
+                            {{ form.username }} <!-- Django form field rendering -->
                             {% if form.username.errors %}
                             <div class="invalid-feedback d-block">
                                 {{ form.username.errors }}
@@ -38,6 +44,7 @@
                             {% endif %}
                         </div>
 
+                        <!-- Password field with security icon -->
                         <div class="mb-3">
                             <label for="{{ form.password.id_for_label }}" class="form-label">
                                 <i class="fas fa-lock" aria-hidden="true"></i> Password
@@ -50,6 +57,7 @@
                             {% endif %}
                         </div>
 
+                        <!-- Remember me checkbox (custom implementation) -->
                         <div class="mb-3 form-check">
                             <input type="checkbox" class="form-check-input" id="rememberMe" name="remember_me">
                             <label class="form-check-label" for="rememberMe">
@@ -57,12 +65,14 @@
                             </label>
                         </div>
 
+                        <!-- Full-width submit button with grid layout -->
                         <div class="d-grid mb-3">
                             <button type="submit" class="btn btn-primary btn-lg">
                                 <i class="fas fa-sign-in-alt" aria-hidden="true"></i> Sign In
                             </button>
                         </div>
 
+                        <!-- Footer links for password reset and registration -->
                         <div class="text-center">
                             <p class="mb-2">
                                 <a href="{% url 'blog:password_reset' %}" class="text-decoration-none">
@@ -80,9 +90,10 @@
                 </div>
             </div>
 
-            <!-- Social Login (if implemented) -->
+            <!-- Social Login Section (placeholder for future implementation) -->
             <div class="text-center mt-4">
                 <p class="text-muted">Or sign in with:</p>
+                <!-- Disabled social login buttons with spacing -->
                 <div class="d-flex justify-content-center gap-2">
                     <button class="btn btn-outline-primary" disabled>
                         <i class="fab fa-google" aria-hidden="true"></i> Google
@@ -96,7 +107,7 @@
                 </div>
                 <small class="text-muted d-block mt-2">Social login coming soon!</small>
             </div>
-        </div>
-    </div>
-</div>
-{% endblock %}
+        </div> <!-- End login column -->
+    </div> <!-- End centered row -->
+</div> <!-- End container -->
+{% endblock %} <!-- End content block -->

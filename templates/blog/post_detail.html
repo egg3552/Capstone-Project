@@ -417,9 +417,19 @@
 {% endblock %}
 
 {% block extra_js %}
+<!-- Add authentication data -->
+<script type="application/json" id="page-data">
+{
+    "isAuthenticated": {% if user.is_authenticated %}true{% else %}false{% endif %},
+    "updateProgressUrl": "{% if user.is_authenticated %}{% url 'blog:update_reading_progress' post.slug %}{% endif %}"
+}
+</script>
+
 <script>
 // Copy link functionality
 document.addEventListener('DOMContentLoaded', function() {
+    const pageData = JSON.parse(document.getElementById('page-data').textContent);
+    
     const copyBtn = document.querySelector('.copy-link-btn');
     if (copyBtn) {
         copyBtn.addEventListener('click', function() {
@@ -440,60 +450,81 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     // Reading progress tracking
-    {% if user.is_authenticated %}
-    const progressBar = document.getElementById('reading-progress');
-    const article = document.querySelector('article');
-    let lastProgressUpdate = 0;
-    
-    function updateReadingProgress() {
-        if (!article) return;
+    if (pageData.isAuthenticated) {
+        const progressBar = document.getElementById('reading-progress');
+        const article = document.querySelector('article');
+        let lastProgressUpdate = 0;
         
-        const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
-        const articleTop = article.offsetTop;
-        const articleHeight = article.offsetHeight;
-        const windowHeight = window.innerHeight;
-        
-        // Calculate progress percentage
-        const progress = Math.min(100, Math.max(0, 
-            ((scrollTop - articleTop + windowHeight / 2) / articleHeight) * 100
-        ));
-        
-        // Update progress bar
-        if (progressBar) {
-            progressBar.style.width = progress + '%';
-        }
-        
-        // Send progress to server every 10% change
-        const roundedProgress = Math.round(progress / 10) * 10;
-        if (roundedProgress !== lastProgressUpdate && roundedProgress >= 10) {
-            lastProgressUpdate = roundedProgress;
+        function updateReadingProgress() {
+            if (!article) return;
             
-            fetch('{% url "blog:update_reading_progress" post.slug %}', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/x-www-form-urlencoded',
-                    'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value
-                },
-                body: 'progress=' + roundedProgress
-            });
+            const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+            const articleTop = article.offsetTop;
+            const articleHeight = article.offsetHeight;
+            const windowHeight = window.innerHeight;
+            
+            // Calculate progress percentage
+            const progress = Math.min(100, Math.max(0, 
+                ((scrollTop - articleTop + windowHeight / 2) / articleHeight) * 100
+            ));
+            
+            // Update progress bar
+            if (progressBar) {
+                progressBar.style.width = progress + '%';
+            }
+            
+            // Send progress to server every 10% change
+            const roundedProgress = Math.round(progress / 10) * 10;
+            if (roundedProgress !== lastProgressUpdate && roundedProgress >= 10) {
+                lastProgressUpdate = roundedProgress;
+                
+                if (pageData.updateProgressUrl) {
+                    fetch(pageData.updateProgressUrl, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/x-www-form-urlencoded',
+                            'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value
+                        },
+                        body: 'progress=' + roundedProgress
+                    });
+                }
+            }
         }
+        
+        // Throttled scroll listener
+        let ticking = false;
+        function onScroll() {
+            if (!ticking) {
+                requestAnimationFrame(function() {
+                    updateReadingProgress();
+                    ticking = false;
+                });
+                ticking = true;
+            }
+        }
+        
+        window.addEventListener('scroll', onScroll);
+        updateReadingProgress(); // Initial call
     }
     
-    // Throttled scroll listener
-    let ticking = false;
-    function onScroll() {
-        if (!ticking) {
-            requestAnimationFrame(function() {
-                updateReadingProgress();
-                ticking = false;
-            });
-            ticking = true;
-        }
-    }
-    
-    window.addEventListener('scroll', onScroll);
-    updateReadingProgress(); // Initial call
-    {% endif %}
+    // Reply button functionality
+    const replyButtons = document.querySelectorAll('.reply-btn');
+    replyButtons.forEach(button => {
+        button.addEventListener('click', function() {
+            const commentId = this.dataset.commentId;
+            const replyForm = document.getElementById(`reply-form-${commentId}`);
+            
+            if (replyForm) {
+                if (replyForm.style.display === 'none' || replyForm.style.display === '') {
+                    replyForm.style.display = 'block';
+                    this.textContent = 'Cancel';
+                } else {
+                    replyForm.style.display = 'none';
+                    this.innerHTML = '<i class="fas fa-reply" aria-hidden="true"></i> Reply';
+                }
+            }
+        });
+    });
     
     // Social sharing enhancements
     const socialLinks = document.querySelectorAll('.social-sharing a[target="_blank"]');

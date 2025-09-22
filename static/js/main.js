@@ -1,7 +1,7 @@
 // Blog JavaScript Functions
 
 document.addEventListener('DOMContentLoaded', function() {
-    // Initialize all components
+    // Initialize all components when DOM is fully loaded
     initializeBackToTop();
     initializeCommentReplies();
     initializeImageLazyLoading();
@@ -15,6 +15,7 @@ document.addEventListener('DOMContentLoaded', function() {
 function initializeBackToTop() {
     const backToTopButton = createBackToTopButton();
     
+    // Show/hide button based on scroll position
     window.addEventListener('scroll', function() {
         if (window.pageYOffset > 300) {
             backToTopButton.style.display = 'block';
@@ -23,6 +24,7 @@ function initializeBackToTop() {
         }
     });
     
+    // Smooth scroll to top when clicked
     backToTopButton.addEventListener('click', function() {
         window.scrollTo({
             top: 0,
@@ -35,7 +37,7 @@ function createBackToTopButton() {
     const button = document.createElement('button');
     button.className = 'back-to-top';
     button.innerHTML = '<i class="fas fa-chevron-up"></i>';
-    button.setAttribute('aria-label', 'Back to top');
+    button.setAttribute('aria-label', 'Back to top');  // Accessibility
     button.style.display = 'none';
     document.body.appendChild(button);
     return button;
@@ -107,18 +109,19 @@ function addCancelReplyButton(form) {
     }
 }
 
-// Lazy Loading for Images
+// Lazy Loading for Images using Intersection Observer API
 function initializeImageLazyLoading() {
     const images = document.querySelectorAll('img[data-src]');
     
+    // Check if browser supports Intersection Observer
     if ('IntersectionObserver' in window) {
         const imageObserver = new IntersectionObserver((entries, observer) => {
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
                     const img = entry.target;
-                    img.src = img.dataset.src;
+                    img.src = img.dataset.src;  // Load actual image
                     img.classList.remove('lazy');
-                    imageObserver.unobserve(img);
+                    imageObserver.unobserve(img);  // Stop observing
                 }
             });
         });
@@ -139,7 +142,7 @@ function initializeSearchFilters() {
     const searchInput = document.querySelector('input[name="query"]');
     
     if (searchForm && searchInput) {
-        // Add search suggestions (if implemented)
+        // Add search suggestions with debounced input handling
         searchInput.addEventListener('input', debounce(function() {
             const query = this.value.trim();
             if (query.length > 2) {
@@ -148,7 +151,7 @@ function initializeSearchFilters() {
             }
         }, 300));
         
-        // Auto-submit on filter change
+        // Auto-submit form when filter options change
         const filterSelects = searchForm.querySelectorAll('select');
         filterSelects.forEach(select => {
             select.addEventListener('change', function() {
@@ -220,6 +223,8 @@ function showFormErrors(form) {
 }
 
 // Utility Functions
+
+// Debounce function to limit function calls
 function debounce(func, wait) {
     let timeout;
     return function executedFunction(...args) {
@@ -240,8 +245,9 @@ function calculateReadingTime(text) {
     return time < 1 ? 1 : time;
 }
 
-// Copy to Clipboard Functionality
+// Copy to Clipboard with modern and fallback methods
 function copyToClipboard(text) {
+    // Use modern Clipboard API if available and in secure context
     if (navigator.clipboard && window.isSecureContext) {
         return navigator.clipboard.writeText(text);
     } else {
@@ -249,13 +255,13 @@ function copyToClipboard(text) {
         const textArea = document.createElement('textarea');
         textArea.value = text;
         textArea.style.position = 'absolute';
-        textArea.style.left = '-999999px';
+        textArea.style.left = '-999999px';  // Hide off-screen
         document.body.appendChild(textArea);
         textArea.focus();
         textArea.select();
         
         try {
-            document.execCommand('copy');
+            document.execCommand('copy');  // Legacy copy command
             document.body.removeChild(textArea);
             return Promise.resolve();
         } catch (error) {
@@ -265,15 +271,16 @@ function copyToClipboard(text) {
     }
 }
 
-// Share Functionality
+// Share Functionality with Web Share API fallback
 function sharePost(title, url) {
+    // Use native Web Share API if available
     if (navigator.share) {
         navigator.share({
             title: title,
             url: url
         }).catch(console.error);
     } else {
-        // Fallback to copy URL
+        // Fallback to copy URL to clipboard
         copyToClipboard(url).then(() => {
             showToast('Link copied to clipboard!');
         }).catch(() => {
@@ -282,12 +289,12 @@ function sharePost(title, url) {
     }
 }
 
-// Toast Notification System
+// Toast Notification System with Bootstrap integration
 function showToast(message, type = 'info') {
     const toast = document.createElement('div');
     toast.className = `toast align-items-center text-white bg-${type} border-0`;
     toast.setAttribute('role', 'alert');
-    toast.setAttribute('aria-live', 'assertive');
+    toast.setAttribute('aria-live', 'assertive');  // Accessibility
     toast.setAttribute('aria-atomic', 'true');
     
     toast.innerHTML = `
@@ -305,17 +312,17 @@ function showToast(message, type = 'info') {
     if (!container) {
         container = document.createElement('div');
         container.className = 'toast-container position-fixed bottom-0 end-0 p-3';
-        container.style.zIndex = '1050';
+        container.style.zIndex = '1050';  // Above other content
         document.body.appendChild(container);
     }
     
     container.appendChild(toast);
     
-    // Initialize and show toast
+    // Initialize and show toast using Bootstrap
     const bsToast = new bootstrap.Toast(toast);
     bsToast.show();
     
-    // Remove toast element after it's hidden
+    // Clean up DOM after toast is hidden
     toast.addEventListener('hidden.bs.toast', function() {
         this.remove();
     });
@@ -326,14 +333,14 @@ function printPage() {
     window.print();
 }
 
-// Dark Mode Toggle (if implemented)
+// Dark Mode Toggle with localStorage persistence
 function toggleDarkMode() {
     document.body.classList.toggle('dark-mode');
     const isDark = document.body.classList.contains('dark-mode');
-    localStorage.setItem('darkMode', isDark);
+    localStorage.setItem('darkMode', isDark);  // Save preference
 }
 
-// Initialize dark mode from localStorage
+// Initialize dark mode preference from localStorage
 function initializeDarkMode() {
     const savedDarkMode = localStorage.getItem('darkMode');
     if (savedDarkMode === 'true') {
@@ -341,7 +348,7 @@ function initializeDarkMode() {
     }
 }
 
-// Export functions for external use
+// Export functions for external use - Global API
 window.BlogJS = {
     showToast,
     sharePost,

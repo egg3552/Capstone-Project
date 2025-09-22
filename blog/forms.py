@@ -28,9 +28,10 @@ class CustomUserCreationForm(UserCreationForm):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        # Add CSS classes for styling
+        # Apply Bootstrap CSS classes to all form fields
         for field_name, field in self.fields.items():
             field.widget.attrs['class'] = 'form-control'
+            # Special styling for select dropdown
             if field_name == 'role':
                 field.widget.attrs['class'] = 'form-select'
 
@@ -168,6 +169,7 @@ class PostForm(forms.ModelForm):
         slug = self.cleaned_data['slug']
         # Check if slug is unique (excluding current post if editing)
         queryset = Post.objects.filter(slug=slug)
+        # Allow same slug when editing existing post
         if self.instance and self.instance.pk:
             queryset = queryset.exclude(pk=self.instance.pk)
         
@@ -271,6 +273,7 @@ class AdvancedSearchForm(forms.Form):
     
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
+        # Dynamically load categories for the dropdown filter
         from .models import Category, Tag
         self.fields['category'].queryset = Category.objects.all()
         self.fields['tag'].queryset = Tag.objects.all()

@@ -1,58 +1,69 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <!-- Required meta tags for Bootstrap and responsive design -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     
-    <!-- SEO Meta Tags -->
+    <!-- Dynamic SEO Meta Tags with conditional post-specific content -->
     {% if post %}
         <title>{{ post.title }} | Blog</title>
+        <!-- Fallback meta description using excerpt if no meta_description -->
         <meta name="description" content="{{ post.meta_description|default:post.excerpt|truncatewords:30 }}">
         <meta name="keywords" content="{{ post.meta_keywords|default:'blog, programming, technology' }}">
+        <!-- Open Graph meta tags for social media sharing -->
         <meta property="og:title" content="{{ post.title }}">
         <meta property="og:description" content="{{ post.excerpt|truncatewords:30 }}">
+        <!-- Conditional featured image with protocol detection -->
         {% if post.featured_image %}
             <meta property="og:image" content="{% if request.is_secure %}https{% else %}http{% endif %}://{{ request.get_host }}{{ post.featured_image.url }}">
         {% endif %}
     {% else %}
+        <!-- Default meta tags for non-post pages -->
         <title>{% block title %}Blog - Programming & Technology{% endblock %}</title>
         <meta name="description" content="A modern blog about programming, technology, and web development. Share knowledge and learn together.">
         <meta name="keywords" content="blog, programming, technology, web development, django, python">
     {% endif %}
     
-    <!-- Bootstrap CSS -->
+    <!-- Bootstrap CSS from CDN with integrity check -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" 
           rel="stylesheet" 
           integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" 
           crossorigin="anonymous">
     
-    <!-- Font Awesome for icons -->
+    <!-- Font Awesome icon library -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     
-    <!-- Custom CSS -->
+    <!-- Custom CSS with Django static file handling -->
     {% load static %}
     <link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}">
     
+    <!-- Block for page-specific CSS -->
     {% block extra_css %}{% endblock %}
 </head>
 <body>
-    <!-- Navigation -->
+    <!-- Primary Navigation with gradient background and sticky positioning -->
     <nav class="navbar navbar-expand-lg navbar-dark sticky-top" role="navigation" aria-label="Main navigation" 
          style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);">
         <div class="container">
+            <!-- Brand logo with text shadow and icon -->
             <a class="navbar-brand fw-bold fs-3" href="{% url 'blog:post_list' %}" style="text-shadow: 0 2px 4px rgba(0,0,0,0.3);">
                 <i class="fas fa-blog me-2" aria-hidden="true"></i> Blog
             </a>
             
+            <!-- Mobile hamburger menu toggle -->
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" 
                     data-bs-target="#navbarNav" aria-controls="navbarNav" 
                     aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
             
+            <!-- Collapsible navigation content -->
             <div class="collapse navbar-collapse" id="navbarNav">
+                <!-- Main navigation links with active state detection -->
                 <ul class="navbar-nav me-auto">
                     <li class="nav-item">
+                        <!-- Dynamic active class based on current URL name -->
                         <a class="nav-link {% if request.resolver_match.url_name == 'post_list' %}active{% endif %}" 
                            href="{% url 'blog:post_list' %}">
                             <i class="fas fa-home" aria-hidden="true"></i> Home
@@ -78,8 +89,10 @@
                     </li>
                 </ul>
                 
+                <!-- User authentication section with conditional content -->
                 <ul class="navbar-nav">
                     {% if user.is_authenticated %}
+                        <!-- Authenticated user dropdown menu -->
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" href="#" role="button" 
                                data-bs-toggle="dropdown" aria-expanded="false">
@@ -89,6 +102,7 @@
                                 <li><a class="dropdown-item" href="{% url 'blog:profile' %}">
                                     <i class="fas fa-user-circle" aria-hidden="true"></i> Profile
                                 </a></li>
+                                <!-- Conditional menu items based on user permissions -->
                                 {% if user.userprofile.can_create_posts %}
                                     <li><a class="dropdown-item" href="{% url 'blog:post_create' %}">
                                         <i class="fas fa-plus" aria-hidden="true"></i> Create Post
@@ -101,6 +115,7 @@
                                 {% endif %}
                                 <li><hr class="dropdown-divider"></li>
                                 <li>
+                                    <!-- Logout form as dropdown item for proper POST method -->
                                     <form method="post" action="{% url 'blog:logout' %}" style="display: inline;">
                                         {% csrf_token %}
                                         <button type="submit" class="dropdown-item" style="border: none; background: none; width: 100%; text-align: left;">
@@ -111,6 +126,7 @@
                             </ul>
                         </li>
                     {% else %}
+                        <!-- Non-authenticated user links -->
                         <li class="nav-item">
                             <a class="nav-link" href="{% url 'blog:login' %}">
                                 <i class="fas fa-sign-in-alt" aria-hidden="true"></i> Login
@@ -123,14 +139,15 @@
                         </li>
                     {% endif %}
                 </ul>
-            </div>
-        </div>
-    </nav>
+            </div> <!-- End collapsible nav -->
+        </div> <!-- End container -->
+    </nav> <!-- End navigation -->
 
-    <!-- Messages -->
+    <!-- Django Messages Framework with dynamic styling -->
     {% if messages %}
         <div class="container mt-4">
             {% for message in messages %}
+                <!-- Message alert with Bootstrap classes and custom styling -->
                 <div class="alert alert-{{ message.tags }} alert-dismissible fade show shadow-sm" role="alert" 
                      style="border: none; border-radius: 0.75rem; backdrop-filter: blur(10px);">
                     <i class="fas fa-info-circle me-2"></i>{{ message }}
@@ -140,11 +157,12 @@
         </div>
     {% endif %}
 
-    <!-- Main Content -->
-    <main role="main" class="py-5" style="min-height: calc(100vh - 200px);">
+    <!-- Main Content Area with semantic HTML -->
+    <main role="main" class="py-5" style="min-height: calc(100vh - 200px);"> <!-- Ensures footer stays at bottom -->
         <div class="container">
             <div class="row justify-content-center">
                 <div class="col-12">
+                    <!-- Block for page-specific content -->
                     {% block content %}
                     {% endblock %}
                 </div>
@@ -152,10 +170,12 @@
         </div>
     </main>
 
-    <!-- Footer -->
+    <!-- Footer Section with gradient background and comprehensive content -->
     <footer class="text-light py-5 mt-auto" style="background: linear-gradient(135deg, #1e293b 0%, #334155 100%); box-shadow: 0 -4px 6px -1px rgba(0, 0, 0, 0.1);">
         <div class="container">
+            <!-- Four-column footer layout -->
             <div class="row">
+                <!-- About section with brand information -->
                 <div class="col-md-4">
                     <h5 class="fw-bold mb-3 text-white">
                         <i class="fas fa-blog me-2 text-primary"></i>About This Blog
@@ -163,10 +183,13 @@
                     <p class="text-white" style="opacity: 0.9;">A modern blog platform built with Django, featuring user authentication, 
                     commenting system, and content management.</p>
                 </div>
+                
+                <!-- Quick navigation links -->
                 <div class="col-md-3">
                     <h5 class="fw-bold mb-3 text-white">Quick Links</h5>
                     <ul class="list-unstyled">
                         <li class="mb-2">
+                            <!-- Links with hover effects via inline JavaScript -->
                             <a href="{% url 'blog:post_list' %}" class="text-white text-decoration-none" style="opacity: 0.9; transition: all 0.3s;" onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0.9'">
                                 <i class="fas fa-home me-2"></i>Home
                             </a>
@@ -181,6 +204,7 @@
                                 <i class="fas fa-envelope me-2"></i>Contact
                             </a>
                         </li>
+                        <!-- Conditional post creation link -->
                         {% if user.is_authenticated and user.userprofile.can_create_posts %}
                             <li class="mb-2">
                                 <a href="{% url 'blog:post_create' %}" class="text-white text-decoration-none" style="opacity: 0.9; transition: all 0.3s;" onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0.9'">
@@ -190,15 +214,20 @@
                         {% endif %}
                     </ul>
                 </div>
+                
+                <!-- Newsletter subscription section -->
                 <div class="col-md-3">
                     <h5 class="fw-bold mb-3 text-white">Newsletter</h5>
                     <p class="text-white mb-3" style="opacity: 0.9;">Stay updated with our latest posts!</p>
+                    <!-- Newsletter subscription form -->
                     <form method="post" action="{% url 'blog:newsletter_subscribe' %}">
                         {% csrf_token %}
                         <div class="input-group mb-3">
+                            <!-- Styled email input with transparency effects -->
                             <input type="email" name="email" class="form-control" 
                                    placeholder="Enter your email" required
                                    style="border-radius: 8px 0 0 8px; border: 1px solid rgba(255,255,255,0.3); background: rgba(255,255,255,0.1); color: white;">
+                            <!-- Submit button with gradient background -->
                             <button class="btn btn-primary" type="submit" 
                                     style="border-radius: 0 8px 8px 0; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border: none;">
                                 <i class="fas fa-paper-plane"></i>
@@ -207,9 +236,12 @@
                     </form>
                     <small class="text-white" style="opacity: 0.7;">We'll never share your email address.</small>
                 </div>
+                
+                <!-- Social media links -->
                 <div class="col-md-2">
                     <h5 class="fw-bold mb-3 text-white">Connect</h5>
                     <div class="social-links">
+                        <!-- Social media icons with hover color transitions -->
                         <a href="#" class="text-white me-3 fs-4" style="opacity: 0.9; transition: all 0.3s;" aria-label="Facebook" onmouseover="this.style.opacity='1'; this.style.color='#3b82f6'" onmouseout="this.style.opacity='0.9'; this.style.color='white'">
                             <i class="fab fa-facebook"></i>
                         </a>
@@ -225,30 +257,37 @@
                     </div>
                 </div>
             </div>
+            
+            <!-- Footer divider with styling -->
             <hr class="mt-4" style="opacity: 0.3; border-color: white;">
+            
+            <!-- Copyright and attribution section -->
             <div class="row align-items-center">
                 <div class="col-md-6">
+                    <!-- Dynamic copyright year using Django template tag -->
                     <p class="mb-0 text-white" style="opacity: 0.9;">
                         <i class="fas fa-copyright me-1"></i>{% now "Y" %} Blog. All rights reserved.
                     </p>
                 </div>
                 <div class="col-md-6 text-end">
+                    <!-- Technology stack attribution -->
                     <small class="text-white" style="opacity: 0.9;">
                         <i class="fas fa-code me-1"></i>Built with Django & Bootstrap
                     </small>
                 </div>
             </div>
         </div>
-    </footer>
+    </footer> <!-- End footer -->
 
-    <!-- Bootstrap JS -->
+    <!-- Bootstrap JavaScript bundle with integrity check -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" 
             integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" 
             crossorigin="anonymous"></script>
     
-    <!-- Custom JS -->
+    <!-- Custom JavaScript file -->
     <script src="{% static 'js/main.js' %}"></script>
     
+    <!-- Block for page-specific JavaScript -->
     {% block extra_js %}{% endblock %}
 </body>
-</html>
+</html> <!-- End HTML document -->
