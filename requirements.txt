@@ -15,6 +15,9 @@ Pillow==10.4.0
 # Database (Production PostgreSQL support)
 psycopg2-binary==2.9.9
 
+# Database URL parsing for Heroku
+dj-database-url==2.1.0
+
 # Production WSGI Server
 gunicorn==23.0.0
 
