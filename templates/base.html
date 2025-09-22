@@ -37,10 +37,11 @@
 </head>
 <body>
     <!-- Navigation -->
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark sticky-top" role="navigation" aria-label="Main navigation">
+    <nav class="navbar navbar-expand-lg navbar-dark sticky-top" role="navigation" aria-label="Main navigation" 
+         style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);">
         <div class="container">
-            <a class="navbar-brand fw-bold" href="{% url 'blog:post_list' %}">
-                <i class="fas fa-blog" aria-hidden="true"></i> Blog
+            <a class="navbar-brand fw-bold fs-3" href="{% url 'blog:post_list' %}" style="text-shadow: 0 2px 4px rgba(0,0,0,0.3);">
+                <i class="fas fa-blog me-2" aria-hidden="true"></i> Blog
             </a>
             
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" 
@@ -117,10 +118,11 @@
 
     <!-- Messages -->
     {% if messages %}
-        <div class="container mt-3">
+        <div class="container mt-4">
             {% for message in messages %}
-                <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
-                    {{ message }}
+                <div class="alert alert-{{ message.tags }} alert-dismissible fade show shadow-sm" role="alert" 
+                     style="border: none; border-radius: 0.75rem; backdrop-filter: blur(10px);">
+                    <i class="fas fa-info-circle me-2"></i>{{ message }}
                     <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                 </div>
             {% endfor %}
@@ -128,48 +130,84 @@
     {% endif %}
 
     <!-- Main Content -->
-    <main role="main">
-        {% block content %}
-        {% endblock %}
+    <main role="main" class="py-5" style="min-height: calc(100vh - 200px);">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-12">
+                    {% block content %}
+                    {% endblock %}
+                </div>
+            </div>
+        </div>
     </main>
 
     <!-- Footer -->
-    <footer class="bg-dark text-light py-4 mt-5">
+    <footer class="text-light py-5 mt-auto" style="background: linear-gradient(135deg, #1e293b 0%, #334155 100%); box-shadow: 0 -4px 6px -1px rgba(0, 0, 0, 0.1);">
         <div class="container">
             <div class="row">
                 <div class="col-md-6">
-                    <h5>About This Blog</h5>
-                    <p class="text-muted">A modern blog platform built with Django, featuring user authentication, 
+                    <h5 class="fw-bold mb-3">
+                        <i class="fas fa-blog me-2 text-primary"></i>About This Blog
+                    </h5>
+                    <p class="text-light opacity-75">A modern blog platform built with Django, featuring user authentication, 
                     commenting system, and content management.</p>
                 </div>
                 <div class="col-md-3">
-                    <h5>Quick Links</h5>
+                    <h5 class="fw-bold mb-3">Quick Links</h5>
                     <ul class="list-unstyled">
-                        <li><a href="{% url 'blog:post_list' %}" class="text-light text-decoration-none">Home</a></li>
-                        <li><a href="{% url 'blog:about' %}" class="text-light text-decoration-none">About</a></li>
-                        <li><a href="{% url 'blog:contact' %}" class="text-light text-decoration-none">Contact</a></li>
+                        <li class="mb-2">
+                            <a href="{% url 'blog:post_list' %}" class="text-light text-decoration-none opacity-75 hover-opacity-100">
+                                <i class="fas fa-home me-2"></i>Home
+                            </a>
+                        </li>
+                        <li class="mb-2">
+                            <a href="{% url 'blog:about' %}" class="text-light text-decoration-none opacity-75 hover-opacity-100">
+                                <i class="fas fa-info-circle me-2"></i>About
+                            </a>
+                        </li>
+                        <li class="mb-2">
+                            <a href="{% url 'blog:contact' %}" class="text-light text-decoration-none opacity-75 hover-opacity-100">
+                                <i class="fas fa-envelope me-2"></i>Contact
+                            </a>
+                        </li>
                         {% if user.is_authenticated and user.userprofile.can_create_posts %}
-                            <li><a href="{% url 'blog:post_create' %}" class="text-light text-decoration-none">Write Post</a></li>
+                            <li class="mb-2">
+                                <a href="{% url 'blog:post_create' %}" class="text-light text-decoration-none opacity-75 hover-opacity-100">
+                                    <i class="fas fa-plus me-2"></i>Write Post
+                                </a>
+                            </li>
                         {% endif %}
                     </ul>
                 </div>
                 <div class="col-md-3">
-                    <h5>Connect</h5>
+                    <h5 class="fw-bold mb-3">Connect</h5>
                     <div class="social-links">
-                        <a href="#" class="text-light me-3" aria-label="Facebook"><i class="fab fa-facebook"></i></a>
-                        <a href="#" class="text-light me-3" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
-                        <a href="#" class="text-light me-3" aria-label="LinkedIn"><i class="fab fa-linkedin"></i></a>
-                        <a href="#" class="text-light" aria-label="GitHub"><i class="fab fa-github"></i></a>
+                        <a href="#" class="text-light me-3 fs-4 opacity-75 hover-opacity-100" aria-label="Facebook" style="transition: all 0.3s;">
+                            <i class="fab fa-facebook"></i>
+                        </a>
+                        <a href="#" class="text-light me-3 fs-4 opacity-75 hover-opacity-100" aria-label="Twitter" style="transition: all 0.3s;">
+                            <i class="fab fa-twitter"></i>
+                        </a>
+                        <a href="#" class="text-light me-3 fs-4 opacity-75 hover-opacity-100" aria-label="LinkedIn" style="transition: all 0.3s;">
+                            <i class="fab fa-linkedin"></i>
+                        </a>
+                        <a href="#" class="text-light fs-4 opacity-75 hover-opacity-100" aria-label="GitHub" style="transition: all 0.3s;">
+                            <i class="fab fa-github"></i>
+                        </a>
                     </div>
                 </div>
             </div>
-            <hr class="mt-4">
+            <hr class="mt-4 opacity-25">
             <div class="row align-items-center">
                 <div class="col-md-6">
-                    <p class="mb-0 text-muted">&copy; {% now "Y" %} Blog. All rights reserved.</p>
+                    <p class="mb-0 opacity-75">
+                        <i class="fas fa-copyright me-1"></i>{% now "Y" %} Blog. All rights reserved.
+                    </p>
                 </div>
                 <div class="col-md-6 text-end">
-                    <small class="text-muted">Built with Django & Bootstrap</small>
+                    <small class="opacity-75">
+                        <i class="fas fa-code me-1"></i>Built with Django & Bootstrap
+                    </small>
                 </div>
             </div>
         </div>
