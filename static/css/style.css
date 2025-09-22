@@ -545,3 +545,33 @@ a:hover {
     color: #fff;  /* Pure white text */
   }
 }
+
+/* About page specific styling for better readability */
+.about-hero {
+  background: linear-gradient(135deg, #1e3a8a 0%, #1e40af 50%, #2563eb 100%) !important;
+  position: relative;
+  overflow: hidden;
+}
+
+.about-hero::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.15);  /* Subtle dark overlay for better contrast */
+  z-index: 1;
+}
+
+.about-hero * {
+  position: relative;
+  z-index: 2;  /* Ensure text appears above overlay */
+}
+
+.about-title {
+  color: #ffffff !important;  /* Pure white for maximum contrast */
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);  /* Strong text shadow for definition */
+  font-weight: 900 !important;  /* Extra bold for better visibility */
+  letter-spacing: -0.02em;  /* Slight letter spacing for better readability */
+}
