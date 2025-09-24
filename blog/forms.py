@@ -40,7 +40,7 @@ class CustomUserCreationForm(UserCreationForm):
         user.email = self.cleaned_data["email"]
         user.first_name = self.cleaned_data["first_name"]
         user.last_name = self.cleaned_data["last_name"]
-        
+
         if commit:
             user.save()
             # Create or update user profile with selected role
@@ -54,7 +54,7 @@ class UserProfileForm(forms.ModelForm):
     """
     Form for editing user profile information.
     """
-    
+
     class Meta:
         model = UserProfile
         fields = ['bio', 'avatar', 'website', 'twitter']
@@ -68,7 +68,7 @@ class UserProfileForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         self.user = kwargs.pop('user', None)
         super().__init__(*args, **kwargs)
-        
+
         # Add help text
         self.fields['bio'].help_text = 'Tell us about yourself'
         self.fields['twitter'].help_text = 'Twitter username (without @)'
@@ -95,7 +95,7 @@ class CommentForm(forms.ModelForm):
     """
     Form for adding comments to blog posts.
     """
-    
+
     class Meta:
         model = Comment
         fields = ['content']
@@ -118,7 +118,7 @@ class PostForm(forms.ModelForm):
     """
     Form for creating and editing blog posts.
     """
-    
+
     class Meta:
         model = Post
         fields = [
@@ -153,7 +153,7 @@ class PostForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         self.user = kwargs.pop('user', None)
         super().__init__(*args, **kwargs)
-        
+
         # Set form help text
         self.fields['title'].help_text = 'Enter a descriptive title'
         self.fields['slug'].help_text = 'URL-friendly version of the title'
@@ -172,7 +172,7 @@ class PostForm(forms.ModelForm):
         # Allow same slug when editing existing post
         if self.instance and self.instance.pk:
             queryset = queryset.exclude(pk=self.instance.pk)
-        
+
         if queryset.exists():
             raise forms.ValidationError(
                 'A post with this slug already exists.'
@@ -270,16 +270,9 @@ class AdvancedSearchForm(forms.Form):
             'type': 'date'
         })
     )
-    
+
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         # Dynamically load categories for the dropdown filter
         from .models import Category, Tag
         self.fields['category'].queryset = Category.objects.all()
-        self.fields['tag'].queryset = Tag.objects.all()
-
-
-
-
-
-
