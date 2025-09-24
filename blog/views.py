@@ -17,6 +17,31 @@ from .forms import (
 )
 
 
+# Landing Page
+def landing_page(request):
+    """
+    Landing page view with featured posts and site overview.
+    """
+    # Get featured posts and recent posts
+    featured_posts = Post.objects.filter(
+        status='published', featured=True
+    ).order_by('-published_at')[:3]
+    
+    recent_posts = Post.objects.filter(
+        status='published'
+    ).order_by('-published_at')[:6]
+    
+    # Get post count for stats
+    total_posts = Post.objects.filter(status='published').count()
+    
+    context = {
+        'featured_posts': featured_posts,
+        'recent_posts': recent_posts,
+        'total_posts': total_posts,
+    }
+    return render(request, 'blog/landing_page.html', context)
+
+
 # Authentication Views
 def register_view(request):
     """

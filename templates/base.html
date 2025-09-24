@@ -48,7 +48,7 @@
          style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); box-shadow: 0 4px 6px -1px rgba(102, 126, 234, 0.2);">
         <div class="container">
             <!-- Brand logo with blue-purple text shadow and icon -->
-            <a class="navbar-brand fw-bold fs-3" href="{% url 'blog:post_list' %}" style="text-shadow: 0 2px 4px rgba(118, 75, 162, 0.5); color: white;">
+            <a class="navbar-brand fw-bold fs-3" href="{% url 'blog:landing_page' %}" style="text-shadow: 0 2px 4px rgba(118, 75, 162, 0.5); color: white;">
                 <i class="fas fa-blog me-2" aria-hidden="true"></i> Blog
             </a>
             
@@ -65,9 +65,15 @@
                 <ul class="navbar-nav me-auto">
                     <li class="nav-item">
                         <!-- Dynamic active class based on current URL name -->
+                        <a class="nav-link {% if request.resolver_match.url_name == 'landing_page' %}active{% endif %}" 
+                           href="{% url 'blog:landing_page' %}" style="color: white !important;">
+                            <i class="fas fa-home" aria-hidden="true"></i> Home
+                        </a>
+                    </li>
+                    <li class="nav-item">
                         <a class="nav-link {% if request.resolver_match.url_name == 'post_list' %}active{% endif %}" 
                            href="{% url 'blog:post_list' %}" style="color: white !important;">
-                            <i class="fas fa-home" aria-hidden="true"></i> Home
+                            <i class="fas fa-th-list" aria-hidden="true"></i> Blog
                         </a>
                     </li>
                     <li class="nav-item">
@@ -243,16 +249,16 @@
                     <h5 class="fw-bold mb-3 text-dark" style="transition: all 0.3s ease; cursor: pointer;" onmouseover="this.style.transform='translateY(-2px)'; this.style.color='#667eea'" onmouseout="this.style.transform='translateY(0)'; this.style.color='#2d3748'">Connect</h5>
                     <div class="social-links">
                         <!-- Social media icons with blue hover transitions -->
-                        <a href="#" class="text-dark me-3 fs-4" style="opacity: 0.8; transition: all 0.3s;" aria-label="Facebook" onmouseover="this.style.opacity='1'; this.style.color='#667eea'" onmouseout="this.style.opacity='0.8'; this.style.color='#2d3748'">
+                        <a href="https://facebook.com" target="_blank" rel="noopener noreferrer" class="text-dark me-3 fs-4" style="opacity: 0.8; transition: all 0.3s;" aria-label="Facebook" onmouseover="this.style.opacity='1'; this.style.color='#1877f2'" onmouseout="this.style.opacity='0.8'; this.style.color='#2d3748'">
                             <i class="fab fa-facebook"></i>
                         </a>
-                        <a href="#" class="text-dark me-3 fs-4" style="opacity: 0.8; transition: all 0.3s;" aria-label="Twitter" onmouseover="this.style.opacity='1'; this.style.color='#667eea'" onmouseout="this.style.opacity='0.8'; this.style.color='#2d3748'">
+                        <a href="https://twitter.com" target="_blank" rel="noopener noreferrer" class="text-dark me-3 fs-4" style="opacity: 0.8; transition: all 0.3s;" aria-label="Twitter" onmouseover="this.style.opacity='1'; this.style.color='#1da1f2'" onmouseout="this.style.opacity='0.8'; this.style.color='#2d3748'">
                             <i class="fab fa-twitter"></i>
                         </a>
-                        <a href="#" class="text-dark me-3 fs-4" style="opacity: 0.8; transition: all 0.3s;" aria-label="LinkedIn" onmouseover="this.style.opacity='1'; this.style.color='#667eea'" onmouseout="this.style.opacity='0.8'; this.style.color='#2d3748'">
+                        <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer" class="text-dark me-3 fs-4" style="opacity: 0.8; transition: all 0.3s;" aria-label="LinkedIn" onmouseover="this.style.opacity='1'; this.style.color='#0077b5'" onmouseout="this.style.opacity='0.8'; this.style.color='#2d3748'">
                             <i class="fab fa-linkedin"></i>
                         </a>
-                        <a href="#" class="text-dark fs-4" style="opacity: 0.8; transition: all 0.3s;" aria-label="GitHub" onmouseover="this.style.opacity='1'; this.style.color='#667eea'" onmouseout="this.style.opacity='0.8'; this.style.color='#2d3748'">
+                        <a href="https://github.com" target="_blank" rel="noopener noreferrer" class="text-dark fs-4" style="opacity: 0.8; transition: all 0.3s;" aria-label="GitHub" onmouseover="this.style.opacity='1'; this.style.color='#333'" onmouseout="this.style.opacity='0.8'; this.style.color='#2d3748'">
                             <i class="fab fa-github"></i>
                         </a>
                     </div>

@@ -31,7 +31,8 @@ urlpatterns = [
          name='password_reset_complete'),
     
     # Blog URLs
-    path('', views.PostListView.as_view(), name='post_list'),
+    path('', views.landing_page, name='landing_page'),
+    path('blog/', views.PostListView.as_view(), name='post_list'),
     path('post/create/', views.PostCreateView.as_view(), name='post_create'),
     path('post/<slug:slug>/', views.PostDetailView.as_view(),
          name='post_detail'),

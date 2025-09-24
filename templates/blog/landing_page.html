@@ -1,0 +1,528 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Welcome to Our Blog{% endblock %}
+
+{% block content %}
+<!-- Hero Section -->
+<section class="hero-section bg-gradient-primary text-white">
+    <div class="hero-overlay">
+        <div class="container-fluid">
+            <div class="row align-items-center hero-content">
+                <div class="col-lg-7 col-md-8">
+                    <div class="hero-text-content">
+                        <h1 class="hero-title text-white mb-4">
+                            Welcome to Our Blog
+                        </h1>
+                        <p class="hero-text text-white mb-5">
+                            Discover insightful articles, engaging stories, and valuable content 
+                            crafted by our community of writers and experts.
+                        </p>
+                        
+                        <div class="hero-actions mb-5">
+                            <a href="{% url 'blog:post_list' %}" class="btn btn-light btn-lg me-3 mb-3">
+                                <i class="fas fa-book-open me-2"></i>Browse Posts
+                            </a>
+                            {% if not user.is_authenticated %}
+                            <a href="{% url 'blog:register' %}" class="btn btn-outline-light btn-lg mb-3">
+                                <i class="fas fa-user-plus me-2"></i>Join Us
+                            </a>
+                            {% endif %}
+                        </div>
+                        
+                        <div class="hero-stats">
+                            <div class="stats-item">
+                                <i class="fas fa-newspaper me-2"></i>
+                                <span class="stats-number">{{ total_posts }}</span>
+                                <span class="stats-label">Articles Published</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-lg-5 col-md-4 text-center">
+                    <div class="hero-visual">
+                        <div class="hero-icon-wrapper">
+                            <i class="fas fa-blog hero-icon"></i>
+                        </div>
+                        <div class="hero-decoration">
+                            <div class="decoration-circle circle-1"></div>
+                            <div class="decoration-circle circle-2"></div>
+                            <div class="decoration-circle circle-3"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Featured Posts Section -->
+{% if featured_posts %}
+<section class="featured-posts py-5">
+    <div class="container">
+        <div class="text-center mb-5">
+            <h2 class="display-6 fw-bold">Featured Articles</h2>
+            <p class="lead text-muted">Hand-picked content from our top writers</p>
+        </div>
+        <div class="row">
+            {% for post in featured_posts %}
+            <div class="col-lg-4 col-md-6 mb-4">
+                <div class="card h-100 shadow-sm hover-card">
+                    {% if post.featured_image %}
+                    <img src="{{ post.featured_image.url }}" 
+                         alt="{{ post.title }}" 
+                         class="card-img-top"
+                         style="height: 200px; object-fit: cover;">
+                    {% else %}
+                    <div class="card-img-top bg-gradient-secondary d-flex align-items-center justify-content-center" 
+                         style="height: 200px;">
+                        <i class="fas fa-newspaper fa-3x text-white"></i>
+                    </div>
+                    {% endif %}
+                    
+                    <div class="card-body d-flex flex-column">
+                        <span class="badge bg-warning text-dark mb-2 align-self-start">
+                            <i class="fas fa-star me-1"></i>Featured
+                        </span>
+                        <h5 class="card-title">{{ post.title }}</h5>
+                        <p class="card-text text-muted flex-grow-1">
+                            {{ post.excerpt|default:post.content|truncatewords:15 }}
+                        </p>
+                        <div class="mt-auto">
+                            <div class="d-flex justify-content-between align-items-center mb-2">
+                                <small class="text-muted">
+                                    <i class="fas fa-user me-1"></i>{{ post.author.get_full_name|default:post.author.username }}
+                                </small>
+                                <small class="text-muted">
+                                    {{ post.published_at|date:"M d, Y" }}
+                                </small>
+                            </div>
+                            <a href="{{ post.get_absolute_url }}" class="btn btn-primary btn-sm w-100">
+                                Read More <i class="fas fa-arrow-right ms-1"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+{% endif %}
+
+<!-- Recent Posts Section -->
+<section class="recent-posts py-5 bg-light">
+    <div class="container">
+        <div class="text-center mb-5">
+            <h2 class="display-6 fw-bold">Latest Articles</h2>
+            <p class="lead text-muted">Stay up to date with our newest content</p>
+        </div>
+        
+        {% if recent_posts %}
+        <div class="row">
+            {% for post in recent_posts %}
+            <div class="col-lg-4 col-md-6 mb-4">
+                <div class="card h-100 shadow-sm hover-card">
+                    {% if post.featured_image %}
+                    <img src="{{ post.featured_image.url }}" 
+                         alt="{{ post.title }}" 
+                         class="card-img-top"
+                         style="height: 180px; object-fit: cover;">
+                    {% else %}
+                    <div class="card-img-top bg-secondary d-flex align-items-center justify-content-center" 
+                         style="height: 180px;">
+                        <i class="fas fa-file-alt fa-2x text-white"></i>
+                    </div>
+                    {% endif %}
+                    
+                    <div class="card-body d-flex flex-column">
+                        <h6 class="card-title">{{ post.title }}</h6>
+                        <p class="card-text text-muted small flex-grow-1">
+                            {{ post.excerpt|default:post.content|truncatewords:10 }}
+                        </p>
+                        <div class="mt-auto">
+                            <div class="d-flex justify-content-between align-items-center mb-2">
+                                <small class="text-muted">
+                                    {{ post.author.username }}
+                                </small>
+                                <small class="text-muted">
+                                    {{ post.published_at|date:"M d" }}
+                                </small>
+                            </div>
+                            <a href="{{ post.get_absolute_url }}" class="btn btn-outline-primary btn-sm w-100">
+                                Read More
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        
+        <div class="text-center mt-4">
+            <a href="{% url 'blog:post_list' %}" class="btn btn-primary btn-lg">
+                <i class="fas fa-th-list me-2"></i>View All Posts
+            </a>
+        </div>
+        {% else %}
+        <div class="text-center py-5">
+            <i class="fas fa-newspaper fa-4x text-muted mb-4"></i>
+            <h4 class="text-muted">No posts yet</h4>
+            <p class="text-muted">Check back soon for new content!</p>
+            {% if user.is_authenticated and user.userprofile.can_create_posts %}
+            <a href="{% url 'blog:post_create' %}" class="btn btn-primary">
+                <i class="fas fa-plus me-2"></i>Create First Post
+            </a>
+            {% endif %}
+        </div>
+        {% endif %}
+    </div>
+</section>
+
+<!-- Call to Action Section -->
+<section class="cta-section py-5 bg-primary text-white">
+    <div class="container text-center">
+        <div class="row justify-content-center">
+            <div class="col-lg-8">
+                <h2 class="display-6 fw-bold mb-4">Join Our Community</h2>
+                <p class="lead mb-4">
+                    Get notified about new posts and connect with fellow readers and writers.
+                </p>
+                {% if not user.is_authenticated %}
+                <div class="d-flex flex-column flex-sm-row gap-3 justify-content-center">
+                    <a href="{% url 'blog:register' %}" class="btn btn-light btn-lg">
+                        <i class="fas fa-user-plus me-2"></i>Create Account
+                    </a>
+                    <a href="{% url 'blog:login' %}" class="btn btn-outline-light btn-lg">
+                        <i class="fas fa-sign-in-alt me-2"></i>Sign In
+                    </a>
+                </div>
+                {% else %}
+                <div class="d-flex flex-column flex-sm-row gap-3 justify-content-center">
+                    <a href="{% url 'blog:profile' %}" class="btn btn-light btn-lg">
+                        <i class="fas fa-user me-2"></i>Your Profile
+                    </a>
+                    {% if user.userprofile.can_create_posts %}
+                    <a href="{% url 'blog:post_create' %}" class="btn btn-outline-light btn-lg">
+                        <i class="fas fa-plus me-2"></i>Write a Post
+                    </a>
+                    {% endif %}
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
+
+{% block extra_css %}
+<style>
+    /* Remove main content padding for landing page */
+    main.py-5 {
+        padding-top: 0 !important;
+        padding-bottom: 0 !important;
+    }
+    .hero-section {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        min-height: 100vh;
+        height: 100vh;
+        position: relative;
+        overflow: hidden;
+        width: 100vw;
+        margin-left: calc(-50vw + 50%);
+        margin-right: calc(-50vw + 50%);
+        margin-top: 0;
+        padding-top: 0;
+    }
+    
+    .hero-overlay {
+        background: linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(0, 0, 0, 0.4) 100%);
+        min-height: 100vh;
+        height: 100vh;
+        display: flex;
+        align-items: center;
+        padding: 2rem 0;
+        width: 100%;
+    }
+    
+    .hero-content {
+        min-height: 80vh;
+        align-items: center !important;
+        margin: 0 auto;
+        max-width: 1200px;
+        width: 100%;
+        padding: 0 15px;
+    }
+    
+    .hero-text-content {
+        padding: 2rem 0;
+    }
+    
+    .hero-title {
+        font-size: 3.5rem;
+        font-weight: 800;
+        line-height: 1.2;
+        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.6);
+        margin-bottom: 2rem !important;
+        letter-spacing: -0.02em;
+        color: #ffffff !important;
+    }
+    
+    .hero-text {
+        font-size: 1.4rem;
+        line-height: 1.6;
+        text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
+        font-weight: 300;
+        margin-bottom: 3rem !important;
+        color: #ffffff !important;
+        opacity: 1;
+    }
+    
+    .hero-actions {
+        margin-bottom: 3rem !important;
+    }
+    
+    .hero-actions .btn {
+        padding: 1rem 2rem;
+        font-size: 1.1rem;
+        font-weight: 600;
+        border-radius: 50px;
+        transition: all 0.3s ease;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
+    
+    .btn-light {
+        background: rgba(255, 255, 255, 0.95);
+        border: none;
+        color: #4a5568 !important;
+        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+    }
+    
+    .btn-light:hover {
+        background: #ffffff;
+        transform: translateY(-3px);
+        box-shadow: 0 12px 30px rgba(0, 0, 0, 0.2);
+        color: #2d3748 !important;
+    }
+    
+    .btn-outline-light {
+        border: 3px solid rgba(255, 255, 255, 0.8);
+        background: transparent;
+        color: #ffffff !important;
+        text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+    }
+    
+    .btn-outline-light:hover {
+        background: rgba(255, 255, 255, 0.1);
+        border-color: #ffffff;
+        transform: translateY(-3px);
+        color: #ffffff !important;
+    }
+    
+    .hero-stats {
+        background: linear-gradient(135deg, rgba(0, 0, 0, 0.6) 0%, rgba(0, 0, 0, 0.8) 100%);
+        padding: 1.5rem 2rem;
+        border-radius: 20px;
+        border: 2px solid rgba(255, 255, 255, 0.3);
+        display: inline-flex;
+        align-items: center;
+        gap: 1rem;
+    }
+    
+    .stats-item {
+        display: flex;
+        align-items: center;
+        gap: 0.8rem;
+        color: #ffffff !important;
+        text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+    }
+    
+    .stats-number {
+        font-size: 1.8rem;
+        font-weight: 700;
+        color: #ffd700;
+    }
+    
+    .stats-label {
+        font-size: 1rem;
+        font-weight: 500;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
+    
+    .hero-visual {
+        position: relative;
+        height: 400px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    
+    .hero-icon-wrapper {
+        position: relative;
+        z-index: 10;
+        background: linear-gradient(135deg, rgba(255, 255, 255, 0.15) 0%, rgba(255, 255, 255, 0.08) 100%);
+        width: 200px;
+        height: 200px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border: 2px solid rgba(255, 255, 255, 0.3);
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+    }
+    
+    .hero-icon {
+        font-size: 5rem;
+        color: #ffffff;
+        text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.3);
+    }
+    
+    .hero-decoration {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+    }
+    
+    .decoration-circle {
+        position: absolute;
+        border: 2px solid rgba(255, 255, 255, 0.1);
+        border-radius: 50%;
+        animation: float 6s ease-in-out infinite;
+    }
+    
+    .circle-1 {
+        width: 120px;
+        height: 120px;
+        top: 20px;
+        right: 40px;
+        animation-delay: 0s;
+    }
+    
+    .circle-2 {
+        width: 80px;
+        height: 80px;
+        bottom: 60px;
+        left: 20px;
+        animation-delay: 2s;
+    }
+    
+    .circle-3 {
+        width: 60px;
+        height: 60px;
+        top: 120px;
+        left: 60px;
+        animation-delay: 4s;
+    }
+    
+    @keyframes float {
+        0%, 100% { transform: translateY(0px); }
+        50% { transform: translateY(-20px); }
+    }
+    
+    .hover-card {
+        transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+    }
+    
+    .hover-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 25px rgba(0,0,0,0.1) !important;
+    }
+    
+    .bg-gradient-primary {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    }
+    
+    .bg-gradient-secondary {
+        background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+    }
+    
+    .display-6 {
+        font-weight: 700;
+        color: #2d3748;
+    }
+    
+    .lead {
+        font-weight: 400;
+        color: #4a5568;
+    }
+    
+    .cta-section h2 {
+        text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.3);
+    }
+    
+    .cta-section .lead {
+        text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
+        color: rgba(255, 255, 255, 0.95) !important;
+    }
+    
+    /* Mobile Responsive */
+    @media (max-width: 992px) {
+        .hero-content {
+            min-height: 70vh;
+        }
+        
+        .hero-title {
+            font-size: 2.8rem;
+        }
+        
+        .hero-text {
+            font-size: 1.2rem;
+        }
+        
+        .hero-visual {
+            height: 300px;
+            margin-top: 2rem;
+        }
+        
+        .hero-icon-wrapper {
+            width: 150px;
+            height: 150px;
+        }
+        
+        .hero-icon {
+            font-size: 4rem;
+        }
+    }
+    
+    @media (max-width: 768px) {
+        .hero-section {
+            min-height: 90vh;
+        }
+        
+        .hero-overlay {
+            min-height: 90vh;
+        }
+        
+        .hero-title {
+            font-size: 2.5rem;
+        }
+        
+        .hero-text {
+            font-size: 1.1rem;
+        }
+        
+        .hero-actions .btn {
+            padding: 0.8rem 1.5rem;
+            font-size: 1rem;
+            display: block;
+            width: 100%;
+            margin: 0.5rem 0;
+        }
+        
+        .hero-visual {
+            height: 250px;
+        }
+        
+        .stats-item {
+            flex-direction: column;
+            text-align: center;
+            gap: 0.5rem;
+        }
+    }
+</style>
+{% endblock %}
