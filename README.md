@@ -30,8 +30,8 @@ This is a comprehensive blog platform that serves as both a functional content m
 - **User Management**: Complete registration and authentication system with role-based permissions
 - **Content Creation**: Rich blog post editor with categories, tags, and featured images
 - **Community Features**: Commenting system with nested replies and moderation
-- **Search & Discovery**: Advanced filtering by content, categories, and tags
-- **Responsive Design**: Mobile-first approach with Bootstrap 5 framework
+- **Advanced Search**: Multi-field search with content, author, category, tag, and date range filtering
+- **Responsive Design**: Mobile-first approach with Bootstrap 5 framework and comprehensive CSS media queries
 
 ### **Modern UI/UX Design**
 - **Blue-Purple Gradient Theme**: Professional gradient color scheme with seamless transitions
@@ -40,6 +40,47 @@ This is a comprehensive blog platform that serves as both a functional content m
 - **Smooth Transitions**: CSS animations with 0.3s easing for polished interactions
 - **Accessibility**: High contrast ratios and keyboard navigation support
 - **Progressive Enhancement**: Graceful degradation for older browsers
+- **Mobile-First Design**: Comprehensive responsive design with touch-friendly interfaces
+
+## 🛠 Technology Stack
+
+### **Backend**
+- **Django 5.2.6** - Python web framework
+- **PostgreSQL** - Production database (SQLite for development)
+- **WhiteNoise** - Static file serving
+- **Gunicorn** - WSGI HTTP Server
+
+### **Frontend**
+- **Bootstrap 5.3.2** - CSS framework with responsive grid system
+- **HTML5 & CSS3** - Modern web standards with custom CSS
+- **JavaScript (ES6+)** - Interactive functionality
+- **Font Awesome** - Icon library
+
+### **Deployment & DevOps**
+- **Heroku** - Cloud application platform
+- **Git** - Version control with structured workflow
+- **Environment Variables** - Secure configuration management
+
+### **Development Tools**
+- **VS Code** - Primary development environment
+- **AI-Assisted Development** - GitHub Copilot integration
+- **Django Admin** - Content management interface
+- **Django Debug Toolbar** - Development debugging
+
+## 🔧 Recent Improvements (September 2025)
+
+### **Search Functionality Fixed**
+- ✅ **Template inheritance issue resolved**: Fixed `blog/base.html` reference to `base.html`
+- ✅ **AdvancedSearchForm completed**: Added missing author field and proper queryset initialization
+- ✅ **Form validation enhanced**: Complete form field setup with category, tag, and author filtering
+- ✅ **Search URL configuration verified**: Proper URL routing and view integration
+
+### **Mobile Responsiveness Enhanced**
+- ✅ **Comprehensive media queries**: Added responsive breakpoints for 768px and 575px
+- ✅ **Typography scaling**: Optimized heading and text sizes for mobile devices
+- ✅ **Touch-friendly UI**: Properly sized buttons and form elements (16px+ to prevent iOS zoom)
+- ✅ **Layout optimizations**: Improved spacing, padding, and navigation for mobile
+- ✅ **Form responsiveness**: Enhanced form layouts and input field sizing
 
 ## � Wireframes & Design
 
@@ -430,6 +471,43 @@ Potential features for continued development:
 - Email newsletter subscription system
 - Social media integration and sharing
 - Advanced analytics and reporting
+
+## 🔧 Troubleshooting
+
+### **Common Issues & Solutions**
+
+#### **Search Function Not Working**
+```bash
+# Template inheritance error
+Error: TemplateDoesNotExist at /search/ - blog/base.html
+
+Solution: Verify template extends 'base.html' not 'blog/base.html'
+```
+
+#### **Mobile Responsiveness Issues**
+```bash
+# Missing viewport meta tag or CSS media queries
+
+Solution: Ensure viewport tag in base.html:
+<meta name="viewport" content="width=device-width, initial-scale=1">
+```
+
+#### **Static Files Not Loading**
+```bash
+# CSS/JS files not found in production
+
+Solution: Run collectstatic command:
+python manage.py collectstatic --noinput
+```
+
+#### **Database Migration Errors**
+```bash
+# Migration conflicts or missing migrations
+
+Solution: Reset and recreate migrations:
+python manage.py migrate
+python manage.py createsuperuser
+```
 
 ## 🎓 Learning Outcomes
 
