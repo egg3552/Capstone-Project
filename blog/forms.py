@@ -244,6 +244,12 @@ class AdvancedSearchForm(forms.Form):
             'placeholder': 'Search posts, content, and authors...'
         })
     )
+    author = forms.ModelChoiceField(
+        queryset=None,
+        required=False,
+        empty_label="All Authors",
+        widget=forms.Select(attrs={'class': 'form-select'})
+    )
     category = forms.ModelChoiceField(
         queryset=None,
         required=False,
@@ -273,6 +279,12 @@ class AdvancedSearchForm(forms.Form):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        # Dynamically load categories for the dropdown filter
+        # Dynamically load categories, tags, and authors for dropdown filters
         from .models import Category, Tag
+        from django.contrib.auth.models import User
+        
         self.fields['category'].queryset = Category.objects.all()
+        self.fields['tag'].queryset = Tag.objects.all()
+        self.fields['author'].queryset = User.objects.filter(
+            posts__isnull=False
+        ).distinct().order_by('username')
