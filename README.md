@@ -31,6 +31,7 @@ This is a comprehensive blog platform that serves as both a functional content m
 - **Content Creation**: Rich blog post editor with categories, tags, and featured images
 - **Community Features**: Commenting system with nested replies and moderation
 - **Advanced Search**: Multi-field search with content, author, category, tag, and date range filtering
+- **Legal Compliance**: Terms of Service and Privacy Policy pages with proper registration integration
 - **Responsive Design**: Mobile-first approach with Bootstrap 5 framework and comprehensive CSS media queries
 
 ### **Modern UI/UX Design**
@@ -67,7 +68,7 @@ This is a comprehensive blog platform that serves as both a functional content m
 - **Django Admin** - Content management interface
 - **Django Debug Toolbar** - Development debugging
 
-## 🔧 Recent Improvements (September 2025)
+## 🔧 Recent Improvements (October 2025)
 
 ### **Search Functionality Fixed**
 - ✅ **Template inheritance issue resolved**: Fixed `blog/base.html` reference to `base.html`
@@ -81,6 +82,15 @@ This is a comprehensive blog platform that serves as both a functional content m
 - ✅ **Touch-friendly UI**: Properly sized buttons and form elements (16px+ to prevent iOS zoom)
 - ✅ **Layout optimizations**: Improved spacing, padding, and navigation for mobile
 - ✅ **Form responsiveness**: Enhanced form layouts and input field sizing
+
+### **Site Tidying & Legal Compliance**
+- ✅ **Placeholder links fixed**: Removed all broken `href="#"` links throughout the site
+- ✅ **Terms of Service page**: Complete legal page with user guidelines and policies
+- ✅ **Privacy Policy page**: GDPR-compliant privacy documentation
+- ✅ **Contact page improvements**: Working GitHub link, disabled placeholder social buttons
+- ✅ **Footer enhancements**: Added legal page links for easy access
+- ✅ **Registration form**: Now links to actual Terms and Privacy pages
+- ✅ **Production readiness**: All links functional, professional user experience
 
 ## � Wireframes & Design
 
@@ -443,6 +453,7 @@ Successfully deployed on Heroku cloud platform featuring:
 - **Input Validation**: Comprehensive form validation and sanitization
 - **Authentication**: Secure user session management with Django's built-in system
 - **SQL Injection Prevention**: Django ORM provides automatic protection
+- **Legal Compliance**: Terms of Service and Privacy Policy for GDPR compliance
 
 ## 📈 Performance & Optimization
 
@@ -507,6 +518,16 @@ python manage.py collectstatic --noinput
 Solution: Reset and recreate migrations:
 python manage.py migrate
 python manage.py createsuperuser
+```
+
+#### **Broken Links or Placeholder Links**
+```bash
+# Links showing href="#" or leading nowhere
+
+Solution: All placeholder links have been fixed in recent updates.
+- Terms/Privacy pages are now functional
+- GitHub link points to actual repository
+- Social links are properly disabled with "Coming Soon"
 ```
 
 ## 🎓 Learning Outcomes
