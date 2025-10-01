@@ -1,0 +1,75 @@
+{% extends 'base.html' %}
+
+{% block title %}Privacy Policy - {{ block.super }}{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <div class="card shadow-sm">
+                <div class="card-body p-5">
+                    <h1 class="text-center mb-4">Privacy Policy</h1>
+                    <p class="text-muted text-center mb-5">Last updated: {{ current_date|date:"F d, Y" }}</p>
+
+                    <div class="content">
+                        <h3>1. Information We Collect</h3>
+                        <p>When you register for an account, we collect:</p>
+                        <ul>
+                            <li>Username and email address</li>
+                            <li>Optional profile information you choose to provide</li>
+                            <li>Content you create (blog posts, comments)</li>
+                        </ul>
+
+                        <h3>2. How We Use Your Information</h3>
+                        <p>We use the information we collect to:</p>
+                        <ul>
+                            <li>Provide, operate, and maintain our service</li>
+                            <li>Improve, personalize, and expand our service</li>
+                            <li>Understand and analyze how you use our service</li>
+                            <li>Communicate with you about updates and changes</li>
+                        </ul>
+
+                        <h3>3. Data Storage and Security</h3>
+                        <p>Your data is stored securely using industry-standard practices. We implement appropriate technical and organizational security measures to protect your personal information against unauthorized access, alteration, disclosure, or destruction.</p>
+
+                        <h3>4. Cookies and Tracking</h3>
+                        <p>We use cookies and similar tracking technologies to track activity on our service and store certain information. You can instruct your browser to refuse all cookies or to indicate when a cookie is being sent.</p>
+
+                        <h3>5. Data Sharing</h3>
+                        <p>We do not sell, trade, or otherwise transfer your personal information to outside parties except:</p>
+                        <ul>
+                            <li>With your explicit consent</li>
+                            <li>To comply with legal obligations</li>
+                            <li>To protect our rights and safety</li>
+                        </ul>
+
+                        <h3>6. Your Rights</h3>
+                        <p>You have the right to:</p>
+                        <ul>
+                            <li>Access and update your personal information</li>
+                            <li>Delete your account and associated data</li>
+                            <li>Opt out of certain communications</li>
+                            <li>Request a copy of your data</li>
+                        </ul>
+
+                        <h3>7. Data Retention</h3>
+                        <p>We retain your personal information only for as long as necessary to provide you with our service and fulfill the purposes outlined in this Privacy Policy.</p>
+
+                        <h3>8. Changes to This Policy</h3>
+                        <p>We may update our Privacy Policy from time to time. We will notify you of any changes by posting the new Privacy Policy on this page and updating the "Last updated" date.</p>
+
+                        <h3>9. Contact Us</h3>
+                        <p>If you have any questions about this Privacy Policy, please contact us through our <a href="{% url 'blog:contact' %}">contact page</a>.</p>
+                    </div>
+
+                    <div class="text-center mt-5">
+                        <a href="{% url 'blog:landing_page' %}" class="btn btn-primary">
+                            <i class="fas fa-home"></i> Return to Home
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

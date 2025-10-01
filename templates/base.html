@@ -275,6 +275,15 @@
                     <p class="mb-0 text-dark" style="opacity: 0.8; transition: all 0.3s ease; cursor: pointer;" onmouseover="this.style.opacity='1'; this.style.transform='translateX(5px)'" onmouseout="this.style.opacity='0.8'; this.style.transform='translateX(0)'">
                         <i class="fas fa-copyright me-1"></i>{% now "Y" %} Blog. All rights reserved.
                     </p>
+                    <!-- Legal links -->
+                    <div class="mt-1">
+                        <a href="{% url 'blog:terms' %}" class="text-dark text-decoration-none me-3" style="opacity: 0.7; font-size: 0.875rem; transition: all 0.3s;" onmouseover="this.style.opacity='1'; this.style.color='#667eea'" onmouseout="this.style.opacity='0.7'; this.style.color='#2d3748'">
+                            Terms of Service
+                        </a>
+                        <a href="{% url 'blog:privacy' %}" class="text-dark text-decoration-none" style="opacity: 0.7; font-size: 0.875rem; transition: all 0.3s;" onmouseover="this.style.opacity='1'; this.style.color='#667eea'" onmouseout="this.style.opacity='0.7'; this.style.color='#2d3748'">
+                            Privacy Policy
+                        </a>
+                    </div>
                 </div>
                 <div class="col-md-6 text-end">
                     <!-- Technology stack attribution -->

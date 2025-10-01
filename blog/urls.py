@@ -72,4 +72,8 @@ urlpatterns = [
     # Reading Progress URLs
     path('post/<slug:slug>/progress/', views.update_reading_progress,
          name='update_reading_progress'),
+    
+    # Legal Pages URLs
+    path('terms/', views.terms_of_service_view, name='terms'),
+    path('privacy/', views.privacy_policy_view, name='privacy'),
 ]

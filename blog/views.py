@@ -588,3 +588,26 @@ def update_reading_progress(request, slug):
     return JsonResponse({'status': 'success'})
 
 
+# Legal Pages Views
+def terms_of_service_view(request):
+    """
+    Terms of Service page view.
+    """
+    from django.utils import timezone
+    context = {
+        'current_date': timezone.now(),
+    }
+    return render(request, 'blog/terms.html', context)
+
+
+def privacy_policy_view(request):
+    """
+    Privacy Policy page view.
+    """
+    from django.utils import timezone
+    context = {
+        'current_date': timezone.now(),
+    }
+    return render(request, 'blog/privacy.html', context)
+
+

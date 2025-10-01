@@ -1,0 +1,61 @@
+{% extends 'base.html' %}
+
+{% block title %}Terms of Service - {{ block.super }}{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <div class="card shadow-sm">
+                <div class="card-body p-5">
+                    <h1 class="text-center mb-4">Terms of Service</h1>
+                    <p class="text-muted text-center mb-5">Last updated: {{ current_date|date:"F d, Y" }}</p>
+
+                    <div class="content">
+                        <h3>1. Acceptance of Terms</h3>
+                        <p>By accessing and using this blog platform, you accept and agree to be bound by the terms and provision of this agreement.</p>
+
+                        <h3>2. User Accounts</h3>
+                        <p>When you create an account with us, you must provide information that is accurate, complete, and current at all times. You are responsible for safeguarding the password and for maintaining the security of your account.</p>
+
+                        <h3>3. Content Guidelines</h3>
+                        <p>Users are expected to:</p>
+                        <ul>
+                            <li>Post content that is respectful and appropriate</li>
+                            <li>Not post spam, malicious content, or copyrighted material</li>
+                            <li>Respect other users and maintain a constructive community environment</li>
+                        </ul>
+
+                        <h3>4. Privacy</h3>
+                        <p>Your privacy is important to us. Please review our Privacy Policy, which also governs your use of the Service.</p>
+
+                        <h3>5. Prohibited Uses</h3>
+                        <p>You may not use our service:</p>
+                        <ul>
+                            <li>For any unlawful purpose or to solicit others to perform unlawful acts</li>
+                            <li>To violate any international, federal, provincial, or state regulations, rules, laws, or local ordinances</li>
+                            <li>To infringe upon or violate our intellectual property rights or the intellectual property rights of others</li>
+                            <li>To harass, abuse, insult, harm, defame, slander, disparage, intimidate, or discriminate</li>
+                        </ul>
+
+                        <h3>6. Termination</h3>
+                        <p>We may terminate or suspend your account and bar access to the service immediately, without prior notice or liability, under our sole discretion, for any reason whatsoever including but not limited to a breach of the Terms.</p>
+
+                        <h3>7. Changes to Terms</h3>
+                        <p>We reserve the right, at our sole discretion, to modify or replace these Terms at any time. If a revision is material, we will provide at least 30 days notice prior to any new terms taking effect.</p>
+
+                        <h3>8. Contact Information</h3>
+                        <p>If you have any questions about these Terms of Service, please contact us through our <a href="{% url 'blog:contact' %}">contact page</a>.</p>
+                    </div>
+
+                    <div class="text-center mt-5">
+                        <a href="{% url 'blog:landing_page' %}" class="btn btn-primary">
+                            <i class="fas fa-home"></i> Return to Home
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
