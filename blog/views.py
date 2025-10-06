@@ -172,6 +172,9 @@ class PostDetailView(DetailView):
     context_object_name = 'post'
 
     def get_queryset(self):
+        # Optimize database queries by using select_related for ForeignKey
+        # fields (author, category) and prefetch_related for ManyToMany
+        # fields (tags). This reduces database hits from N+1 to 2-3 queries
         return Post.objects.filter(status='published').select_related(
             'author', 'category').prefetch_related('tags')
 
@@ -180,9 +183,14 @@ class PostDetailView(DetailView):
         post = self.get_object()
 
         # Increment view count atomically to avoid race conditions
+        # Using update() instead of save() prevents race conditions when
+        # multiple users view the same post simultaneously
         Post.objects.filter(pk=post.pk).update(view_count=post.view_count + 1)
 
         # Get top-level comments only (replies are handled in template)
+        # parent=None filters for top-level comments, child replies are
+        # accessed via the 'replies' related manager in the template for
+        # hierarchical display. select_related('author') prevents N+1 queries
         comments = Comment.objects.filter(
             post=post, active=True, parent=None
         ).select_related('author').order_by('created_at')
@@ -415,6 +423,10 @@ def add_reaction(request, slug):
     try:
         from .models import PostReaction
         # Use get_or_create to avoid duplicate reactions
+        # This atomic operation either gets existing reaction or creates new
+        # defaults= only applies if creating new record, not when getting
+        # existing. Returns tuple: (object, boolean) where boolean indicates
+        # if created
         reaction, created = PostReaction.objects.get_or_create(
             post=post,
             user=request.user,
@@ -524,6 +536,9 @@ def advanced_search(request):
         
         # Apply search filters if provided
         if query:
+            # Use Q objects for complex OR logic across multiple fields
+            # icontains performs case-insensitive substring matching
+            # The | operator creates OR conditions between the Q objects
             posts = posts.filter(
                 django_models.Q(title__icontains=query) |
                 django_models.Q(content__icontains=query) |

@@ -51,32 +51,34 @@ function initializeCommentReplies() {
         button.addEventListener('click', function(e) {
             e.preventDefault();
             
+            // Extract comment ID from data attribute to set up reply relationship
             const commentId = this.getAttribute('data-comment-id');
             const commentForm = document.getElementById('comment-form');
             const parentInput = document.getElementById('parent-comment-id');
             
             if (commentForm && parentInput) {
+                // Set the parent comment ID for hierarchical comment structure
                 parentInput.value = commentId;
                 
-                // Scroll to comment form
+                // Smooth scroll to form for better UX
                 commentForm.scrollIntoView({
                     behavior: 'smooth',
                     block: 'center'
                 });
                 
-                // Focus on textarea
+                // Automatically focus on textarea for immediate typing
                 const textarea = commentForm.querySelector('textarea');
                 if (textarea) {
                     textarea.focus();
                 }
                 
-                // Update form heading
+                // Update form heading to indicate reply mode
                 const formHeading = commentForm.querySelector('h4');
                 if (formHeading) {
                     formHeading.textContent = 'Reply to Comment';
                 }
                 
-                // Add cancel button if not exists
+                // Dynamically add cancel button for reply mode
                 addCancelReplyButton(commentForm);
             }
         });
@@ -113,22 +115,28 @@ function addCancelReplyButton(form) {
 function initializeImageLazyLoading() {
     const images = document.querySelectorAll('img[data-src]');
     
-    // Check if browser supports Intersection Observer
+    // Check if browser supports Intersection Observer (modern browsers)
     if ('IntersectionObserver' in window) {
+        // Create observer to watch when images enter viewport
         const imageObserver = new IntersectionObserver((entries, observer) => {
             entries.forEach(entry => {
+                // Only load image when it becomes visible (isIntersecting)
                 if (entry.isIntersecting) {
                     const img = entry.target;
-                    img.src = img.dataset.src;  // Load actual image
+                    // Replace placeholder with actual image source
+                    img.src = img.dataset.src;
                     img.classList.remove('lazy');
-                    imageObserver.unobserve(img);  // Stop observing
+                    // Stop observing this image to prevent repeated loading
+                    imageObserver.unobserve(img);
                 }
             });
         });
         
+        // Start observing all lazy images
         images.forEach(img => imageObserver.observe(img));
     } else {
-        // Fallback for browsers without IntersectionObserver
+        // Fallback for older browsers without IntersectionObserver support
+        // Load all images immediately (no lazy loading benefit)
         images.forEach(img => {
             img.src = img.dataset.src;
             img.classList.remove('lazy');
@@ -143,18 +151,21 @@ function initializeSearchFilters() {
     
     if (searchForm && searchInput) {
         // Add search suggestions with debounced input handling
+        // Debouncing prevents excessive API calls while user is typing
         searchInput.addEventListener('input', debounce(function() {
             const query = this.value.trim();
+            // Only process searches with meaningful length
             if (query.length > 2) {
-                // Implement search suggestions here
+                // Placeholder for future search suggestions feature
                 console.log('Searching for:', query);
             }
-        }, 300));
+        }, 300)); // 300ms delay after user stops typing
         
-        // Auto-submit form when filter options change
+        // Auto-submit form when filter dropdowns change for immediate filtering
         const filterSelects = searchForm.querySelectorAll('select');
         filterSelects.forEach(select => {
             select.addEventListener('change', function() {
+                // Immediately submit form when filter selection changes
                 searchForm.submit();
             });
         });
@@ -224,15 +235,21 @@ function showFormErrors(form) {
 
 // Utility Functions
 
-// Debounce function to limit function calls
+// Debounce function to limit function calls and improve performance
+// Prevents excessive execution of expensive operations (like API calls)
+// during rapid user input events (typing, scrolling, resizing)
 function debounce(func, wait) {
     let timeout;
     return function executedFunction(...args) {
+        // Clear existing timeout to reset the delay
         const later = () => {
             clearTimeout(timeout);
+            // Execute the original function with preserved context and arguments
             func.apply(this, args);
         };
         clearTimeout(timeout);
+        // Set new timeout - function only executes after 'wait' milliseconds
+        // of inactivity
         timeout = setTimeout(later, wait);
     };
 }

@@ -44,6 +44,8 @@ class CustomUserCreationForm(UserCreationForm):
         if commit:
             user.save()
             # Create or update user profile with selected role
+            # get_or_create prevents errors if profile already exists
+            # and ensures every user has a profile with proper role
             profile, created = UserProfile.objects.get_or_create(user=user)
             profile.role = self.cleaned_data["role"]
             profile.save()
@@ -168,8 +170,11 @@ class PostForm(forms.ModelForm):
     def clean_slug(self):
         slug = self.cleaned_data['slug']
         # Check if slug is unique (excluding current post if editing)
+        # This prevents duplicate URLs while allowing editing existing posts
         queryset = Post.objects.filter(slug=slug)
-        # Allow same slug when editing existing post
+        
+        # When editing an existing post, exclude it from uniqueness check
+        # self.instance.pk exists only when editing, not when creating
         if self.instance and self.instance.pk:
             queryset = queryset.exclude(pk=self.instance.pk)
 
@@ -201,6 +206,9 @@ class PostSearchForm(forms.Form):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
+        # Dynamically populate category choices from database
+        # This ensures the dropdown always reflects current categories
+        # even if categories are added/removed after form definition
         from .models import Category
         self.fields['category'].queryset = Category.objects.all()
 
@@ -280,11 +288,16 @@ class AdvancedSearchForm(forms.Form):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         # Dynamically load categories, tags, and authors for dropdown filters
+        # This ensures dropdowns always reflect current database state
         from .models import Category, Tag
         from django.contrib.auth.models import User
         
         self.fields['category'].queryset = Category.objects.all()
         self.fields['tag'].queryset = Tag.objects.all()
+        
+        # Only show users who have actually published posts as author options
+        # posts__isnull=False filters for users with at least one post
+        # distinct() prevents duplicate users if they have multiple posts
         self.fields['author'].queryset = User.objects.filter(
             posts__isnull=False
         ).distinct().order_by('username')

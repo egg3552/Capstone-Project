@@ -18,13 +18,16 @@ import os
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-# Initialize environment variables
+# Initialize environment variables with defaults for development
+# django-environ allows reading from .env file and environment variables
+# Production deployments (like Heroku) override these via environment
 env = environ.Env(
-    DEBUG=(bool, False),
+    DEBUG=(bool, False),  # Default to False for security
     SECRET_KEY=(str, 'django-insecure-default-key-change-in-production')
 )
 
-# Read .env file
+# Read .env file if it exists (development only)
+# Production environments set variables directly
 environ.Env.read_env(BASE_DIR / '.env')
 
 
@@ -37,20 +40,23 @@ SECRET_KEY = env('SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = env('DEBUG')
 
+# List of host/domain names that Django can serve
+# Heroku app domain is included for production deployment
 ALLOWED_HOSTS = env.list('ALLOWED_HOSTS', default=[
     'django-blog-app-a5ba456d0cc7.herokuapp.com',
     'localhost',
     '127.0.0.1'
 ])
 
-# Production security settings
+# Production security settings - only enabled when DEBUG=False
+# These settings enforce HTTPS and secure cookies in production
 if not DEBUG:
-    SECURE_HSTS_SECONDS = 31536000  # 1 year
-    SECURE_HSTS_INCLUDE_SUBDOMAINS = True
-    SECURE_HSTS_PRELOAD = True
-    SECURE_SSL_REDIRECT = True
-    SESSION_COOKIE_SECURE = True
-    CSRF_COOKIE_SECURE = True
+    SECURE_HSTS_SECONDS = 31536000  # 1 year HTTPS Strict Transport Security
+    SECURE_HSTS_INCLUDE_SUBDOMAINS = True  # Apply HSTS to all subdomains
+    SECURE_HSTS_PRELOAD = True  # Allow browser HSTS preload list inclusion
+    SECURE_SSL_REDIRECT = True  # Redirect all HTTP to HTTPS
+    SESSION_COOKIE_SECURE = True  # Only send session cookies over HTTPS
+    CSRF_COOKIE_SECURE = True  # Only send CSRF cookies over HTTPS
 
 
 # Application definition
@@ -67,14 +73,24 @@ INSTALLED_APPS = [
     'blog.apps.BlogConfig',
 ]
 
+# Middleware stack - order matters for request/response processing
+# Each middleware processes requests top-to-bottom, responses bottom-to-top
 MIDDLEWARE = [
+    # Security headers and protection against common attacks
     'django.middleware.security.SecurityMiddleware',
+    # WhiteNoise for serving static files in production (before sessions)
     'whitenoise.middleware.WhiteNoiseMiddleware',
+    # Session management - must come before auth and CSRF
     'django.contrib.sessions.middleware.SessionMiddleware',
+    # Common HTTP features (ETags, content length, etc.)
     'django.middleware.common.CommonMiddleware',
+    # Cross-Site Request Forgery protection
     'django.middleware.csrf.CsrfViewMiddleware',
+    # User authentication - depends on sessions
     'django.contrib.auth.middleware.AuthenticationMiddleware',
+    # Flash message framework
     'django.contrib.messages.middleware.MessageMiddleware',
+    # Clickjacking protection via X-Frame-Options header
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
@@ -101,11 +117,16 @@ WSGI_APPLICATION = 'blogproject.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/5.2/ref/settings/#databases
 
+# Database configuration using dj-database-url
+# Automatically parses DATABASE_URL environment variable (Heroku standard)
+# Falls back to SQLite for local development if DATABASE_URL not set
+# conn_max_age enables connection pooling for better performance
+# conn_health_checks ensures database connections are healthy
 DATABASES = {
     'default': dj_database_url.config(
         default=f'sqlite:///{BASE_DIR / "db.sqlite3"}',
-        conn_max_age=600,
-        conn_health_checks=True,
+        conn_max_age=600,  # Keep connections alive for 10 minutes
+        conn_health_checks=True,  # Validate connections before use
     )
 }
 
@@ -151,18 +172,22 @@ USE_TZ = True
 STATIC_URL = '/static/'
 
 # Use absolute paths for maximum Heroku compatibility
+# Heroku requires absolute paths for collectstatic command
 STATIC_ROOT = os.path.join(str(BASE_DIR), 'staticfiles')
 
-# Detect if we're running on Heroku
+# Detect if we're running on Heroku via DYNO environment variable
 IS_HEROKU = 'DYNO' in os.environ
 
 # Conditional static dirs based on environment
+# Only add static directory if it exists to prevent errors
 STATICFILES_DIRS = []
 static_dir = os.path.join(str(BASE_DIR), 'static')
 if os.path.exists(static_dir):
     STATICFILES_DIRS.append(static_dir)
 
-# Essential static files finders only
+# Essential static files finders only - avoid unnecessary overhead
+# FileSystemFinder looks in STATICFILES_DIRS
+# AppDirectoriesFinder looks in each app's static/ folder
 STATICFILES_FINDERS = [
     'django.contrib.staticfiles.finders.FileSystemFinder',
     'django.contrib.staticfiles.finders.AppDirectoriesFinder',
@@ -197,45 +222,59 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 LOGIN_URL = '/login/'
 LOGIN_REDIRECT_URL = '/'
 
-# CKEditor Configuration
+# CKEditor Configuration for rich text editing in blog posts
+# CKEDITOR_UPLOAD_PATH: Directory for uploaded images within MEDIA_ROOT
+# CKEDITOR_IMAGE_BACKEND: Use Pillow for image processing and validation
+# CKEDITOR_ALLOW_NONIMAGE_FILES: Security - only allow image uploads
 CKEDITOR_UPLOAD_PATH = "uploads/"
 CKEDITOR_IMAGE_BACKEND = "pillow"
 CKEDITOR_ALLOW_NONIMAGE_FILES = False
 
+# Custom CKEditor toolbar and plugin configuration
 CKEDITOR_CONFIGS = {
     'default': {
         'height': 400,
         'width': '100%',
+        # Custom toolbar with organized button groups for better UX
         'toolbar_Custom': [
+            # Text formatting group
             ['Bold', 'Italic', 'Underline', 'Strike'],
-            ['NumberedList', 'BulletedList', '-', 'Outdent', 'Indent', '-', 
+            # List and alignment group
+            ['NumberedList', 'BulletedList', '-', 'Outdent', 'Indent', '-',
              'JustifyLeft', 'JustifyCenter', 'JustifyRight', 'JustifyBlock'],
+            # Link group
             ['Link', 'Unlink', 'Anchor'],
+            # Media and layout group
             ['Image', 'Table', 'HorizontalRule', 'SpecialChar'],
+            # Styling group
             ['Styles', 'Format', 'Font', 'FontSize'],
+            # Color group
             ['TextColor', 'BGColor'],
+            # View and tools group
             ['Maximize', 'ShowBlocks'],
+            # Source code group
             ['Source', 'CodeSnippet'],
         ],
         'toolbar': 'Custom',
-        'tabSpaces': 4,
+        'tabSpaces': 4,  # Code indentation
+        # Plugins to enhance editor functionality
         'extraPlugins': ','.join([
-            'uploadimage',
-            'div',
-            'autolink',
-            'autoembed',
-            'embedsemantic',
-            'autogrow',
-            'widget',
-            'lineutils',
-            'clipboard',
-            'dialog',
-            'dialogui',
-            'elementspath',
-            'codesnippet',
+            'uploadimage',     # Image upload capability
+            'div',            # HTML div element support
+            'autolink',       # Automatic link detection
+            'autoembed',      # Auto-embed media
+            'embedsemantic',  # Semantic media embedding
+            'autogrow',       # Auto-resize editor height
+            'widget',         # Widget framework
+            'lineutils',      # Line utilities
+            'clipboard',      # Enhanced clipboard support
+            'dialog',         # Dialog framework
+            'dialogui',       # Dialog UI
+            'elementspath',   # Element path display
+            'codesnippet',    # Code syntax highlighting
         ]),
-        'codeSnippet_theme': 'monokai_sublime',
-        'removePlugins': 'stylesheetparser',
+        'codeSnippet_theme': 'monokai_sublime',  # Code highlighting theme
+        'removePlugins': 'stylesheetparser',      # Remove problematic plugin
     }
 }
 LOGOUT_REDIRECT_URL = '/'
