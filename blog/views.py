@@ -611,3 +611,18 @@ def privacy_policy_view(request):
     return render(request, 'blog/privacy.html', context)
 
 
+# Custom Error Pages
+def custom_404_view(request, exception):
+    """
+    Custom 404 error page view.
+    """
+    return render(request, '404.html', status=404)
+
+
+def custom_500_view(request):
+    """
+    Custom 500 error page view.
+    """
+    return render(request, '500.html', status=500)
+
+

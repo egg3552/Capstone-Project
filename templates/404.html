@@ -1,0 +1,110 @@
+{% extends 'base.html' %}
+
+{% block title %}Page Not Found - {{ block.super }}{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-6 col-md-8 text-center">
+            <!-- 404 Error Card -->
+            <div class="card shadow-lg border-0" style="background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(10px); border-radius: 20px;">
+                <div class="card-body p-5">
+                    <!-- Large 404 Number -->
+                    <div class="mb-4">
+                        <h1 class="display-1 fw-bold" style="background: var(--gradient-primary); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; font-size: 8rem; line-height: 1;">
+                            404
+                        </h1>
+                    </div>
+                    
+                    <!-- Error Message -->
+                    <h2 class="h3 text-dark mb-3">Oops! Page Not Found</h2>
+                    <p class="text-muted mb-4 lead">
+                        The page you're looking for seems to have wandered off into the digital void. 
+                        Don't worry, it happens to the best of us!
+                    </p>
+                    
+                    <!-- Helpful Suggestions -->
+                    <div class="mb-4">
+                        <p class="text-muted mb-3">Here are some things you can try:</p>
+                        <ul class="list-unstyled text-muted">
+                            <li class="mb-2">
+                                <i class="fas fa-check-circle text-primary me-2"></i>
+                                Check the URL for any typos
+                            </li>
+                            <li class="mb-2">
+                                <i class="fas fa-check-circle text-primary me-2"></i>
+                                Go back to the previous page
+                            </li>
+                            <li class="mb-2">
+                                <i class="fas fa-check-circle text-primary me-2"></i>
+                                Visit our homepage to start fresh
+                            </li>
+                            <li class="mb-2">
+                                <i class="fas fa-check-circle text-primary me-2"></i>
+                                Use the search function to find what you need
+                            </li>
+                        </ul>
+                    </div>
+                    
+                    <!-- Action Buttons -->
+                    <div class="d-grid gap-2 d-md-flex justify-content-md-center">
+                        <a href="{% url 'blog:landing_page' %}" class="btn btn-primary btn-lg me-md-2">
+                            <i class="fas fa-home me-2"></i>Go Home
+                        </a>
+                        <a href="{% url 'blog:post_list' %}" class="btn btn-outline-primary btn-lg me-md-2">
+                            <i class="fas fa-blog me-2"></i>Browse Posts
+                        </a>
+                        <a href="{% url 'blog:advanced_search' %}" class="btn btn-outline-secondary btn-lg">
+                            <i class="fas fa-search me-2"></i>Search
+                        </a>
+                    </div>
+                    
+                    <!-- Contact Option -->
+                    <div class="mt-4 pt-3 border-top">
+                        <p class="text-muted small mb-2">Still can't find what you're looking for?</p>
+                        <a href="{% url 'blog:contact' %}" class="text-decoration-none">
+                            <i class="fas fa-envelope me-1"></i>Contact us for help
+                        </a>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Fun Animation Element -->
+            <div class="mt-4">
+                <div class="text-center">
+                    <i class="fas fa-robot fa-3x text-muted opacity-50" style="animation: bounce 2s infinite;"></i>
+                    <p class="text-muted small mt-2">Even our robots are confused!</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Custom CSS for animations -->
+<style>
+@keyframes bounce {
+    0%, 20%, 53%, 80%, 100% {
+        transform: translate3d(0,0,0);
+    }
+    40%, 43% {
+        transform: translate3d(0,-15px,0);
+    }
+    70% {
+        transform: translate3d(0,-7px,0);
+    }
+    90% {
+        transform: translate3d(0,-2px,0);
+    }
+}
+
+.card:hover {
+    transform: translateY(-5px);
+    transition: all 0.3s ease;
+}
+
+.btn:hover {
+    transform: translateY(-2px);
+    transition: all 0.3s ease;
+}
+</style>
+{% endblock %}

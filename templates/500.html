@@ -1,0 +1,96 @@
+{% extends 'base.html' %}
+
+{% block title %}Server Error - {{ block.super }}{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-6 col-md-8 text-center">
+            <!-- 500 Error Card -->
+            <div class="card shadow-lg border-0" style="background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(10px); border-radius: 20px;">
+                <div class="card-body p-5">
+                    <!-- Large 500 Number -->
+                    <div class="mb-4">
+                        <h1 class="display-1 fw-bold" style="background: var(--gradient-primary); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; font-size: 8rem; line-height: 1;">
+                            500
+                        </h1>
+                    </div>
+                    
+                    <!-- Error Message -->
+                    <h2 class="h3 text-dark mb-3">Internal Server Error</h2>
+                    <p class="text-muted mb-4 lead">
+                        Something went wrong on our end. Our team has been notified and we're working to fix it!
+                    </p>
+                    
+                    <!-- Helpful Suggestions -->
+                    <div class="mb-4">
+                        <p class="text-muted mb-3">What you can do:</p>
+                        <ul class="list-unstyled text-muted">
+                            <li class="mb-2">
+                                <i class="fas fa-check-circle text-warning me-2"></i>
+                                Try refreshing the page in a few minutes
+                            </li>
+                            <li class="mb-2">
+                                <i class="fas fa-check-circle text-warning me-2"></i>
+                                Go back to the homepage
+                            </li>
+                            <li class="mb-2">
+                                <i class="fas fa-check-circle text-warning me-2"></i>
+                                Contact us if the problem persists
+                            </li>
+                        </ul>
+                    </div>
+                    
+                    <!-- Action Buttons -->
+                    <div class="d-grid gap-2 d-md-flex justify-content-md-center">
+                        <a href="{% url 'blog:landing_page' %}" class="btn btn-primary btn-lg me-md-2">
+                            <i class="fas fa-home me-2"></i>Go Home
+                        </a>
+                        <button onclick="window.location.reload()" class="btn btn-outline-primary btn-lg me-md-2">
+                            <i class="fas fa-redo me-2"></i>Try Again
+                        </button>
+                        <a href="{% url 'blog:contact' %}" class="btn btn-outline-secondary btn-lg">
+                            <i class="fas fa-envelope me-2"></i>Contact Us
+                        </a>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Fun Animation Element -->
+            <div class="mt-4">
+                <div class="text-center">
+                    <i class="fas fa-tools fa-3x text-muted opacity-50" style="animation: shake 1.5s infinite;"></i>
+                    <p class="text-muted small mt-2">Our engineers are on it!</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Custom CSS for animations -->
+<style>
+@keyframes shake {
+    0% { transform: translate(1px, 1px) rotate(0deg); }
+    10% { transform: translate(-1px, -2px) rotate(-1deg); }
+    20% { transform: translate(-3px, 0px) rotate(1deg); }
+    30% { transform: translate(3px, 2px) rotate(0deg); }
+    40% { transform: translate(1px, -1px) rotate(1deg); }
+    50% { transform: translate(-1px, 2px) rotate(-1deg); }
+    60% { transform: translate(-3px, 1px) rotate(0deg); }
+    70% { transform: translate(3px, 1px) rotate(-1deg); }
+    80% { transform: translate(-1px, -1px) rotate(1deg); }
+    90% { transform: translate(1px, 2px) rotate(0deg); }
+    100% { transform: translate(1px, -2px) rotate(-1deg); }
+}
+
+.card:hover {
+    transform: translateY(-5px);
+    transition: all 0.3s ease;
+}
+
+.btn:hover {
+    transform: translateY(-2px);
+    transition: all 0.3s ease;
+}
+</style>
+{% endblock %}
