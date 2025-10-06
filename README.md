@@ -77,6 +77,7 @@ This real-world testing confirmed the platform's production readiness and user-f
 - **AI-Assisted Development** - GitHub Copilot integration
 - **Django Admin** - Content management interface
 - **Django Debug Toolbar** - Development debugging
+- **Heroku CLI** - Command-line interface for streamlined deployment and application management
 
 ## 🔧 Recent Improvements (October 2025)
 
@@ -416,6 +417,36 @@ Successfully deployed on Heroku cloud platform featuring:
 - **Static Files**: Optimized delivery with WhiteNoise middleware
 - **Environment Security**: Environment variables for sensitive configuration
 - **SSL/HTTPS**: Secure connections with automatic certificate management
+
+### **Deployment Management**
+The project utilizes **Heroku CLI** for efficient deployment and application management:
+
+#### **Heroku CLI Benefits**
+- **Streamlined Deployments**: Direct `git push heroku main` for instant deployment
+- **Real-time Monitoring**: Live log viewing and application health checks
+- **Database Management**: Direct access to PostgreSQL for migrations and maintenance
+- **Environment Configuration**: Easy environment variable management
+- **Build Monitoring**: Real-time feedback during deployment process
+
+#### **Key Heroku CLI Commands Used**
+```bash
+# Deploy latest changes
+git push heroku main
+
+# Run database migrations
+heroku run python manage.py migrate
+
+# Collect static files
+heroku run python manage.py collectstatic --noinput
+
+# Monitor application logs
+heroku logs --tail
+
+# Check application status
+heroku apps:info
+```
+
+This CLI integration significantly improves development workflow by providing direct control over the cloud deployment process.
 
 ### **Deployment Challenges Solved**
 - ✅ **Module Import Issues**: Resolved case sensitivity in WSGI configuration
