@@ -9,7 +9,14 @@ from .models import (
 class CustomUserCreationForm(UserCreationForm):
     """
     Extended user registration form with additional fields.
+    Admin role is excluded - only admins can promote users to admin status.
     """
+    # Filter out admin role - only reader and author available for registration
+    REGISTRATION_ROLE_CHOICES = [
+        ('reader', 'Reader'),
+        ('author', 'Author'),
+    ]
+    
     email = forms.EmailField(
         required=True,
         help_text='Required. Enter a valid email address.'
@@ -17,8 +24,10 @@ class CustomUserCreationForm(UserCreationForm):
     first_name = forms.CharField(max_length=30, required=True)
     last_name = forms.CharField(max_length=30, required=True)
     role = forms.ChoiceField(
-        choices=UserProfile.ROLE_CHOICES,
-        initial='reader'
+        choices=REGISTRATION_ROLE_CHOICES,
+        initial='reader',
+        help_text=('Authors can create and manage blog posts. '
+                   'Contact an admin to request admin privileges.')
     )
 
     class Meta:
@@ -34,6 +43,19 @@ class CustomUserCreationForm(UserCreationForm):
             # Special styling for select dropdown
             if field_name == 'role':
                 field.widget.attrs['class'] = 'form-select'
+
+    def clean_role(self):
+        """
+        Validate that users cannot select admin role during registration.
+        This prevents form manipulation attempts to gain admin access.
+        """
+        role = self.cleaned_data.get('role')
+        if role == 'admin':
+            raise forms.ValidationError(
+                'Admin role cannot be selected during registration. '
+                'Contact an existing admin to request admin privileges.'
+            )
+        return role
 
     def save(self, commit=True):
         user = super().save(commit=False)
