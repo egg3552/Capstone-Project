@@ -1,5 +1,12 @@
 /* Blog Custom Styles */
 
+/*
+ * CSS VALIDATION NOTE:
+ * Any Font Awesome CSS validation errors (e.g., --fa-rotate-angle transform issues) 
+ * are from the external Font Awesome library and not from this custom stylesheet.
+ * This is a known issue with Font Awesome's CSS and does not affect functionality.
+ */
+
 /* Root variables for consistent theming and easy customization */
 :root {
   /* Blue-Purple gradient color palette */
