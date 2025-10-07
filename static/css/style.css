@@ -55,7 +55,7 @@ h1, h2, h3, h4, h5, h6 {
 
 /* Bright gradient text effect for main headings */
 h1 {
-  background: var(--gradient-primary);
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
   -webkit-background-clip: text;  /* Webkit prefix for Safari */
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -115,13 +115,13 @@ a:hover {
 }
 
 .btn-primary {
-  background: var(--gradient-primary);
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
   border: none;
   box-shadow: var(--box-shadow);
 }
 
 .btn-primary:hover {
-  background: var(--gradient-primary);
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
   transform: translateY(-2px);
   box-shadow: var(--box-shadow-lg);
 }
@@ -145,7 +145,7 @@ a:hover {
 }
 
 .btn-outline-primary:hover {
-  background: var(--gradient-primary);
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
   border-color: transparent;
   transform: translateY(-2px);
 }
@@ -354,7 +354,7 @@ a:hover {
 
 /* Profile */
 .profile-header {
-  background: linear-gradient(135deg, var(--gradient-primary));
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
   color: white;
   padding: 3rem 0;
   text-align: center;
@@ -697,7 +697,7 @@ a:hover {
 }
 
 /* High contrast mode support for accessibility compliance */
-@media (prefers-contrast: high) {
+@media (prefers-contrast: more) {
   .card {
     border: 2px solid var(--primary-color);  /* Strong bright border for high contrast */
   }
