@@ -175,8 +175,27 @@ class PostDetailView(DetailView):
         # Optimize database queries by using select_related for ForeignKey
         # fields (author, category) and prefetch_related for ManyToMany
         # fields (tags). This reduces database hits from N+1 to 2-3 queries
-        return Post.objects.filter(status='published').select_related(
+        queryset = Post.objects.select_related(
             'author', 'category').prefetch_related('tags')
+        
+        # Show published posts to everyone, but allow authors and admins
+        # to view their own draft posts
+        if self.request.user.is_authenticated:
+            # If user is logged in, show published posts OR posts they authored
+            # OR if they're admin, show all posts
+            if (hasattr(self.request.user, 'userprofile') and
+                    self.request.user.userprofile.can_moderate()):
+                # Admins can see all posts regardless of status
+                return queryset
+            else:
+                # Regular users see published posts + their own drafts
+                from django.db.models import Q
+                return queryset.filter(
+                    Q(status='published') | Q(author=self.request.user)
+                )
+        else:
+            # Anonymous users only see published posts
+            return queryset.filter(status='published')
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)

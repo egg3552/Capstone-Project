@@ -19,6 +19,13 @@
                 <div class="card-body">
                     <!-- Post Header -->
                     <header class="mb-4">
+                        {% if post.status == 'draft' %}
+                        <div class="alert alert-warning" role="alert">
+                            <i class="fas fa-exclamation-triangle" aria-hidden="true"></i>
+                            <strong>Draft Post:</strong> This post is not published and is only visible to you.
+                        </div>
+                        {% endif %}
+                        
                         {% if post.featured %}
                         <span class="badge bg-warning text-dark mb-2">
                             <i class="fas fa-star" aria-hidden="true"></i> Featured
