@@ -132,16 +132,16 @@ class Post(models.Model):
     status = models.CharField(
         max_length=10, choices=STATUS_CHOICES, default='draft'
     )
-    
+
     # SEO and metadata
     meta_description = models.CharField(max_length=160, blank=True)
     meta_keywords = models.CharField(max_length=255, blank=True)
-    
+
     # Timestamps
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     published_at = models.DateTimeField(null=True, blank=True)
-    
+
     # Engagement metrics
     view_count = models.PositiveIntegerField(default=0)
     featured = models.BooleanField(default=False)
@@ -227,10 +227,10 @@ class NewsletterSubscription(models.Model):
     email = models.EmailField(unique=True)
     subscribed_at = models.DateTimeField(auto_now_add=True)
     is_active = models.BooleanField(default=True)
-    
+
     class Meta:
         ordering = ['-subscribed_at']
-        
+
     def __str__(self):
         return self.email
 
@@ -247,7 +247,7 @@ class PostReaction(models.Model):
         ('sad', 'Sad'),
         ('angry', 'Angry'),
     ]
-    
+
     post = models.ForeignKey(
         Post, on_delete=models.CASCADE, related_name='reactions'
     )
@@ -258,7 +258,7 @@ class PostReaction(models.Model):
         max_length=10, choices=REACTION_CHOICES, default='like'
     )
     created_at = models.DateTimeField(auto_now_add=True)
-    
+
     class Meta:
         unique_together = ('post', 'user')  # One reaction per user per post
         ordering = ['-created_at']
@@ -266,7 +266,7 @@ class PostReaction(models.Model):
             # Optimize reaction count queries by type
             models.Index(fields=['post', 'reaction_type']),
         ]
-    
+
     def __str__(self):
         return f'{self.user.username} {self.reaction_type}d {self.post.title}'
 
@@ -279,12 +279,12 @@ class ReadingProgress(models.Model):
     post = models.ForeignKey(Post, on_delete=models.CASCADE)
     progress_percentage = models.PositiveIntegerField(default=0)
     last_read_at = models.DateTimeField(auto_now=True)
-    
+
     class Meta:
         # One progress record per user per post
         unique_together = ('user', 'post')
         ordering = ['-last_read_at']
-    
+
     def __str__(self):
         return (f'{self.user.username} - {self.post.title} '
                 f'({self.progress_percentage}%)')

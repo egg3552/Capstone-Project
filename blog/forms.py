@@ -16,7 +16,7 @@ class CustomUserCreationForm(UserCreationForm):
         ('reader', 'Reader'),
         ('author', 'Author'),
     ]
-    
+
     email = forms.EmailField(
         required=True,
         help_text='Required. Enter a valid email address.'
@@ -194,7 +194,7 @@ class PostForm(forms.ModelForm):
         # Check if slug is unique (excluding current post if editing)
         # This prevents duplicate URLs while allowing editing existing posts
         queryset = Post.objects.filter(slug=slug)
-        
+
         # When editing an existing post, exclude it from uniqueness check
         # self.instance.pk exists only when editing, not when creating
         if self.instance and self.instance.pk:
@@ -313,10 +313,10 @@ class AdvancedSearchForm(forms.Form):
         # This ensures dropdowns always reflect current database state
         from .models import Category, Tag
         from django.contrib.auth.models import User
-        
+
         self.fields['category'].queryset = Category.objects.all()
         self.fields['tag'].queryset = Tag.objects.all()
-        
+
         # Only show users who have actually published posts as author options
         # posts__isnull=False filters for users with at least one post
         # distinct() prevents duplicate users if they have multiple posts

@@ -75,7 +75,7 @@ class PostAdmin(admin.ModelAdmin):
     ]
     date_hierarchy = 'published_at'
     filter_horizontal = ['tags']
-    
+
     fieldsets = (
         ('Content', {
             'fields': ('title', 'slug', 'author', 'content', 'excerpt')

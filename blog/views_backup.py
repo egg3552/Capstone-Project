@@ -386,7 +386,7 @@ def add_reaction(request, slug):
     """
     post = get_object_or_404(Post, slug=slug, status='published')
     reaction_type = request.POST.get('reaction_type', 'like')
-    
+
     try:
         from .models import PostReaction
         # Use get_or_create to avoid duplicate reactions
@@ -395,7 +395,7 @@ def add_reaction(request, slug):
             user=request.user,
             defaults={'reaction_type': reaction_type}
         )
-        
+
         if not created:
             # Toggle reaction - remove if same type, update if different
             if reaction.reaction_type == reaction_type:
@@ -414,7 +414,7 @@ def add_reaction(request, slug):
         # Handle case where PostReaction table doesn't exist
         messages.warning(
             request, 'Reactions feature temporarily unavailable.')
-    
+
     return redirect('blog:post_detail', slug=slug)
 
 
@@ -436,9 +436,9 @@ def analytics_dashboard(request):
         messages.error(
             request, 'Profile setup required. Please contact admin.')
         return redirect('blog:post_list')
-    
+
     from django.db.models import Sum
-    
+
     # Get user's posts if author, all posts if admin
     if request.user.userprofile.can_moderate():
         posts = Post.objects.filter(status='published')
@@ -446,11 +446,11 @@ def analytics_dashboard(request):
         posts = Post.objects.filter(
             author=request.user, status='published'
         )
-    
+
     # Calculate analytics
     total_posts = posts.count()
     total_views = posts.aggregate(Sum('view_count'))['view_count__sum'] or 0
-    
+
     # Try to get reaction data, handle if table doesn't exist
     try:
         from .models import PostReaction
@@ -463,10 +463,10 @@ def analytics_dashboard(request):
         # (e.g., local development without proper migrations)
         total_reactions = 0
         recent_reactions = []
-    
+
     # Popular posts
     popular_posts = posts.order_by('-view_count')[:5]
-    
+
     context = {
         'total_posts': total_posts,
         'total_views': total_views,
@@ -474,7 +474,7 @@ def analytics_dashboard(request):
         'popular_posts': popular_posts,
         'recent_reactions': recent_reactions,
     }
-    
+
     return render(request, 'blog/analytics_dashboard.html', context)
 
 
@@ -485,10 +485,10 @@ def advanced_search(request):
     """
     from django.db import models as django_models
     from .forms import AdvancedSearchForm
-    
+
     form = AdvancedSearchForm(request.GET or None)
     posts = Post.objects.filter(status='published')
-    
+
     if form.is_valid():
         query = form.cleaned_data.get('query')
         author = form.cleaned_data.get('author')
@@ -496,7 +496,7 @@ def advanced_search(request):
         tag = form.cleaned_data.get('tag')
         date_from = form.cleaned_data.get('date_from')
         date_to = form.cleaned_data.get('date_to')
-        
+
         # Apply search filters if provided
         if query:
             posts = posts.filter(
@@ -504,35 +504,35 @@ def advanced_search(request):
                 django_models.Q(content__icontains=query) |
                 django_models.Q(excerpt__icontains=query)
             )
-        
+
         if author:
             posts = posts.filter(author=author)
-        
+
         if category:
             posts = posts.filter(category=category)
-        
+
         if tag:
             posts = posts.filter(tags__in=[tag])
-        
+
         # Date range filtering
         if date_from:
             posts = posts.filter(created__gte=date_from)
-        
+
         if date_to:
             posts = posts.filter(created__lte=date_to)
-    
+
     # Pagination
     from django.core.paginator import Paginator
     paginator = Paginator(posts.distinct(), 6)
     page = request.GET.get('page')
     posts = paginator.get_page(page)
-    
+
     context = {
         'form': form,
         'posts': posts,
         'search_performed': form.is_valid() and form.cleaned_data,
     }
-    
+
     return render(request, 'blog/advanced_search.html', context)
 
 
@@ -543,10 +543,10 @@ def update_reading_progress(request, slug):
     Update reading progress for a post.
     """
     from django.http import JsonResponse
-    
+
     post = get_object_or_404(Post, slug=slug, status='published')
     progress = request.POST.get('progress', 0)
-    
+
     from .models import ReadingProgress
     # Use get_or_create to track reading progress per user per post
     reading_progress, created = ReadingProgress.objects.get_or_create(
@@ -554,12 +554,10 @@ def update_reading_progress(request, slug):
         user=request.user,
         defaults={'progress_percentage': progress}
     )
-    
+
     # Update progress if record already exists
     if not created:
         reading_progress.progress_percentage = progress
         reading_progress.save()
-    
+
     return JsonResponse({'status': 'success'})
-
-

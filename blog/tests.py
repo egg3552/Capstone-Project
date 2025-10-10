@@ -7,19 +7,19 @@ from .forms import CustomUserCreationForm, PostForm, PostSearchForm
 
 class UserProfileModelTest(TestCase):
     """Test cases for UserProfile model."""
-    
+
     def setUp(self):
         self.user = User.objects.create_user(
             username='testuser',
             email='test@example.com',
             password='testpass123'
         )
-    
+
     def test_user_profile_creation(self):
         """Test UserProfile is created automatically with User."""
         self.assertTrue(hasattr(self.user, 'userprofile'))
         self.assertEqual(self.user.userprofile.role, 'reader')
-    
+
     def test_user_profile_str(self):
         """Test UserProfile string representation."""
         expected = f"{self.user.username} - {self.user.userprofile.role}"
@@ -28,19 +28,19 @@ class UserProfileModelTest(TestCase):
 
 class CategoryModelTest(TestCase):
     """Test cases for Category model."""
-    
+
     def setUp(self):
         self.category = Category.objects.create(
             name='Technology',
             description='Tech related posts'
         )
-    
+
     def test_category_creation(self):
         """Test Category model creation."""
         self.assertEqual(self.category.name, 'Technology')
         self.assertEqual(self.category.slug, 'technology')
         self.assertTrue(self.category.description)
-    
+
     def test_category_str(self):
         """Test Category string representation."""
         self.assertEqual(str(self.category), 'Technology')
@@ -48,15 +48,15 @@ class CategoryModelTest(TestCase):
 
 class TagModelTest(TestCase):
     """Test cases for Tag model."""
-    
+
     def setUp(self):
         self.tag = Tag.objects.create(name='Django')
-    
+
     def test_tag_creation(self):
         """Test Tag model creation."""
         self.assertEqual(self.tag.name, 'Django')
         self.assertEqual(self.tag.slug, 'django')
-    
+
     def test_tag_str(self):
         """Test Tag string representation."""
         self.assertEqual(str(self.tag), 'Django')
@@ -64,7 +64,7 @@ class TagModelTest(TestCase):
 
 class PostModelTest(TestCase):
     """Test cases for Post model."""
-    
+
     def setUp(self):
         self.user = User.objects.create_user(
             username='author',
@@ -84,7 +84,7 @@ class PostModelTest(TestCase):
             status='published'
         )
         self.post.tags.add(self.tag)
-    
+
     def test_post_creation(self):
         """Test Post model creation."""
         self.assertEqual(self.post.title, 'Test Post')
@@ -92,11 +92,11 @@ class PostModelTest(TestCase):
         self.assertEqual(self.post.category, self.category)
         self.assertEqual(self.post.status, 'published')
         self.assertTrue(self.post.slug)
-    
+
     def test_post_str(self):
         """Test Post string representation."""
         self.assertEqual(str(self.post), 'Test Post')
-    
+
     def test_post_absolute_url(self):
         """Test Post get_absolute_url method."""
         expected_url = reverse('blog:post_detail',
@@ -106,7 +106,7 @@ class PostModelTest(TestCase):
 
 class CommentModelTest(TestCase):
     """Test cases for Comment model."""
-    
+
     def setUp(self):
         self.user = User.objects.create_user(
             username='commenter',
@@ -129,14 +129,14 @@ class CommentModelTest(TestCase):
             author=self.user,
             content='Test comment content.'
         )
-    
+
     def test_comment_creation(self):
         """Test Comment model creation."""
         self.assertEqual(self.comment.post, self.post)
         self.assertEqual(self.comment.author, self.user)
         self.assertEqual(self.comment.content, 'Test comment content.')
         self.assertTrue(self.comment.created_at)
-    
+
     def test_comment_str(self):
         """Test Comment string representation."""
         expected = f"Comment by {self.user.username} on {self.post.title}"
@@ -145,7 +145,7 @@ class CommentModelTest(TestCase):
 
 class CustomUserCreationFormTest(TestCase):
     """Test cases for CustomUserCreationForm."""
-    
+
     def test_valid_form(self):
         """Test CustomUserCreationForm with valid data."""
         form_data = {
@@ -159,7 +159,7 @@ class CustomUserCreationFormTest(TestCase):
         }
         form = CustomUserCreationForm(data=form_data)
         self.assertTrue(form.is_valid())
-    
+
     def test_password_mismatch(self):
         """Test form with mismatched passwords."""
         form_data = {
@@ -177,13 +177,13 @@ class CustomUserCreationFormTest(TestCase):
 
 class PostFormTest(TestCase):
     """Test cases for PostForm."""
-    
+
     def setUp(self):
         self.category = Category.objects.create(
             name='Technology',
             description='Tech posts'
         )
-    
+
     def test_valid_post_form(self):
         """Test PostForm with valid data."""
         form_data = {
@@ -201,7 +201,7 @@ class PostFormTest(TestCase):
         if not form.is_valid():
             print("Form errors:", form.errors)
         self.assertTrue(form.is_valid())
-    
+
     def test_empty_title(self):
         """Test PostForm with empty title."""
         form_data = {
@@ -216,7 +216,7 @@ class PostFormTest(TestCase):
 
 class ViewsTest(TestCase):
     """Test cases for blog views."""
-    
+
     def setUp(self):
         self.client = Client()
         self.user = User.objects.create_user(
@@ -226,7 +226,7 @@ class ViewsTest(TestCase):
         )
         self.user.userprofile.role = 'author'
         self.user.userprofile.save()
-        
+
         self.category = Category.objects.create(
             name='Technology',
             description='Tech posts'
@@ -238,13 +238,13 @@ class ViewsTest(TestCase):
             category=self.category,
             status='published'
         )
-    
+
     def test_post_list_view(self):
         """Test post list view."""
         response = self.client.get(reverse('blog:post_list'))
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, self.post.title)
-    
+
     def test_post_detail_view(self):
         """Test post detail view."""
         response = self.client.get(
@@ -253,22 +253,22 @@ class ViewsTest(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, self.post.title)
         self.assertContains(response, self.post.content)
-    
+
     def test_register_view(self):
         """Test user registration view."""
         response = self.client.get(reverse('blog:register'))
         self.assertEqual(response.status_code, 200)
-    
+
     def test_login_view(self):
         """Test login view."""
         response = self.client.get(reverse('blog:login'))
         self.assertEqual(response.status_code, 200)
-    
+
     def test_post_create_requires_login(self):
         """Test post creation requires authentication."""
         response = self.client.get(reverse('blog:post_create'))
         self.assertEqual(response.status_code, 302)  # Redirect to login
-    
+
     def test_post_create_authenticated(self):
         """Test post creation with authenticated user."""
         self.client.login(username='testuser', password='testpass123')
@@ -278,22 +278,22 @@ class ViewsTest(TestCase):
 
 class URLPatternsTest(TestCase):
     """Test cases for URL patterns."""
-    
+
     def test_post_list_url(self):
         """Test post list URL resolves correctly."""
         url = reverse('blog:post_list')
         self.assertEqual(url, '/')
-    
+
     def test_register_url(self):
         """Test register URL resolves correctly."""
         url = reverse('blog:register')
         self.assertEqual(url, '/register/')
-    
+
     def test_login_url(self):
         """Test login URL resolves correctly."""
         url = reverse('blog:login')
         self.assertEqual(url, '/login/')
-    
+
     def test_post_create_url(self):
         """Test post create URL resolves correctly."""
         url = reverse('blog:post_create')
@@ -302,7 +302,7 @@ class URLPatternsTest(TestCase):
 
 class SearchFunctionalityTest(TestCase):
     """Test cases for search functionality."""
-    
+
     def setUp(self):
         self.user = User.objects.create_user(
             username='author',
@@ -327,13 +327,13 @@ class SearchFunctionalityTest(TestCase):
             category=self.category,
             status='published'
         )
-    
+
     def test_search_form(self):
         """Test search form functionality."""
         form_data = {'query': 'Django'}
         form = PostSearchForm(data=form_data)
         self.assertTrue(form.is_valid())
-    
+
     def test_empty_search(self):
         """Test search form with empty query."""
         form_data = {'query': ''}
