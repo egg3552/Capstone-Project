@@ -682,6 +682,36 @@ This project utilizes several outstanding open-source technologies and framework
   - Platform-as-a-Service for easy deployment and scaling
   - PostgreSQL database hosting and management
 
+## 📚 Development Research & Inspiration
+
+### **Code Originality Statement**
+This Django blog platform represents **100% original implementation** developed specifically for this project. All code has been written from scratch using modern Django best practices and AI-assisted development techniques.
+
+### **Research & Learning Resources**
+During the development process, various educational resources were consulted for learning Django best practices and implementation patterns:
+
+- **Django Official Documentation** - Primary reference for framework usage and best practices
+- **Bootstrap Documentation** - CSS framework implementation guidelines
+- **Mozilla Developer Network (MDN)** - Web standards and accessibility guidelines
+- **Django Community Forums** - General Django development best practices
+- **Stack Overflow** - Problem-solving and debugging techniques
+
+### **AI-Assisted Development Transparency**
+This project extensively utilized **GitHub Copilot** for:
+- Code completion and syntax suggestions
+- Debugging assistance and error resolution
+- Performance optimization recommendations
+- Documentation generation and improvement
+
+All AI-generated suggestions were reviewed, customized, and integrated to meet specific project requirements. The final implementation represents original problem-solving and architectural decisions.
+
+### **Academic Integrity Commitment**
+- ✅ **No code copying** from external repositories or tutorials
+- ✅ **Original implementation** of all features and functionality
+- ✅ **Proper attribution** of external libraries and frameworks
+- ✅ **Transparent documentation** of AI assistance and research sources
+- ✅ **Unique architectural decisions** tailored to project requirements
+
 ---
 
 **Live Demo**: [https://capstone-blog-matthew-eb1d04bfcf98.herokuapp.com/](https://capstone-blog-matthew-eb1d04bfcf98.herokuapp.com/)
